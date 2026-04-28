@@ -1,0 +1,61 @@
+/* 磐石系統模板 - 全局樣式 */
+
+/* 平滑滾動 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 選中文字樣式 */
+::selection {
+  background: #bef264;
+  color: #1f1f1f;
+}
+
+/* 自定義滾動條 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8f8f8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}
+
+/* 圖片優化 */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 焦點樣式 */
+*:focus-visible {
+  outline: 2px solid #bef264;
+  outline-offset: 2px;
+}
+
+/* 減少動畫（無障礙） */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 列印樣式 */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 12%;
+    --primary: 0 0% 12%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 97%;
+    --secondary-foreground: 0 0% 12%;
+    --muted: 0 0% 97%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 82 92% 65%;
+    --accent-foreground: 0 0% 12%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 82 92% 65%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 26%;
+    --sidebar-primary: 0 0% 12%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 12%;
+    --sidebar-border: 0 0% 91%;
+    --sidebar-ring: 82 92% 65%;
+    
+    /* 磐石系統品牌變量 */
+    --panshi-black: #1f1f1f;
+    --panshi-dark: #2a2a2a;
+    --panshi-gray: #333333;
+    --panshi-medium: #666666;
+    --panshi-light: #999999;
+    --panshi-surface: #f8f8f8;
+    --panshi-white: #ffffff;
+    --panshi-lime: #bef264;
+    --panshi-lime-dark: #9ad145;
+    --panshi-blue: #3b82f6;
+    --panshi-cement: #e5e5e5;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* 磐石系統按鈕樣式 */
+  .btn-panshi {
+    @apply inline-flex items-center justify-center px-6 py-3 text-sm font-medium transition-all duration-300 rounded-lg;
+  }
+  
+  .btn-panshi-primary {
+    @apply btn-panshi bg-panshi-lime text-panshi-black hover:bg-panshi-lime-dark hover:shadow-glow;
+  }
+  
+  .btn-panshi-secondary {
+    @apply btn-panshi bg-panshi-black text-white hover:bg-panshi-gray;
+  }
+  
+  .btn-panshi-outline {
+    @apply btn-panshi border-2 border-panshi-black text-panshi-black hover:bg-panshi-black hover:text-white;
+  }
+  
+  .btn-panshi-outline-white {
+    @apply btn-panshi border-2 border-white text-white hover:bg-white hover:text-panshi-black;
+  }
+  
+  /* 區塊標題樣式 */
+  .section-title {
+    @apply text-4xl md:text-5xl lg:text-6xl font-display font-bold text-panshi-black leading-tight;
+  }
+  
+  .section-subtitle {
+    @apply text-lg md:text-xl text-panshi-medium max-w-2xl;
+  }
+  
+  /* 卡片懸停效果 */
+  .card-hover {
+    @apply transition-all duration-500 ease-out;
+  }
+  
+  .card-hover:hover {
+    @apply -translate-y-2 shadow-structural;
+  }
+  
+  /* 文字漸層效果 */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-panshi-lime to-panshi-blue;
+  }
+  
+  /* 玻璃態效果 */
+  .glass {
+    @apply bg-white/80 backdrop-blur-xl border border-white/20;
+  }
+  
+  .glass-dark {
+    @apply bg-panshi-black/80 backdrop-blur-xl border border-white/10;
+  }
+  
+  /* 網格背景 */
+  .grid-pattern {
+    background-image: 
+      linear-gradient(rgba(190, 242, 100, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(190, 242, 100, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  
+  /* 混凝土紋理 */
+  .concrete-texture {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+  }
+  
+  /* 發光效果 */
+  .glow-lime {
+    box-shadow: 0 0 40px rgba(190, 242, 100, 0.3);
+  }
+  
+  /* 動態邊框 */
+  .animated-border {
+    position: relative;
+  }
+  
+  .animated-border::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--panshi-lime);
+    transition: width 0.3s ease;
+  }
+  
+  .animated-border:hover::after {
+    width: 100%;
+  }
+  
+  /* 統計數字動畫 */
+  .stat-number {
+    @apply text-5xl md:text-6xl lg:text-7xl font-display font-bold text-panshi-lime;
+  }
+  
+  /* 導航欄樣式 */
+  .nav-link {
+    @apply relative text-sm font-medium text-panshi-medium hover:text-panshi-black transition-colors duration-300;
+  }
+  
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-panshi-lime transition-all duration-300;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+  
+  /* 表單輸入樣式 */
+  .input-panshi {
+    @apply w-full px-4 py-3 bg-white border border-panshi-cement rounded-lg text-panshi-black placeholder:text-panshi-light focus:outline-none focus:border-panshi-lime focus:ring-2 focus:ring-panshi-lime/20 transition-all duration-300;
+  }
+  
+  .input-panshi-dark {
+    @apply w-full px-4 py-3 bg-panshi-dark border border-panshi-gray rounded-lg text-white placeholder:text-panshi-light focus:outline-none focus:border-panshi-lime focus:ring-2 focus:ring-panshi-lime/20 transition-all duration-300;
+  }
+  
+  /* 標籤樣式 */
+  .tag {
+    @apply inline-flex items-center px-3 py-1 text-xs font-medium rounded-full bg-panshi-surface text-panshi-medium border border-panshi-cement;
+  }
+  
+  .tag-lime {
+    @apply tag bg-panshi-lime/10 text-panshi-black border-panshi-lime/30;
+  }
+  
+  /* 滾動顯示動畫 */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* 延遲類 */
+  .delay-100 { transition-delay: 100ms; }
+  .delay-200 { transition-delay: 200ms; }
+  .delay-300 { transition-delay: 300ms; }
+  .delay-400 { transition-delay: 400ms; }
+  .delay-500 { transition-delay: 500ms; }
+}
+
+@layer utilities {
+  /* 結構緩動函數 */
+  .ease-structural {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  /* 流體滾動緩動 */
+  .ease-fluid {
+    transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  
+  /* 文字描邊 */
+  .text-stroke {
+    -webkit-text-stroke: 1px currentColor;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* 遮罩效果 */
+  .mask-gradient-b {
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  }
+  
+  /* 硬件加速 */
+  .gpu-accelerate {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+}
+
+/* 自定義滾動條 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--panshi-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--panshi-cement);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--panshi-medium);
+}
+
+/* 選中文字樣式 */
+::selection {
+  background: var(--panshi-lime);
+  color: var(--panshi-black);
+}
