@@ -243,10 +243,8 @@ export default function Platform() {
               填寫以下資料，我們將盡快與您聯繫
             </DialogDescription>
           </DialogHeader>
-          <form action="https://formsubmit.co/adolph0306@gmail.com" method="POST" target="_blank" className="space-y-4 mt-4" onSubmit={() => setTimeout(() => setShowMasterForm(false), 500)}>
-            <input type="hidden" name="_subject" value="磐石系統模板 - 新模主申請" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value="https://f7i6vatmst46g.kimi.page/platform" />
+          <form name="模主申請" method="POST" data-netlify="true" className="space-y-4 mt-4" onSubmit={(e) => { e.preventDefault(); const form = e.target as HTMLFormElement; fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form) as any).toString() }).then(() => setShowMasterForm(false)); }}>
+            <input type="hidden" name="form-name" value="模主申請" />
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-panshi-black mb-1">
@@ -325,10 +323,8 @@ export default function Platform() {
               告訴我們您的需求，我們將提供專屬解決方案
             </DialogDescription>
           </DialogHeader>
-          <form action="https://formsubmit.co/adolph0306@gmail.com" method="POST" target="_blank" className="space-y-4 mt-4" onSubmit={() => setTimeout(() => setShowPartnerForm(false), 500)}>
-            <input type="hidden" name="_subject" value="磐石系統模板 - 新建商合作洽詢" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value="https://f7i6vatmst46g.kimi.page/platform" />
+          <form name="建商合作洽詢" method="POST" data-netlify="true" className="space-y-4 mt-4" onSubmit={(e) => { e.preventDefault(); const form = e.target as HTMLFormElement; fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form) as any).toString() }).then(() => setShowPartnerForm(false)); }}>
+            <input type="hidden" name="form-name" value="建商合作洽詢" />
             <div>
               <label className="block text-sm font-medium text-panshi-black mb-1">
                 公司名稱 *

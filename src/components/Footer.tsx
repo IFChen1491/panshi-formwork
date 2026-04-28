@@ -162,7 +162,7 @@ export default function Footer() {
               </div>
               <div>
                 <p className="text-xs text-panshi-light mb-1">聯絡電話</p>
-                <p className="text-sm text-white">03-8333164</p>
+                <p className="text-sm text-white">03-835-7308</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
