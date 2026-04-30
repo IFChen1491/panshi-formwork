@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, ArrowRight, Layers, Box, Mountain, Star } from 'lucide-react';
+import { Check, ArrowRight, Layers, Box, Star } from 'lucide-react';
 
 const solutions = [
   {
@@ -10,7 +10,7 @@ const solutions = [
     description: '針對各種牆體結構設計的模組化模板系統，從一般住宅到超高層建築皆適用。',
     features: [
       '模組化設計，快速拼裝',
-      '高精度鋁合金材質',
+      '高強度塑鋼材質',
       '內建 RFID 追蹤晶片',
       'AI 壓力監測系統',
       '最高可達 5 米單次澆置',
@@ -18,7 +18,7 @@ const solutions = [
     specs: [
       { label: '最大高度', value: '5.0m' },
       { label: '最大長度', value: '3.6m' },
-      { label: '材質', value: '鋁合金 6061-T6' },
+      { label: '材質', value: '塑鋼' },
       { label: '重複使用率', value: '200+' },
     ],
     image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop&q=80',
@@ -39,31 +39,10 @@ const solutions = [
     specs: [
       { label: '最大跨度', value: '6.0m' },
       { label: '載重能力', value: '5kN/m²' },
-      { label: '材質', value: '鋁合金 + 鋼材' },
+      { label: '材質', value: '塑鋼' },
       { label: '重量', value: '15kg/m²' },
     ],
     image: 'https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=800&h=600&fit=crop&q=80',
-  },
-  {
-    id: 'climbing',
-    icon: Mountain,
-    title: '爬升模板系統',
-    subtitle: 'Climbing Formwork',
-    description: '專為超高層建築設計的液壓爬升系統，實現自動化、連續施工。',
-    features: [
-      '液壓自動爬升',
-      '單層爬升時間 < 4hr',
-      '整合施工平台',
-      '全天候作業能力',
-      '遠端監控系統',
-    ],
-    specs: [
-      { label: '最大高度', value: '無限制' },
-      { label: '爬升速度', value: '0.3m/min' },
-      { label: '載重能力', value: '10kN/m²' },
-      { label: '風速限制', value: '60km/h' },
-    ],
-    image: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&h=600&fit=crop&q=80',
   },
   {
     id: 'special',
@@ -105,7 +84,7 @@ export default function Solutions() {
               全方位<span className="text-panshi-lime">模板系統</span>
             </h1>
             <p className="text-xl text-panshi-light max-w-2xl leading-relaxed">
-              從牆體到樓板，從一般建築到超高層，磐石提供完整的模板解決方案，
+              從牆體到樓板，磐石提供完整的塑鋼智慧模板解決方案，
               滿足各種施工需求。
             </p>
           </div>
@@ -241,40 +220,28 @@ export default function Solutions() {
                         <td key={solution.id} className="px-6 py-4 text-panshi-medium">
                           {row.key === 'height' &&
                             (solution.id === 'wall'
-                              ? ' up to 5m'
+                              ? 'up to 5m'
                               : solution.id === 'slab'
-                              ? ' up to 6m'
-                              : solution.id === 'climbing'
-                              ? ' 無限制'
-                              : ' 依設計')}
+                              ? 'up to 6m'
+                              : '依設計')}
                           {row.key === 'speed' &&
                             (solution.id === 'wall'
-                              ? ' 快'
+                              ? '快'
                               : solution.id === 'slab'
-                              ? ' 極快'
-                              : solution.id === 'climbing'
-                              ? ' 自動化'
-                              : ' 依設計')}
+                              ? '極快'
+                              : '依設計')}
                           {row.key === 'labor' &&
                             (solution.id === 'wall'
-                              ? ' 中等'
+                              ? '中等'
                               : solution.id === 'slab'
-                              ? ' 低'
-                              : solution.id === 'climbing'
-                              ? ' 極低'
-                              : ' 依設計')}
+                              ? '低'
+                              : '依設計')}
                           {row.key === 'reuse' &&
-                            (solution.id === 'special'
-                              ? ' 依設計'
-                              : ' 200+')}
+                            (solution.id === 'special' ? '依設計' : '200+')}
                           {row.key === 'iot' &&
-                            (solution.id === 'special' ? ' 選配' : ' 標配')}
+                            (solution.id === 'special' ? '選配' : '標配')}
                           {row.key === 'cost' &&
-                            (solution.id === 'climbing'
-                              ? ' 高'
-                              : solution.id === 'special'
-                              ? ' 依設計'
-                              : ' 優')}
+                            (solution.id === 'special' ? '依設計' : '優')}
                         </td>
                       ))}
                     </tr>
@@ -288,3 +255,5 @@ export default function Solutions() {
     </div>
   );
 }
+
+export default Solutions;
