@@ -78,28 +78,40 @@ const values = [
 
 const team = [
   {
-    name: '張建國',
+    name: '陳毅夫',
     role: '創辦人暨執行長',
-    background: '前中鋼結構總工程師，30年營建經驗',
-    avatar: '張',
+    background: '台灣大學工商管理碩士，20年營建經歷，台灣國家建築金獎，台灣、日本、中國多項營建工程專利',
+    avatar: '陳',
   },
   {
-    name: '李慧君',
+    name: '廖奕勝',
+    role: '亞太區營運長',
+    background: '台灣大學工商管理碩士，台科大資訊工程學士，前戴爾科技大中華區總監級顧問，前華碩電腦泰緬區副總經理，專長市場開發',
+    avatar: '廖',
+  },
+  {
+    name: '李亞喬',
     role: '技術長',
-    background: 'MIT 土木博士，AIoT 專家',
+    background: '超過15年營建工程經驗，多年系統模板團隊經驗',
     avatar: '李',
   },
   {
-    name: '王志明',
-    role: '營運長',
-    background: '前 McKinsey 顧問，平台經濟專家',
-    avatar: '王',
+    name: '宋又時',
+    role: '國際策略長',
+    background: '專長品牌策略、海外拓展與綠色建材應用',
+    avatar: '宋',
   },
   {
-    name: '陳雅芳',
-    role: '永續長',
-    background: 'LEED Fellow，ESG 策略顧問',
+    name: '陳玫芳',
+    role: '資本管理長',
+    background: '跨產業背景，擅大型專案與系統整合',
     avatar: '陳',
+  },
+  {
+    name: '葉書瑜',
+    role: '行銷公關長',
+    background: '熟悉社群與影音行銷操作，打造品牌聲量',
+    avatar: '葉',
   },
 ];
 
@@ -345,7 +357,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {team.map((member) => (
               <div
                 key={member.name}
