@@ -99,8 +99,11 @@ export default function Contact() {
                 填寫以下表單，選擇您感興趣的服務類型
               </p>
 
-              <form name="聯絡表單" method="POST" data-netlify="true" className="space-y-6" onSubmit={(e) => { e.preventDefault(); const form = e.target as HTMLFormElement; fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form) as any).toString() }).then(() => setShowSuccess(true)); }}>
-                <input type="hidden" name="form-name" value="聯絡表單" />
+              <form className="space-y-6" onSubmit={async (e) => { e.preventDefault(); const form = e.target as HTMLFormElement; const data = new FormData(form); const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data }); if (res.ok) { setShowSuccess(true); form.reset(); } }}>
+                <input type="hidden" name="access_key" value="d7f8ab13-7379-4c43-8108-834eb93d4d81" />
+                <input type="hidden" name="subject" value="磐石系統模板｜新諮詢表單" />
+                <input type="hidden" name="from_name" value="磐石系統模板官網" />
+                <input type="hidden" name="redirect" value="false" />
                 {/* Inquiry Type */}
                 <div>
                   <label className="block text-sm font-medium text-panshi-black mb-3">
