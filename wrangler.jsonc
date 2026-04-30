@@ -8,6 +8,10 @@
   "assets": {
     "not_found_handling": "single-page-application"
   },
+  "routes": [
+    { "pattern": "panshi-formwork.com/*", "zone_name": "panshi-formwork.com" },
+    { "pattern": "www.panshi-formwork.com/*", "zone_name": "panshi-formwork.com" }
+  ],
   "compatibility_flags": [
     "nodejs_compat"
   ]

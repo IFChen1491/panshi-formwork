@@ -23,9 +23,13 @@ if (-not $status) {
     exit
 }
 
-# Commit 並 Push
+# Commit
 git commit -m "更新網站內容 - $time"
-git push
+
+# 先 Pull 再 Push（避免遠端有新 commit 導致衝突）
+Write-Host "`n同步遠端變更中..." -ForegroundColor Cyan
+git pull origin main --rebase
+git push origin main
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "`n========================================" -ForegroundColor Green
