@@ -252,13 +252,13 @@ export default function Platform() {
                 <label className="block text-sm font-medium text-panshi-black mb-1">
                   姓名 *
                 </label>
-                <input type="text" name="姓名" className="input-panshi" placeholder="您的姓名" required />
+                <input type="text" name="name" className="input-panshi" placeholder="您的姓名" required />
               </div>
               <div>
                 <label className="block text-sm font-medium text-panshi-black mb-1">
                   電話 *
                 </label>
-                <input type="tel" name="電話" className="input-panshi" placeholder="聯絡電話" required />
+                <input type="tel" name="phone" className="input-panshi" placeholder="聯絡電話" required />
               </div>
             </div>
             <div>
@@ -271,7 +271,7 @@ export default function Platform() {
               <label className="block text-sm font-medium text-panshi-black mb-1">
                 居住地區 *
               </label>
-              <select name="居住地區" className="input-panshi">
+              <select name="region" className="input-panshi">
                 <option>請選擇地區</option>
                 <option>台北市</option>
                 <option>新北市</option>
@@ -286,7 +286,7 @@ export default function Platform() {
               <label className="block text-sm font-medium text-panshi-black mb-1">
                 模板施工經驗 *
               </label>
-              <select name="模板施工經驗" className="input-panshi">
+              <select name="experience" className="input-panshi">
                 <option>請選擇年資</option>
                 <option>1 年以下</option>
                 <option>1-3 年</option>
@@ -299,13 +299,13 @@ export default function Platform() {
               <label className="block text-sm font-medium text-panshi-black mb-1">
                 相關證照
               </label>
-              <input type="text" name="相關證照" className="input-panshi" placeholder="請列出您持有的相關證照" />
+              <input type="text" name="license" className="input-panshi" placeholder="請列出您持有的相關證照" />
             </div>
             <div>
               <label className="block text-sm font-medium text-panshi-black mb-1">
                 其他說明
               </label>
-              <textarea name="其他說明" className="input-panshi h-24" placeholder="有任何想補充的資訊..." />
+              <textarea name="message" className="input-panshi h-24" placeholder="有任何想補充的資訊..." />
             </div>
             <button type="submit" className="btn-panshi-primary w-full">
               提交申請
@@ -333,27 +333,27 @@ export default function Platform() {
               <label className="block text-sm font-medium text-panshi-black mb-1">
                 公司名稱 *
               </label>
-              <input type="text" name="公司名稱" className="input-panshi" placeholder="貴公司名稱" required />
+              <input type="text" name="company" className="input-panshi" placeholder="貴公司名稱" required />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-panshi-black mb-1">
                   聯絡人姓名 *
                 </label>
-                <input type="text" name="聯絡人姓名" className="input-panshi" placeholder="聯絡人姓名" required />
+                <input type="text" name="name" className="input-panshi" placeholder="聯絡人姓名" required />
               </div>
               <div>
                 <label className="block text-sm font-medium text-panshi-black mb-1">
                   職稱
                 </label>
-                <input type="text" name="職稱" className="input-panshi" placeholder="例如：專案經理" />
+                <input type="text" name="title" className="input-panshi" placeholder="例如：專案經理" />
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-panshi-black mb-1">
                 聯絡電話 *
               </label>
-              <input type="tel" name="聯絡電話" className="input-panshi" placeholder="聯絡電話" required />
+              <input type="tel" name="phone" className="input-panshi" placeholder="聯絡電話" required />
             </div>
             <div>
               <label className="block text-sm font-medium text-panshi-black mb-1">
@@ -365,7 +365,7 @@ export default function Platform() {
               <label className="block text-sm font-medium text-panshi-black mb-1">
                 專案類型
               </label>
-              <select name="專案類型" className="input-panshi">
+              <select name="project_type" className="input-panshi">
                 <option>請選擇專案類型</option>
                 <option>住宅大樓</option>
                 <option>商業大樓</option>
@@ -378,7 +378,7 @@ export default function Platform() {
               <label className="block text-sm font-medium text-panshi-black mb-1">
                 需求說明
               </label>
-              <textarea name="需求說明" className="input-panshi h-24" placeholder="請簡述您的專案需求..." />
+              <textarea name="message" className="input-panshi h-24" placeholder="請簡述您的專案需求..." />
             </div>
             <button type="submit" className="btn-panshi-primary w-full">
               送出洽詢

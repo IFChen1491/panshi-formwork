@@ -109,7 +109,7 @@ export default function Contact() {
                   <label className="block text-sm font-medium text-panshi-black mb-3">
                     諮詢類型 *
                   </label>
-                  <select name="諮詢類型" className="input-panshi" defaultValue="general">
+                  <select name="inquiry_type" className="input-panshi" defaultValue="general">
                     {inquiryTypes.map((type) => (
                       <option key={type.value} value={type.label}>
                         {type.label}
@@ -126,7 +126,7 @@ export default function Contact() {
                     </label>
                     <input
                       type="text"
-                      name="姓名"
+                      name="name"
                       required
                       className="input-panshi"
                       placeholder="您的姓名"
@@ -138,7 +138,7 @@ export default function Contact() {
                     </label>
                     <input
                       type="text"
-                      name="公司名稱"
+                      name="company"
                       className="input-panshi"
                       placeholder="貴公司名稱"
                     />
@@ -165,7 +165,7 @@ export default function Contact() {
                     </label>
                     <input
                       type="tel"
-                      name="聯絡電話"
+                      name="phone"
                       required
                       className="input-panshi"
                       placeholder="+886"
@@ -179,7 +179,7 @@ export default function Contact() {
                     訊息內容 *
                   </label>
                   <textarea
-                    name="訊息內容"
+                    name="message"
                     required
                     rows={5}
                     className="input-panshi"
