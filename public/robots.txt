@@ -1,4 +1,74 @@
+# 磐石智慧系統模板 robots.txt
+# 維護者：陳毅夫 / adolph0306@gmail.com
+# 最後更新：2026-05-20
+#
+# 策略：
+# 1. 允許 Google / Bing 等搜尋引擎完整索引（對 SEO 重要）
+# 2. 阻擋 AI 訓練爬蟲（保護磐石原創敘事不被免費餵 AI）
+# 3. 用 Content-Signal 協議（2025 年 Cloudflare/IETF 新標準）
+
+# ============================================================
+# 一般爬蟲：允許索引，但禁止 AI 訓練
+# ============================================================
 User-agent: *
+Content-Signal: search=yes, ai-train=no, ai-input=no
 Allow: /
 
+# ============================================================
+# 明確阻擋已知 AI 訓練爬蟲
+# ============================================================
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+# ============================================================
+# Sitemap（重要！協助 Google/Bing 加速索引）
+# ============================================================
 Sitemap: https://panshi-formwork.com/sitemap.xml
