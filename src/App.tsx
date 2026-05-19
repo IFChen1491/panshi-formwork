@@ -11,6 +11,7 @@ import ESG from './pages/ESG';
 import Projects from './pages/Projects';
 import Investors from './pages/Investors';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 import './App.css';
 
 // 每次換頁自動回到頂部
@@ -61,6 +62,7 @@ function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/investors" element={<Investors />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />
