@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>巨禾 × 磐石｜戰略晨報 2026.05.30</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+:root{
+  --bg:#F5F3EE; --ink:#1A1A1A; --ink-soft:#6B6B6B; --ink-faint:#9A968D;
+  --accent:#A0411F; --line:#D9D5CC; --card:#FFFFFF; --warn-bg:#F8EFEA;
+  --up:#3A6B47; --down:#A0411F; --flat:#9A968D; --new:#5B4B8A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.serif{font-family:'Noto Serif TC','Songti TC',serif;letter-spacing:.02em}
+.wrap{max-width:1180px;margin:0 auto;padding:80px 56px}
+
+/* HERO */
+.hero{padding-bottom:60px;border-bottom:1px solid var(--line);margin-bottom:80px}
+.hero .eyebrow{font-size:12px;letter-spacing:.5em;color:var(--accent);font-weight:600;margin-bottom:28px}
+.hero h1{font-size:44px;font-weight:700;line-height:1.35;margin-bottom:24px;color:var(--ink)}
+.hero .sub{font-size:17px;color:var(--ink-soft);max-width:880px;line-height:1.85;margin-bottom:32px}
+.hero .meta{font-size:11px;letter-spacing:.15em;color:var(--ink-faint);padding-top:24px;border-top:1px dashed var(--line);font-family:'Noto Sans TC',monospace}
+
+/* SECTION COMMON */
+section{margin-bottom:80px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:36px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.sec-title{font-family:'Noto Serif TC',serif;font-size:24px;font-weight:600;color:var(--ink);letter-spacing:.05em}
+.sec-desc{font-size:12px;letter-spacing:.3em;color:var(--ink-faint)}
+
+/* HERO SIGNAL */
+.hero-signal{background:var(--card);padding:48px;border-left:4px solid var(--accent);margin-bottom:0}
+.hero-signal .label{font-size:11px;letter-spacing:.5em;color:var(--accent);font-weight:700;margin-bottom:20px}
+.hero-signal h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:600;line-height:1.5;margin-bottom:20px;color:var(--ink)}
+.hero-signal .big-number{font-family:'Noto Serif TC',serif;font-size:64px;font-weight:700;color:var(--accent);line-height:1;margin:24px 0;letter-spacing:-.02em}
+.hero-signal .insight{font-size:15px;color:var(--ink-soft);line-height:1.85;max-width:860px}
+.hero-signal .insight strong{color:var(--ink);font-weight:600}
+
+/* ACTION CARDS */
+.action-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px}
+.action-card{background:var(--card);padding:36px 28px;border-top:2px solid var(--accent);position:relative}
+.action-card .when{font-size:11px;letter-spacing:.4em;color:var(--accent);margin-bottom:16px;font-weight:600}
+.action-card .title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:600;line-height:1.5;margin-bottom:16px;color:var(--ink)}
+.action-card .who{font-size:12px;color:var(--ink-soft);margin-bottom:12px;letter-spacing:.05em}
+.action-card .who strong{color:var(--ink);font-weight:500}
+.action-card .desc{font-size:13px;color:var(--ink-soft);line-height:1.75}
+.action-card .exit{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);font-size:11px;color:var(--ink-faint);letter-spacing:.05em}
+.action-card .exit strong{color:var(--accent);font-weight:600}
+
+/* TRACKING */
+.tracking{background:var(--card);padding:40px 44px;border:1px solid var(--line)}
+.tracking-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.tracking-sub{font-size:12px;color:var(--ink-faint);letter-spacing:.2em;margin-bottom:28px}
+.tracking-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.track-item{padding:20px;border-left:3px solid var(--line);background:var(--bg)}
+.track-item.up{border-left-color:var(--up)}
+.track-item.flat{border-left-color:var(--flat)}
+.track-item.warn{border-left-color:var(--down)}
+.track-item.new{border-left-color:var(--new)}
+.track-item .badge{display:inline-block;font-size:10px;letter-spacing:.2em;padding:2px 8px;border-radius:2px;background:var(--ink);color:#fff;margin-bottom:10px;font-weight:600}
+.track-item.up .badge{background:var(--up)}
+.track-item.flat .badge{background:var(--flat)}
+.track-item.warn .badge{background:var(--down)}
+.track-item.new .badge{background:var(--new)}
+.track-item .title-row{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:8px}
+.track-item .update{font-size:12px;color:var(--ink-soft);line-height:1.6}
+
+/* REAL ESTATE / POLICY / CAPITAL */
+.item-row{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;margin-bottom:28px}
+.item-card{background:var(--card);padding:32px;border-top:1px solid var(--ink)}
+.item-card .qty{font-family:'Noto Serif TC',serif;font-size:32px;font-weight:700;color:var(--accent);line-height:1.1;margin-bottom:12px;letter-spacing:-.01em}
+.item-card .qty-sub{font-size:11px;letter-spacing:.3em;color:var(--ink-faint);margin-bottom:18px}
+.item-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:14px}
+.item-card .body{font-size:14px;color:var(--ink-soft);line-height:1.85}
+.item-card .body strong{color:var(--ink);font-weight:600}
+.item-card .matrix{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-top:18px;border-top:1px dashed var(--line)}
+.item-card .matrix .col{font-size:12px}
+.item-card .matrix .col .h{font-weight:600;color:var(--accent);letter-spacing:.1em;margin-bottom:6px;font-size:11px}
+.item-card .matrix .col .t{color:var(--ink-soft);line-height:1.6}
+
+/* CHART AREA */
+.chart-block{background:var(--card);padding:36px;border:1px solid var(--line);margin-top:24px}
+.chart-block .ch-title{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.chart-block .ch-sub{font-size:11px;color:var(--ink-faint);letter-spacing:.15em;margin-bottom:24px}
+.bar-chart{display:flex;flex-direction:column;gap:14px}
+.bar-row{display:grid;grid-template-columns:130px 1fr 80px;gap:14px;align-items:center}
+.bar-row .lbl{font-size:12px;color:var(--ink)}
+.bar-row .bar-bg{height:18px;background:var(--bg);position:relative;border-right:1px solid var(--line)}
+.bar-row .bar-fg{height:100%;background:var(--accent);transition:width 1s}
+.bar-row.up .bar-fg{background:var(--up)}
+.bar-row .val{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:600;color:var(--ink);text-align:right}
+
+/* DOUGHNUT */
+.doughnut-wrap{display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:center}
+.doughnut{width:200px;height:200px;position:relative}
+.doughnut .center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.doughnut .center .num{font-family:'Noto Serif TC',serif;font-size:36px;font-weight:700;color:var(--accent);line-height:1}
+.doughnut .center .lbl{font-size:10px;letter-spacing:.3em;color:var(--ink-faint);margin-top:6px}
+
+/* WARN */
+.warning-section{background:var(--warn-bg);padding:44px 48px;border-left:4px solid var(--accent)}
+.warning-section .warn-label{font-size:11px;letter-spacing:.5em;color:var(--accent);font-weight:700;margin-bottom:18px}
+.warning-section h2{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:24px;line-height:1.5}
+.warning-section .warn-body{font-size:14px;color:var(--ink);line-height:1.95;max-width:880px}
+.warning-section .warn-body strong{color:var(--accent);font-weight:700}
+.warning-section .warn-grid{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:24px;padding-top:24px;border-top:1px dashed var(--accent)}
+.warning-section .warn-grid .col .h{font-size:11px;letter-spacing:.3em;color:var(--accent);font-weight:600;margin-bottom:10px}
+.warning-section .warn-grid .col .b{font-size:13px;color:var(--ink-soft);line-height:1.75}
+
+/* FOOTER */
+footer{padding-top:48px;border-top:1px solid var(--line);font-size:11px;color:var(--ink-faint);letter-spacing:.1em;line-height:1.9}
+footer .src{margin-top:14px;font-size:10px;color:var(--ink-faint)}
+footer .src a{color:var(--ink-soft);text-decoration:none;margin-right:14px}
+
+@media(max-width:880px){
+  .wrap{padding:48px 24px}
+  .action-cards,.tracking-grid,.item-row{grid-template-columns:1fr}
+  .hero h1{font-size:32px}
+  .doughnut-wrap{grid-template-columns:1fr}
+  .warning-section .warn-grid{grid-template-columns:1fr}
+  .bar-row{grid-template-columns:90px 1fr 60px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- 1. HERO -->
+<header class="hero">
+  <div class="eyebrow">巨禾 × 磐石　戰略晨報　2026.05.30</div>
+  <h1 class="serif">使照新高 × 建照十年次低：3-5 年後的供給斷層已被建商「自願」鎖死，但中間 18 個月誰先死？</h1>
+  <p class="sub">內政部 2026Q1 數據出爐：使照 31,798 宅創 2005 來新高、建照 24,658 宅十年次低，台灣房市正式出現第二次「死亡交叉」（上次 2015）。同日輝達北士科總部動土、宣布在台投資再加碼至 1,500 億美元；央行不動產放款占比 35.42% 連三月低於 36%，6/18 理監事會成關鍵。三股力量同時作用——建商縮手、AI 需求引爆能源／土地題材、央行政策抉擇——巨禾與磐石的窗口期已正式打開。</p>
+  <p class="meta">資料截止 07:00 台北｜桌面掛載: ✅｜Tavily: search ×11, extract ×5, crawl ×0｜歷史對照: 過去 3 份報告（5/28、5/29 v1、5/29 v2）｜Prompt: v3.4</p>
+</header>
+
+<!-- 2. HERO SIGNAL -->
+<section class="hero-signal">
+  <div class="label">SIGNAL OF THE DAY</div>
+  <h2 class="serif">2026 年第一次「使照 &gt; 建照」確認成立——歷史上一次出現是 2015，隔年房市轉負成長。</h2>
+  <div class="big-number">31,798 ／ 24,658</div>
+  <p class="insight">內政部 Q1 數據：<strong>使照 31,798 宅（2005 來歷史新高）</strong>、<strong>建照 24,658 宅（十年次低）</strong>、<strong>開工 20,920 宅（十年次低，僅高於 2017）</strong>、拆照 797 宅（十年第三低）。對照表中 2015→2016 的死亡交叉，下一年房市進入負成長並持續修正兩年。但這次的不同之處是：建商不是「不想蓋」，是「不敢蓋」——央行限貸、營建成本年增 4.91%（4 月主計總處）、缺工被科技廠搶走。皇普董座蘇永平自嘲「小媳婦」、決定暫緩開工，正是縮影。<strong>對巨禾的意義：3-5 年後新案稀缺確定發生，但中間 18 個月會出現中小建商死亡谷，這正是「土地撿便宜＋整併同業」的窗口。對磐石的意義：建商現金壓力 → SaaS 銷售週期會被拉長，但碳費＋缺工＋光電強制法的三題材組合，反而是逆勢進場的契機。</strong></p>
+</section>
+
+<!-- 3. ACTION CARDS -->
+<section>
+  <div class="sec-head">
+    <span class="sec-title serif">今日三件事</span>
+    <span class="sec-desc">未來 7 天必須啟動</span>
+  </div>
+  <div class="action-cards">
+    <div class="action-card">
+      <div class="when">24 HOURS</div>
+      <div class="title">召開「6/18 央行理監事會」沙盤推演會</div>
+      <div class="who">執行：<strong>董事長室＋財務長＋開發部</strong>｜本週內</div>
+      <div class="desc">不動產放款占比 35.42% 連三月低於 36%，市場喊鬆綁；但豪宅、法人、第三戶仍卡 3 成成數，劉佩真說「央行短期內不會全面鬆綁」。準備兩套劇本：（A）鬆豪宅／法人 → 巨禾北台灣蛋白案重新定價；（B）維持現狀 → 加速磐石付款結構複製。</div>
+      <div class="exit"><strong>退場：</strong>若 6/18 央行完全不鬆綁，A 案延後一季再評估，避免單押</div>
+    </div>
+    <div class="action-card">
+      <div class="when">7 DAYS</div>
+      <div class="title">啟動「中小建商土地獵物名單」</div>
+      <div class="who">執行：<strong>開發部＋外部估價師</strong>｜本週內</div>
+      <div class="desc">建照、開工雙創十年次低 ＝ 中小建商死亡谷已開始。鎖定花蓮、宜蘭、新竹外溢區（竹東、湖口、寶山、頭份、竹南）有土地、推不動、財務壓力上升的中小型同業。竹東 Q2 還有 412 件、Q4 驟降至 18 件——這就是「被迫讓地」的訊號。</div>
+      <div class="exit"><strong>退場：</strong>若同業財務未見鬆動、土地溢價仍高，6 月底前不出手</div>
+    </div>
+    <div class="action-card">
+      <div class="when">14 DAYS</div>
+      <div class="title">磐石「碳費＋光電＋缺工」三合一敘事包出爐</div>
+      <div class="who">執行：<strong>磐石產品部＋行銷</strong>｜本月內</div>
+      <div class="desc">碳費 300 元 / 公噸正式繳費、2026/8 光電強制法上路、缺工被科技廠搶走——三件事同時打中建商痛點。冠德、長安、漢宇、舜元已率先布局低碳建築（減碳 11.3%–23.8%）。磐石模板可重複使用 200–300 次 ＝ 直接對應「碳足跡＋缺工＋光電屋頂預埋」三需求，是對外募資的最強敘事。</div>
+      <div class="exit"><strong>退場：</strong>若三大題材投資人反應冷淡，回歸 SaaS 銷售本業</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. TRACKING (連續追蹤) -->
+<section class="tracking">
+  <div class="tracking-title serif">⏳ 昨日訊號追蹤｜本週連續報導第 3 天</div>
+  <div class="tracking-sub">DAY-OVER-DAY SIGNAL TRACKER</div>
+  <div class="tracking-grid">
+    <div class="track-item flat">
+      <span class="badge">FLAT</span>
+      <div class="title-row">央行不動產放款占比 35.42%</div>
+      <div class="update">昨日揭露數字今日續發酵；6/18 理監事會倒數 19 天，市場壓力升溫但鬆綁可能性仍有限。<strong>連續第 3 天追蹤。</strong></div>
+    </div>
+    <div class="track-item warn">
+      <span class="badge">WARN</span>
+      <div class="title-row">竹科後花園「價量背離」加劇</div>
+      <div class="update">昨日 5/29 自由時報新報導：竹東 Q4 成交僅 18 件（vs Q2 的 412 件）、芎林單季零成交，但房價未跌。買盤蒸發但建商死撐，意味斷頭潮可能延後但更猛。<strong>連續第 2 天追蹤。</strong></div>
+    </div>
+    <div class="track-item new">
+      <span class="badge">NEW</span>
+      <div class="title-row">輝達北士科正式動土 ＋ 1,500 億美元加碼</div>
+      <div class="update">5/27 黃仁勳宣布在台年支出由 1,000 億升至 1,500 億美元（≒ 4.8 兆台幣，10 倍成長）、2030 啟用、4,000 名員工。北士科外溢的「廠辦＋高階白領住宅」題材正式開閘——這是 5/28 報告預判的事件確認。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. REAL ESTATE -->
+<section class="real-estate">
+  <div class="sec-head">
+    <span class="sec-title serif">不動產．土地訊號</span>
+    <span class="sec-desc">CORE BATTLEFIELD</span>
+  </div>
+  <div class="item-row">
+    <div class="item-card">
+      <div class="qty">-14.7%</div>
+      <div class="qty-sub">竹北高鐵特區 YoY (Q1 2026)</div>
+      <h3 class="serif">竹北從 7 字頭跌回 6 字頭，但新案單價 Q1 仍年增 12.7%——「成屋跌、預售漲」的雙軌分裂</h3>
+      <div class="body">591 數據：竹北高鐵特區成屋從 70.9 萬 → 60.5 萬／坪、跌幅 14.7%（全台第七大跌區）。但新竹縣市預售屋 Q1 平均單價 58.3 萬，季增 9.6%、年增 12.7%。<strong>核心解讀：科技買盤被信用管制壓住、轉而觀望成屋；但土地稀缺＋建商成本撐住預售價。對巨禾的意義：竹北新案窗口仍在，但要避開蛋白外溢區（竹東、湖口）的單季零成交陷阱。</strong></div>
+      <div class="matrix">
+        <div class="col"><div class="h">巨禾</div><div class="t">竹北核心案維持節奏；外溢區暫停。優付方案複製到磐石新案。</div></div>
+        <div class="col"><div class="h">磐石</div><div class="t">竹科外溢區建商現金緊 → SaaS 銷售週期拉長，先打入冠德、長安、漢宇供應鏈。</div></div>
+      </div>
+    </div>
+    <div class="item-card">
+      <div class="qty">-3.62%</div>
+      <div class="qty-sub">2025Q4 全國房價指數 YoY</div>
+      <h3 class="serif">全國房價五年來首見年衰退，台中 -6.65%、高雄 -4.91%、台南 -4.23%；雙北仍持平</h3>
+      <div class="body">內政部最新房價指數：2025Q4 年減 3.62%——這是 2020 年後第一次出現年衰退。中南部跌幅最大，符合央行「軟著陸」政策意圖。<strong>關鍵盲點：北部抗跌不是因為強，是因為基期已被信用管制壓在低檔；中南部跌是因為前期漲得太快（2024 全年漲 10.85%）。對巨禾的意義：北台灣蛋白進場的「基期優勢」尚未被市場認知，現在進場可避免「明朝劍斬清朝官」。</strong></div>
+      <div class="matrix">
+        <div class="col"><div class="h">巨禾</div><div class="t">北台灣蛋白（新店、汐止、淡海）的修正窗口尚未關閉；花蓮基本盤守住節奏。</div></div>
+        <div class="col"><div class="h">磐石</div><div class="t">中南部建商現金壓力最大，是磐石 SaaS 逆勢談判最佳對象。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 圖一：橫條 -->
+  <div class="chart-block">
+    <div class="ch-title">圖一｜全台前 5 大房價跌幅生活圈（2025Q1 → 2026Q1）</div>
+    <div class="ch-sub">SOURCE: 591 實價登錄</div>
+    <div class="bar-chart">
+      <div class="bar-row"><div class="lbl">高雄三多生活圈</div><div class="bar-bg"><div class="bar-fg" style="width:93%"></div></div><div class="val">-23.4%</div></div>
+      <div class="bar-row"><div class="lbl">台中中科生活圈</div><div class="bar-bg"><div class="bar-fg" style="width:73%"></div></div><div class="val">-18.3%</div></div>
+      <div class="bar-row"><div class="lbl">高雄楠梓加工區</div><div class="bar-bg"><div class="bar-fg" style="width:69%"></div></div><div class="val">-17.2%</div></div>
+      <div class="bar-row"><div class="lbl">台中五期重劃區</div><div class="bar-bg"><div class="bar-fg" style="width:67%"></div></div><div class="val">-16.7%</div></div>
+      <div class="bar-row"><div class="lbl">新竹竹北高鐵</div><div class="bar-bg"><div class="bar-fg" style="width:59%"></div></div><div class="val">-14.7%</div></div>
+    </div>
+  </div>
+
+  <!-- 圖二：建照 vs 使照對比 -->
+  <div class="chart-block" style="margin-top:24px">
+    <div class="ch-title">圖二｜近十年 Q1 建照 vs 使照宅數（內政部）</div>
+    <div class="ch-sub">SOURCE: 內政部、信傳媒整理</div>
+    <div class="bar-chart">
+      <div class="bar-row"><div class="lbl">2026Q1 建照</div><div class="bar-bg"><div class="bar-fg" style="width:54%"></div></div><div class="val">24,658</div></div>
+      <div class="bar-row up"><div class="lbl">2026Q1 使照</div><div class="bar-bg"><div class="bar-fg" style="width:70%"></div></div><div class="val">31,798</div></div>
+      <div class="bar-row"><div class="lbl">2025Q1 建照</div><div class="bar-bg"><div class="bar-fg" style="width:77%"></div></div><div class="val">35,221</div></div>
+      <div class="bar-row up"><div class="lbl">2025Q1 使照</div><div class="bar-bg"><div class="bar-fg" style="width:69%"></div></div><div class="val">31,616</div></div>
+      <div class="bar-row"><div class="lbl">2021Q1 建照（高點）</div><div class="bar-bg"><div class="bar-fg" style="width:100%"></div></div><div class="val">45,547</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. POLICY -->
+<section class="policy">
+  <div class="sec-head">
+    <span class="sec-title serif">政策．法規倒數</span>
+    <span class="sec-desc">REGULATORY COUNTDOWN</span>
+  </div>
+  <div class="item-row">
+    <div class="item-card">
+      <div class="qty">19 天</div>
+      <div class="qty-sub">距 6/18 央行理監事會</div>
+      <h3 class="serif">央行最難的選擇：放款占比已回到 2020 起漲前、但房價未夠跌、建商未夠痛</h3>
+      <div class="body">不動產放款占比連三月低於 36%（4 月 35.42%）、回到 2020/7 信用管制前水位。徐佳馨：央行希望「軟著陸」、不想硬著陸衝擊金融體系，但房價仍高、民怨仍深。<strong>巨禾的判斷：第二戶 6 成已鬆，但豪宅、法人、第三戶＋餘屋貸款仍卡 3 成的可能性 &gt; 70%。準備兩套劇本。</strong></div>
+    </div>
+    <div class="item-card">
+      <div class="qty">2026/8/1</div>
+      <div class="qty-sub">太陽光電屋頂強制法上路</div>
+      <h3 class="serif">碳費 300 元正式繳費 ＋ 8 月光電強制 ＝ 磐石對外敘事三合一</h3>
+      <div class="body">碳費已進入實際繳費階段、金管會把「營造建築與不動產業」納入永續分類架構。冠德崇德綻（LCBA 認證、減碳 11.3%）、長安大序（低碳混凝土＋預製化）、漢宇雲衍（鋁系統模板可重複 200–300 次）、舜元悟野（減碳 23.8%）——四家品牌建商已開始布局。<strong>磐石的位置：模主＋RFID＋光電預埋 SOP 全部對應，但敘事還沒包好。</strong></div>
+    </div>
+  </div>
+
+  <!-- 圖三：doughnut 倒數 -->
+  <div class="chart-block">
+    <div class="ch-title">圖三｜2026/8/1 光電強制法倒數</div>
+    <div class="ch-sub">COUNTDOWN TO MANDATORY ROOFTOP PV</div>
+    <div class="doughnut-wrap">
+      <svg class="doughnut" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="80" fill="none" stroke="#D9D5CC" stroke-width="20"/>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="#A0411F" stroke-width="20"
+                stroke-dasharray="263 502" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+        <text x="100" y="100" text-anchor="middle" dominant-baseline="central"
+              font-family="'Noto Serif TC',serif" font-size="36" font-weight="700" fill="#A0411F">63</text>
+        <text x="100" y="130" text-anchor="middle" dominant-baseline="central"
+              font-size="10" letter-spacing="2" fill="#9A968D">DAYS LEFT</text>
+      </svg>
+      <div>
+        <p style="font-size:14px;color:var(--ink);line-height:1.85;margin-bottom:14px">距 2026/8/1 還有 <strong style="color:var(--accent)">63 天</strong>。所有新建建照需符合屋頂光電強制配置。對巨禾在建案：成本壓力但價格題材成立；對磐石：模主 SOP 必須在 6/15 前上架「光電認證 v1.0」，否則錯過第一波應用窗口。</p>
+        <p style="font-size:12px;color:var(--ink-soft);line-height:1.7">建商目前因應方式：延後請照→8/1 前搶最後一波舊制建照；磐石可逆向操作：直接打包「8/1 後新制 SOP」吸引中大型同業。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. CAPITAL MARKET -->
+<section class="capital-market">
+  <div class="sec-head">
+    <span class="sec-title serif">資本市場．敘事訊號</span>
+    <span class="sec-desc">NARRATIVE &amp; CAPITAL FLOW</span>
+  </div>
+  <div class="item-row">
+    <div class="item-card">
+      <div class="qty">4.8 兆</div>
+      <div class="qty-sub">輝達在台年投資（NT$）</div>
+      <h3 class="serif">輝達 1,500 億美元加碼 × 北士科總部 2030 啟用：北台灣「廠辦＋高階白領住宅」題材正式進入兌現期</h3>
+      <div class="body">5/27 黃仁勳於北士科員工大會宣布：在台年支出由 1,000 億→1,500 億美元（≒ 4.8 兆台幣，10 倍成長）、2030 啟用、4,000 名員工。<strong>連動效應</strong>：（1）新潤士科大院（總銷 120 億、2027 完工）已開始受惠；（2）萬隆變電所即將動工，2029 前供電到位；（3）內湖／士林周邊住宅與廠辦需求 3 年內結構性上揚。對巨禾：北士科外溢的「廠辦＋輕豪宅」評估報告 8/31 前完成。</div>
+    </div>
+    <div class="item-card">
+      <div class="qty">1.45 元</div>
+      <div class="qty-sub">華南金 2026 股利（創新高）</div>
+      <h3 class="serif">華南金法說：房市「量縮、價緩修正」格局，<strong>建商讓利壓力恐浮現</strong></h3>
+      <div class="body">5/28 華南金法說會總座蕭玉美宣示：股利 1.45 元、股利配發率 76.32%、現金殖利率 4.56%。風控副總謝和君直言：<strong>「市場修正期拉長，建商面對交屋流動性壓力，可能逐步走向讓利，為後續房價修正加壓。」</strong>這是國銀公開表態的最直接訊號：銀行已預期建商讓利。對巨禾：談土地、談併購、談融資 ＝ 議價優勢回到買方手上。</div>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item-card" style="grid-column:span 2">
+      <div class="qty">皇普暫緩開工</div>
+      <div class="qty-sub">同業動態（5/28 股東會）</div>
+      <h3 class="serif">皇普董座蘇永平自嘲「小媳婦」：科技廠、公共工程搶走工班，「我們很難發得出去」、暫緩開工</h3>
+      <div class="body">皇普去年 EPS 創新高 3.65 元、營收 122.8 億（年增 130%），但董座公開承認被科技廠擠壓人力、決定暫緩開工。<strong>這是中型上市建商首度公開「暫緩開工」的訊號</strong>，與內政部開工量十年次低相互驗證。對巨禾：缺工問題會持續、磐石模主制度 ＋ 系統模板的解方價值倍增；對磐石對外敘事：可直接引用皇普公開談話做案例（無需取得同意，因為是法說會公開資訊）。<strong>同業若連龍頭都喊暫緩，中小建商的死亡谷會更深、更快。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. WARNING -->
+<section class="warning-section">
+  <div class="warn-label">⚠ BLIND SPOT</div>
+  <h2 class="serif">盲點警示：尹衍樑辭世＋潤泰世代交替——「老建商時代」結束的訊號比想像中更早來</h2>
+  <div class="warn-body">
+    潤泰總裁尹衍樑 5/26 凌晨辭世（享壽 76 歲）。他主張「不要求子女完全掌控集團、由專業經理人落實治理」——這個遺願才是真正的結構性訊號。<strong>過去 40 年台灣建設業由創辦人一個人扛起一切（從工法、土地判斷、銷售到資本市場敘事），這個時代正在快速結束。</strong>巨禾董事長必須思考的兩個問題：（1）「降低對創辦人依賴」不是十年後才做的事，是現在就要做——磐石平台與制度化 SOP 正是答案；（2）老一代建商（潤泰、潤弘、興富發、寶佳）若加速「專業經理人化」，他們的決策會更慢、更保守、更怕風險——這對巨禾＋磐石的「敏捷＋制度化」雙打法是利多。
+    <div class="warn-grid">
+      <div class="col"><div class="h">對巨禾的具體提醒</div><div class="b">本季完成「董事長角色降低 30% 工作量」的組織盤點；土地判斷、產品定位 SOP 化、AI 化。否則五年後遇到接班議題會手忙腳亂。</div></div>
+      <div class="col"><div class="h">對磐石的具體提醒</div><div class="b">把「降低對創辦人依賴」直接寫進對外敘事——這是中型建商最痛但不敢說的事。從「智慧營建 OS」升級為「建商接班過渡期解方」。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. FOOTER -->
+<footer>
+  <div>巨禾 × 磐石｜戰略晨報｜2026.05.30｜陳毅夫董事長 AI 幕僚自動產製</div>
+  <div class="src">
+    主要來源：
+    <a href="https://money.udn.com/money/story/5613/9525019">經濟日報-央行不動產放款占比</a>
+    <a href="https://www.ctee.com.tw/news/20260526701201-430601">工商時報-房市管制退場倒數</a>
+    <a href="https://city.gvm.com.tw/article/130374">城市學-全台房價跌幅前 10 區</a>
+    <a href="https://estate.ltn.com.tw/article/27977">自由時報-新竹外溢區成交暴跌</a>
+    <a href="https://www.technice.com.tw/experience/enterprise/223663">科技島-輝達 1500 億加碼</a>
+    <a href="https://www.peoplenews.tw/articles/investment-financialmgmt/33792">民報-建照開工十年次低</a>
+    <a href="https://tw.stock.yahoo.com/news/華南金法說-股利配發1-45元創新高">華南金法說</a>
+    <a href="https://money.udn.com/money/story/5612/9527588">經濟日報-尹衍樑辭世</a>
+    <a href="https://today.line.me/tw/v3/article/nXKvJgJ">皇普暫緩開工</a>
+    <a href="https://news.pchome.com.tw/realestate/myhousing/20260527/index-77987125178245259101.html">碳費時代-品牌建商拚低碳住宅</a>
+    <a href="https://money.udn.com/money/story/5621/9529241">經濟日報-全國房價五年首見衰退</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>
