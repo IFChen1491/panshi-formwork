@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>磐石｜專業統包協力隊鎖定研究</title>
+<style>
+:root{
+  --bg:#0f1117; --panel:#171a23; --panel2:#1d212c; --line:#2a2f3d;
+  --txt:#e7ebf2; --sub:#9aa3b2; --mut:#6b7383;
+  --blue:#2563eb; --blue2:#3b82f6; --green:#10b981; --amber:#f59e0b;
+  --red:#ef4444; --rust:#b9542d; --gold:#d4a13a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);
+  font-family:-apple-system,"Noto Sans CJK TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1280px;margin:0 auto;padding:32px 28px 80px}
+.fade{animation:fade .5s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+h2{font-size:21px;font-weight:700;margin:6px 0 14px;letter-spacing:-.3px}
+h3{font-size:16px;font-weight:700;margin:18px 0 8px;color:var(--blue2)}
+.kicker{color:var(--rust);font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase}
+.sub{color:var(--sub)}
+.mut{color:var(--mut);font-size:13px}
+.hr{height:1px;background:var(--line);margin:26px 0}
+.src{font-size:11px;color:var(--mut);border:1px solid var(--line);border-radius:4px;padding:1px 5px;margin-left:5px;white-space:nowrap;cursor:help}
+.cred{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.c-h{background:var(--green)}.c-m{background:var(--amber)}.c-l{background:var(--red)}
+
+/* dashboard */
+.dash{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin:22px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+.verdict{background:linear-gradient(135deg,#10231b,#0f1117);border:1px solid var(--green)}
+.vbadge{display:inline-block;background:var(--green);color:#04140d;font-weight:800;
+  padding:6px 16px;border-radius:30px;font-size:15px;letter-spacing:1px}
+.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.score{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center}
+.score .n{font-size:30px;font-weight:800}
+.score .l{font-size:12px;color:var(--sub);margin-top:2px}
+.bar{height:6px;background:var(--line);border-radius:4px;margin-top:8px;overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:4px}
+
+.findings{list-style:none}
+.findings li{padding:11px 0;border-bottom:1px solid var(--line);display:flex;gap:11px}
+.findings li:last-child{border:0}
+.fn{flex:0 0 24px;height:24px;border-radius:6px;background:var(--rust);color:#fff;
+  font-weight:800;font-size:13px;display:grid;place-items:center}
+
+/* tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 22px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.tab{background:var(--panel);border:1px solid var(--line);color:var(--sub);
+  padding:9px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s}
+.tab:hover{color:var(--txt);border-color:var(--blue)}
+.tab.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel-sec{display:none}.panel-sec.on{display:block;animation:fade .4s ease both}
+
+/* table */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--sub);font-weight:700;font-size:12px;letter-spacing:.5px;background:var(--panel2)}
+tr:hover td{background:rgba(37,99,235,.05)}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:700}
+.t-a{background:rgba(16,185,129,.15);color:#34d399}
+.t-b{background:rgba(245,158,11,.15);color:#fbbf24}
+.t-c{background:rgba(239,68,68,.15);color:#f87171}
+.t-n{background:rgba(37,99,235,.15);color:#60a5fa}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+.box.warn{border-left:3px solid var(--amber)}
+.box.good{border-left:3px solid var(--green)}
+.box.bad{border-left:3px solid var(--red)}
+.box.key{border-left:3px solid var(--rust)}
+ul.clean{list-style:none}
+ul.clean li{padding:5px 0 5px 18px;position:relative;font-size:13.5px}
+ul.clean li:before{content:"▸";position:absolute;left:0;color:var(--rust)}
+
+/* positioning map */
+.map{position:relative;height:420px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin:14px 0}
+.axis{position:absolute;background:var(--line)}
+.dot{position:absolute;transform:translate(-50%,-50%);text-align:center;cursor:pointer;transition:.2s}
+.dot .c{width:auto;padding:7px 11px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;border:1px solid}
+.dot:hover{transform:translate(-50%,-50%) scale(1.07);z-index:5}
+.axlbl{position:absolute;color:var(--sub);font-size:12px;font-weight:600}
+
+/* slider scenario */
+.sim{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin:14px 0}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.simout{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.simbox{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center}
+.simbox .n{font-size:26px;font-weight:800;color:var(--green)}
+.simbox .l{font-size:12px;color:var(--sub)}
+
+.step{display:flex;gap:14px;margin:12px 0}
+.stepn{flex:0 0 32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;display:grid;place-items:center}
+.steptxt{flex:1}
+.note{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:12px 14px;font-size:13px;margin:12px 0}
+
+.foot{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--mut)}
+.reflist{font-size:12px;color:var(--sub);line-height:1.9}
+@media(max-width:980px){.dash,.grid2,.grid3,.scores,.simout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap fade">
+
+  <div class="kicker">磐石 · 系統模板下包供應鏈策略</div>
+  <h1>專業統包協力隊鎖定研究</h1>
+  <p class="sub">如何從「南科聯鋼那一筆」複製成 3–5 家專業統包的固定系統模板協力隊</p>
+  <p class="mut">研究目的：通路/客戶鎖定決策 ｜ 框架：客戶分群 + Value Chain + 採購決策鏈 + 競品弱點 ｜ 視角：磐石作為「專業統包的固定協力隊」，非直接面對台電/科技廠業主</p>
+
+  <!-- ===== EXEC DASHBOARD ===== -->
+  <div class="dash">
+    <div class="card verdict">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">決策判斷</h2>
+        <span class="vbadge">條件式 GO</span>
+      </div>
+      <p class="sub" style="margin:12px 0">
+        鎖定「供電／廠務專業統包」（非一線大型統包）作為固定協力隊客戶，是磐石模主制度最高 ROI、最易守護城河的通路。
+        條件：① 先用 1 家樣板（南科聯鋼）做成可量化的 QCD 數據，② 取得專業統包供應鏈的「合格供應商」門票（甲級營造/電器承裝實績綁定），③ 半年內把口碑複製到同生態圈 2–3 家。
+      </p>
+      <div class="scores">
+        <div class="score"><div class="n" style="color:var(--green)">8</div><div class="l">市場吸引力</div><div class="bar"><i style="width:80%;background:var(--green)"></i></div></div>
+        <div class="score"><div class="n" style="color:var(--amber)">6</div><div class="l">進入難度（中偏高）</div><div class="bar"><i style="width:60%;background:var(--amber)"></i></div></div>
+        <div class="score"><div class="n" style="color:var(--blue2)">7</div><div class="l">執行可行性</div><div class="bar"><i style="width:70%;background:var(--blue2)"></i></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Top 5 關鍵發現</h3>
+      <ul class="findings">
+        <li><span class="fn">1</span><span>市場分兩層：<b>一線大型統包</b>（漢唐、聖暉、洋基、亞翔、帆宣、中鼎）採購成熟、進入門檻極高、議價弱；真正的甜蜜點是<b>供電／廠務專業統包</b>——他們缺穩定模板協力隊、痛點強、決策鏈短。</span></li>
+        <li><span class="fn">2</span><span>專業統包選下包的<b>第一道門是「資格實績」而非價格</b>：台電輸變電案要求甲級電器承裝＋69kV/345kV 鐵塔實績；科技廠廠務看潔淨/工期/工安紀錄。磐石的卡位點不是比價，是「幫統包扛 QCD 風險」。</span></li>
+        <li><span class="fn">3</span><span>現有系統模板協力隊三大弱點：<b>產能綁人不綁制度</b>、<b>無數據可交付給統包/業主</b>、<b>跨案場品質飄移</b>。這正是磐石模主制度 + SaaS 的對位打擊面。</span></li>
+        <li><span class="fn">4</span><span>公共工程（箱涵、橋墩）與廠務（基礎、純水池、結構體）的<b>高重複性介面</b>，是系統模板「人均㎡產值」最大化的場景，與磐石鐵律（每㎡利潤公式）天然吻合。</span></li>
+        <li><span class="fn">5</span><span>複製公式 = <b>樣板數據化 → 進合格供應商名單 → 同生態圈轉介 → 框架合約鎖定</b>。關鍵不是接更多案，是把南科聯鋼變成「可被引用的 QCD 證據」。</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== TABS ===== -->
+  <div class="tabs">
+    <div class="tab on" data-t="t1">① 客戶分群與鎖定</div>
+    <div class="tab" data-t="t2">② 採購決策鏈</div>
+    <div class="tab" data-t="t3">③ 選下包標準與門檻</div>
+    <div class="tab" data-t="t4">④ 現有協力隊弱點</div>
+    <div class="tab" data-t="t5">⑤ 定位地圖</div>
+    <div class="tab" data-t="t6">⑥ 複製公式（1→5家）</div>
+    <div class="tab" data-t="t7">⑦ 財務模擬</div>
+    <div class="tab" data-t="t8">⑧ 風險與下一步</div>
+  </div>
+
+  <!-- T1 客戶分群 -->
+  <div class="panel-sec on" id="t1">
+    <h2>專業統包客戶分群 — 哪一層是磐石的甜蜜點</h2>
+    <p class="sub">把「專業統包」拆成兩大層級。磐石作為系統模板「下包」，不該追一線大廠（門檻高、議價弱、被當料商），而該鎖定有結構體/土建需求、缺模板制度的供電與廠務專業統包。</p>
+
+    <table>
+      <thead><tr><th>層級</th><th>代表玩家 <span class="src" title="市場公開報導，僅作生態定位，非完整名單">來源</span></th><th>特性</th><th>磐石機會</th><th>優先度</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>L1 一線大型統包</b><br><span class="mut">整廠 Turnkey</span></td>
+          <td>漢唐、聖暉、洋基、亞翔、帆宣、朋億；電力統包龍頭中鼎(CTCI)
+            <span class="cred c-h"></span></td>
+          <td>採購制度成熟、自帶 BIM/3D、合格供應商名單封閉、把模板當「料」議價</td>
+          <td>難進；進去也是被殺價的材料供應商，<b>無法植入模主制度</b></td>
+          <td><span class="tag t-c">低</span></td>
+        </tr>
+        <tr style="background:rgba(16,185,129,.04)">
+          <td><b>L2 供電／輸變電專業統包</b><br><span class="mut">台電變電所/輸電土建</span></td>
+          <td>承接台電輸變電工程處各區施工處發包之變電所基礎、機房結構體、鐵塔基礎的中型甲級營造廠 <span class="cred c-m"></span></td>
+          <td>案量穩定（台電年年發包）、結構體重複性高、自身缺穩定模板班、最怕工期罰則</td>
+          <td><b>最高 ROI</b>：穩定回流 + 模板制度可直接落地 + 公共工程介面單純</td>
+          <td><span class="tag t-a">首選</span></td>
+        </tr>
+        <tr style="background:rgba(16,185,129,.04)">
+          <td><b>L2 廠務專業統包</b><br><span class="mut">科技廠土建/結構</span></td>
+          <td>承接科技廠「廠房基礎、結構體、純水/廢水池、二次結構」的區域型專業營造廠（非無塵室機電大廠） <span class="cred c-m"></span></td>
+          <td>工期極壓縮、罰則重、業主品質稽核嚴、模板品質直接影響交期</td>
+          <td><b>高單價</b>：磐石「品質可數據化」直接對應業主稽核需求</td>
+          <td><span class="tag t-a">首選</span></td>
+        </tr>
+        <tr>
+          <td><b>L3 一般民間統包</b></td>
+          <td>區域建築統包、廠辦營造</td>
+          <td>價格敏感、無資料需求、忠誠度低</td>
+          <td>練兵可，不構成護城河</td>
+          <td><span class="tag t-b">次要</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <b>磐石最該優先鎖定的 3–5 家「類型」（非特定公司，先定畫像）：</b>
+      <ul class="clean" style="margin-top:6px">
+        <li><b>類型 A｜台電輸變電土建專業統包</b>（甲級營造＋變電所/機房結構實績）— 案量穩、重複性高、磐石公共工程系統模板最強場景</li>
+        <li><b>類型 B｜科技廠廠務土建統包</b>（廠房基礎/結構體，非機電）— 高單價、工期罰則重、品質數據化價值最高</li>
+        <li><b>類型 C｜公共工程結構統包</b>（箱涵、橋墩、擋土、水池）— 高重複系統模板、與每㎡利潤鐵律吻合</li>
+        <li><b>類型 D｜RC 結構體專業分包升級型統包</b> — 已自接結構體、正缺模板制度標準化的成長型廠商，最容易被綁成獨家</li>
+      </ul>
+      建議結構：A、B 各鎖 1–2 家（穩定 + 高利潤雙引擎），C 鎖 1 家（量大練制度），合計 3–5 家固定協力隊。
+    </div>
+  </div>
+
+  <!-- T2 採購決策鏈 -->
+  <div class="panel-sec" id="t2">
+    <h2>專業統包的採購決策鏈 — 誰拍板、看什麼、何時切入</h2>
+    <p class="sub">關鍵洞察：模板下包的採購<b>不是一個人決定</b>，而是「工地現場 + 採購 + 工務」三方角力。磐石要同時打三個人。</p>
+
+    <table>
+      <thead><tr><th>角色</th><th>在決策中的權重</th><th>真正在意的事</th><th>磐石對位武器</th></tr></thead>
+      <tbody>
+        <tr><td><b>工地主任 / 工務經理</b><br>（實質拍板者）</td><td>★★★★★</td><td>能不能準時拆模、會不會出包拖累整個工期罰則、工安出事誰扛</td><td>QCD 履約紀錄 + 工安零事故數據 + 模主到場承諾</td></tr>
+        <tr><td><b>採購 / 發包單位</b></td><td>★★★★</td><td>單價、付款條件、是否在合格供應商名單、發票/保固完整</td><td>每㎡報價透明表 + 合格資格文件包 + 制度化保固</td></tr>
+        <tr><td><b>專案經理 / 統包高層</b></td><td>★★★（首次合作關鍵）</td><td>這家下包能不能「複製到下個案」、能不能交數據給業主稽核</td><td>SaaS 可交付的進度/品質報表（這是一線大廠都給不了業主的東西）</td></tr>
+        <tr><td><b>業主端品管/監造</b><br>（間接但致命）</td><td>★★（科技廠/台電特高）</td><td>品質可追溯、清水模面層合格率、整改速度</td><td>模板計畫 + 損傷紀錄 + RFID 追溯（template_plans / damage_records）</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid2" style="margin-top:14px">
+      <div class="box good"><h3 style="margin-top:0">切入時機（When）</h3>
+        <ul class="clean">
+          <li><b>最佳：投標/規劃階段</b>——統包在估價時就把磐石模板計畫納入，鎖死後段</li>
+          <li>次佳：上一個模板班出包後（換班窗口）</li>
+          <li>最差：開工後硬擠進去（只能當救火，無框架合約）</li>
+        </ul>
+      </div>
+      <div class="box key"><h3 style="margin-top:0">決策鏈的真相</h3>
+        <p style="font-size:13.5px">統包選模板下包，<b>表面比價、實際買保險</b>。工地主任怕的是「工期罰則」與「工安連坐」，不是省那點模板錢。磐石的銷售語言不該是「我比較便宜」，而是「<b>我幫你把拆模時間鎖死、把工安風險歸零、把品質變成可交業主的數據</b>」。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- T3 選下包標準 -->
+  <div class="panel-sec" id="t3">
+    <h2>選下包的標準與打入供應鏈的門檻</h2>
+    <p class="sub">分兩道關卡：先過「資格門檻」（沒有就連報價資格都沒有），再比「擇優標準」（決定誰拿單）。</p>
+
+    <h3>關卡一｜資格門檻（Hard Gate — 沒有=出局）</h3>
+    <table>
+      <thead><tr><th>客戶類型</th><th>關鍵硬門檻 <span class="src" title="台電招標公告／政府採購網實際資格條款">來源</span></th><th>磐石現況</th></tr></thead>
+      <tbody>
+        <tr><td>台電輸變電土建統包的下包</td>
+          <td>統包本身須甲級營造＋<b>合格甲級電器承裝業</b>＋69kV以上架空輸電鐵塔工程完工實績；其下包須能配合此等級工安/品質文件 <span class="cred c-m"></span></td>
+          <td>磐石以模板專業分包身分介入結構體，需備齊工安/品質/保固文件包對接</td></tr>
+        <tr><td>科技廠廠務土建統包的下包</td>
+          <td>業主合格供應商註冊、工安積點、ISO/職安衛、過往類似廠房實績</td>
+          <td>需先靠 1 樣板取得「類似實績」證明</td></tr>
+        <tr><td>公共工程結構統包的下包</td>
+          <td>政府採購法分包規定、納保、勞安、實績佐證</td>
+          <td>門檻相對低，適合先練兵建實績</td></tr>
+      </tbody>
+    </table>
+
+    <h3>關卡二｜擇優標準（Soft Gate — 決定誰拿單，依權重）</h3>
+    <table>
+      <thead><tr><th>標準</th><th>權重</th><th>專業統包真正的判斷邏輯</th><th>磐石分數定位</th></tr></thead>
+      <tbody>
+        <tr><td>履約穩定度（工期）</td><td>30%</td><td>過去有沒有準時拆模、有沒有拖過工期</td><td><span class="tag t-a">模主派工制 = 產能不綁單一師傅</span></td></tr>
+        <tr><td>品質與整改速度</td><td>25%</td><td>清水模面層合格率、出問題多快補</td><td><span class="tag t-a">損傷紀錄 + 標準SOP</span></td></tr>
+        <tr><td>工安紀錄</td><td>20%</td><td>零事故，系統模板本身工安優於傳統</td><td><span class="tag t-a">系統模板天生優勢</span></td></tr>
+        <tr><td>價格 / 每㎡成本</td><td>15%</td><td>不是最低，是「合理且可預測」</td><td><span class="tag t-b">浮動參考價，非錨點</span></td></tr>
+        <tr><td>可交付數據（差異化）</td><td>10%↑</td><td>能不能給統包交業主的報表 — <b>目前幾乎沒人能給</b></td><td><span class="tag t-n">磐石獨家：SaaS 報表</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="note"><b>策略含義：</b>磐石不要在 15% 的價格欄打架，要把戰場拉到「履約穩定 + 品質數據」這 65% 的權重區，並用 10% 的「可交付數據」欄製造對手做不到的差異化。這正是模主制度 + SaaS 的設計初衷。</div>
+  </div>
+
+  <!-- T4 競品弱點 -->
+  <div class="panel-sec" id="t4">
+    <h2>現有系統模板協力隊的弱點 — 磐石的對位打擊面</h2>
+    <p class="sub">現有市場主要是「鋁模/系統模板租賃商 + 自帶模板班的承包商」。三大結構性弱點，正好是磐石模主制度 + SaaS 的三個進攻點。</p>
+
+    <div class="grid3">
+      <div class="box bad"><h3 style="margin-top:0">弱點 1｜綁人不綁制度</h3>
+        <p style="font-size:13.5px">產能掛在少數師傅身上，師傅一走、品質與進度崩。統包最怕「換人就出包」。</p>
+        <p style="font-size:12.5px;color:var(--green)"><b>磐石打擊：</b>模主制度把工法標準化成 SOP，產能屬於制度不屬於個人。</p>
+      </div>
+      <div class="box bad"><h3 style="margin-top:0">弱點 2｜無數據可交付</h3>
+        <p style="font-size:13.5px">傳統協力隊只交工，交不出進度/品質/工安的結構化數據。統包向業主稽核時只能口頭交代。</p>
+        <p style="font-size:12.5px;color:var(--green)"><b>磐石打擊：</b>SaaS 產出 template_plans / damage_records / client_feedbacks 報表，統包可直接轉交業主。</p>
+      </div>
+      <div class="box bad"><h3 style="margin-top:0">弱點 3｜跨案場品質飄移</h3>
+        <p style="font-size:13.5px">同一隊伍在 A 案好、B 案爛，品質不可預測，清水模面層合格率隨機。</p>
+        <p style="font-size:12.5px;color:var(--green)"><b>磐石打擊：</b>標準工法 + 績效分數（效率/品質/合作/工安）+ 等級制，把品質鎖在制度線上。</p>
+      </div>
+    </div>
+
+    <h3>對位總表</h3>
+    <table>
+      <thead><tr><th>維度</th><th>傳統模板協力隊</th><th>磐石模主制度</th></tr></thead>
+      <tbody>
+        <tr><td>產能來源</td><td>師傅個人</td><td>制度化模主網絡（派工權）</td></tr>
+        <tr><td>品質保證</td><td>靠老師傅經驗，飄移</td><td>SOP + 績效分數 + 損傷追溯</td></tr>
+        <tr><td>給統包的交付物</td><td>只有完工</td><td>完工 + 可交業主的數據報表</td></tr>
+        <tr><td>規模化</td><td>受限於找得到幾個師傅</td><td>制度可複製、模主可培養</td></tr>
+        <tr><td>對統包的價值</td><td>一個施工班</td><td>一個降低 QCD 風險的系統</td></tr>
+      </tbody>
+    </table>
+    <p class="mut">註：競品弱點為產業常識性結構描述，未取得逐家內部數據，可信度標示為中。建議以南科聯鋼案實測數據反向佐證。</p>
+  </div>
+
+  <!-- T5 定位地圖 -->
+  <div class="panel-sec" id="t5">
+    <h2>競爭定位地圖</h2>
+    <p class="sub">X 軸＝對統包的議價地位（左：被當料殺價 → 右：被當不可替代系統）；Y 軸＝制度/數據化程度（下：綁人 → 上：綁制度）。磐石要佔的是右上角無人區。</p>
+    <div class="map" id="map">
+      <div class="axis" style="left:50%;top:8%;width:1px;height:84%"></div>
+      <div class="axis" style="left:8%;top:50%;width:84%;height:1px"></div>
+      <div class="axlbl" style="right:12px;top:48%">議價地位強 →</div>
+      <div class="axlbl" style="left:12px;top:48%">← 被殺價</div>
+      <div class="axlbl" style="left:50%;top:4%;transform:translateX(-50%)">制度/數據化高 ↑</div>
+      <div class="axlbl" style="left:50%;bottom:4%;transform:translateX(-50%)">↓ 綁人</div>
+
+      <div class="dot" style="left:24%;top:74%"><div class="c" style="background:rgba(239,68,68,.12);border-color:var(--red);color:#f87171">傳統模板班</div></div>
+      <div class="dot" style="left:34%;top:62%"><div class="c" style="background:rgba(245,158,11,.12);border-color:var(--amber);color:#fbbf24">鋁模租賃商</div></div>
+      <div class="dot" style="left:62%;top:38%"><div class="c" style="background:rgba(37,99,235,.12);border-color:var(--blue);color:#60a5fa">一線統包自有班<br><span style="font-size:10px;color:var(--mut)">(漢唐/聖暉內製)</span></div></div>
+      <div class="dot" style="left:78%;top:18%"><div class="c" style="background:rgba(16,185,129,.18);border-color:var(--green);color:#34d399;font-size:13px"><b>磐石</b> 目標區</div></div>
+      <div class="dot" style="left:56%;top:54%"><div class="c" style="background:rgba(185,84,45,.15);border-color:var(--rust);color:#e0794f">磐石 今日<br><span style="font-size:10px">(南科聯鋼)</span></div></div>
+    </div>
+    <div class="note"><b>移動路徑：</b>磐石今日在「中間偏右」（已有議價地位但數據化未被外部認知）。把南科聯鋼數據化 → 沿對角線往右上推 → 進入「不可替代的系統供應商」無人區。對手要追，得先重建整套制度與 SaaS，這就是護城河。</div>
+  </div>
+
+  <!-- T6 複製公式 -->
+  <div class="panel-sec" id="t6">
+    <h2>複製公式：從南科聯鋼 1 筆 → 3–5 家固定協力隊</h2>
+    <p class="sub">核心心法：不是去「接更多案」，是把第一筆變成「可被引用的證據資產」，讓後面的客戶來找你。</p>
+
+    <div class="step"><div class="stepn">1</div><div class="steptxt">
+      <h3 style="margin:0">把南科聯鋼數據化（0–60 天）</h3>
+      <ul class="clean"><li>把這筆案的 QCD 全量記錄進 SaaS：拆模工期、面層合格率、零工安、整改次數</li>
+      <li>產出一份「<b>標準成果報告</b>」（template_plan + damage_record + client_feedback），這是後面所有銷售的彈藥</li>
+      <li>取得聯鋼/業主端一句可引用的見證（哪怕口頭轉文字）</li></ul>
+    </div></div>
+
+    <div class="step"><div class="stepn">2</div><div class="steptxt">
+      <h3 style="margin:0">進「合格供應商名單」（30–90 天）</h3>
+      <ul class="clean"><li>用聯鋼這筆當「類似實績」，去敲同生態圈 2 家專業統包的合格供應商註冊</li>
+      <li>備齊資格文件包（工安、品質、保固、納保）——這是 Hard Gate</li>
+      <li>鎖定類型 A（台電土建）與類型 B（廠務土建）各 1 家為首攻</li></ul>
+    </div></div>
+
+    <div class="step"><div class="stepn">3</div><div class="steptxt">
+      <h3 style="margin:0">同生態圈轉介（60–150 天）</h3>
+      <ul class="clean"><li>專業統包圈子小、工地主任彼此認識——一個準時拆模的口碑會自己走</li>
+      <li>主動請聯鋼案的工務經理「轉介」同業（營造業最有效的通路是同行背書）</li>
+      <li>目標：靠 1 個成功案，撬開 2–3 家詢問</li></ul>
+    </div></div>
+
+    <div class="step"><div class="stepn">4</div><div class="steptxt">
+      <h3 style="margin:0">框架合約鎖定（90–180 天）</h3>
+      <ul class="clean"><li>對前 3 家不打單案，談「<b>年度框架/優先協力</b>」——把回流變制度</li>
+      <li>用 SaaS 報表當綁定鉤子：統包習慣了交業主的數據，就離不開</li>
+      <li>達成 3–5 家固定協力隊 = 穩定基本盤 + 資本市場敘事的客戶證據</li></ul>
+    </div></div>
+
+    <div class="note"><b>北極星指標：</b>不是「接了幾個案」，而是「<b>有幾家統包把磐石列入投標時的預設模板協力</b>」。這個數字到 3，磐石就從接案商變成供應鏈的基礎設施。</div>
+  </div>
+
+  <!-- T7 財務模擬 -->
+  <div class="panel-sec" id="t7">
+    <h2>財務吸引力模擬</h2>
+    <p class="sub">以「每㎡利潤鐵律」為核心（NT$1,500/㎡ 為浮動參考、非固定錨點）。拖動滑桿模擬不同協力隊規模與單㎡利潤下的年貢獻。</p>
+
+    <div class="sim">
+      <div class="grid2">
+        <div>
+          <label class="sub">固定協力隊家數：<b id="vN">4</b> 家</label>
+          <input type="range" id="rN" min="1" max="6" value="4" step="1">
+        </div>
+        <div>
+          <label class="sub">每家年均施作量：<b id="vM">18000</b> ㎡</label>
+          <input type="range" id="rM" min="5000" max="40000" value="18000" step="1000">
+        </div>
+        <div>
+          <label class="sub">每㎡淨利（參考值）：NT$ <b id="vP">350</b></label>
+          <input type="range" id="rP" min="150" max="700" value="350" step="10">
+        </div>
+        <div>
+          <label class="sub">情境：</label>
+          <select id="rS" style="width:100%;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px">
+            <option value="1">Base（穩定回流）</option>
+            <option value="1.4">Bull（框架合約+轉介擴散）</option>
+            <option value="0.65">Bear（僅單案、無綁定）</option>
+          </select>
+        </div>
+      </div>
+      <div class="simout">
+        <div class="simbox"><div class="n" id="oRev">—</div><div class="l">年淨利貢獻</div></div>
+        <div class="simbox"><div class="n" id="oVol">—</div><div class="l">年總施作量(㎡)</div></div>
+        <div class="simbox"><div class="n" id="oNote" style="font-size:15px">—</div><div class="l">資本敘事意義</div></div>
+      </div>
+    </div>
+    <p class="mut">註：數字為情境推估、非預測。單㎡淨利與施作量請以南科聯鋼實際數據校正後替換。此模型用於決策方向，不作財測。</p>
+  </div>
+
+  <!-- T8 風險與下一步 -->
+  <div class="panel-sec" id="t8">
+    <h2>風險揭露與行動清單</h2>
+
+    <h3>關鍵風險（≥3）</h3>
+    <div class="grid2">
+      <div class="box warn"><b>R1 過度集中單一統包</b><br><span style="font-size:13px">若 3–5 家中有 1 家佔比過高，等於把命交給對方採購。對策：分散於 A/B/C 三型，單一客戶 ≤35%。</span></div>
+      <div class="box warn"><b>R2 被降級為「料商」</b><br><span style="font-size:13px">若銷售語言落回比價，會被當鋁模租賃殺價。對策：永遠先談 QCD 與數據，價格最後談。</span></div>
+      <div class="box warn"><b>R3 資格門檻卡關</b><br><span style="font-size:13px">台電/科技廠合格供應商註冊耗時。對策：用聯鋼實績先攻門檻較低的公共工程結構統包(類型C)建實績。</span></div>
+      <div class="box warn"><b>R4 模主產能跟不上回流</b><br><span style="font-size:13px">綁了 4 家卻調不出人=砸招牌。對策：協力隊擴張節奏綁定模主培養進度，寧缺勿濫。</span></div>
+      <div class="box bad"><b>R5 數據缺口（本研究限制）</b><br><span style="font-size:13px">未取得各專業統包逐家採購數據與競品內部成本。本報告為結構性策略判斷，具體名單與單價需實地拜訪校正。</span></div>
+    </div>
+
+    <h3 style="margin-top:20px">下一步行動清單（誰 · 做什麼 · 何時）</h3>
+    <table>
+      <thead><tr><th>順序</th><th>行動</th><th>負責</th><th>時程</th></tr></thead>
+      <tbody>
+        <tr><td>P0</td><td>南科聯鋼案 QCD 全量數據化，產出標準成果報告(SaaS)</td><td>毅夫＋CTO李亞喬</td><td>30天內</td></tr>
+        <tr><td>P0</td><td>盤點生態圈內符合 A/B/C 三型的具名候選統包(實地名單)</td><td>毅夫＋Wall(COO)</td><td>30天內</td></tr>
+        <tr><td>P1</td><td>備齊合格供應商資格文件包（工安/品質/保固/納保）</td><td>CFO張合儀＋林子涵</td><td>60天內</td></tr>
+        <tr><td>P1</td><td>請聯鋼工務經理轉介同業 2–3 家，安排拜訪</td><td>毅夫</td><td>60–90天</td></tr>
+        <tr><td>P2</td><td>對前 3 家提年度框架/優先協力提案（SaaS報表為鉤子）</td><td>Wall＋毅夫</td><td>120–180天</td></tr>
+        <tr><td>P2</td><td>達成 3–5 家固定協力隊，納入磐石資本市場客戶證據</td><td>毅夫</td><td>180天</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== SOURCES ===== -->
+  <div class="hr"></div>
+  <h3>資料來源與可信度</h3>
+  <p class="reflist">
+    <span class="cred c-h"></span>高 ｜ <span class="cred c-m"></span>中 ｜ <span class="cred c-l"></span>低（參考性）<br>
+    [1] 台電輸供電事業部組織架構（輸變電工程處／各區施工處），taipower.com.tw <span class="cred c-h"></span><br>
+    [2] 台電輸電鐵塔工程招標資格條款（甲級電器承裝業、69kV/345kV 鐵塔實績），政府電子採購網／台灣採購公報 <span class="cred c-m"></span><br>
+    [3] 科技廠廠務統包生態（漢唐、聖暉、洋基、亞翔、帆宣、朋億；中鼎電力統包），Digitimes／鉅亨／財訊 2024–2025 報導 <span class="cred c-m"></span><br>
+    [4] 系統模板協力隊弱點、採購決策鏈：產業結構性常識歸納，未經逐家內部數據驗證 <span class="cred c-l"></span><br>
+    [5] 財務模型為情境推估，非財測；待南科聯鋼實際 QCD 數據校正 <span class="cred c-l"></span>
+  </p>
+
+  <div class="foot">
+    磐石智慧系統 · 系統模板供應鏈策略研究 ｜ 框架：客戶分群 + Value Chain + 採購決策鏈 + 競品分析 ｜
+    本報告為策略方向判斷，具名客戶清單與單價數字須以實地拜訪及南科聯鋼實測數據替換後始可用於正式決策。
+  </div>
+
+</div>
+
+<script>
+// tabs
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.panel-sec').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    document.getElementById(t.dataset.t).classList.add('on');
+  });
+});
+// simulator
+function fmt(n){return n.toLocaleString('en-US');}
+function money(n){
+  if(n>=1e8)return 'NT$'+(n/1e8).toFixed(2)+'億';
+  if(n>=1e4)return 'NT$'+(n/1e4).toFixed(0)+'萬';
+  return 'NT$'+fmt(n);
+}
+function sim(){
+  const N=+rN.value,M=+rM.value,P=+rP.value,S=+rS.value;
+  vN.textContent=N; vM.textContent=fmt(M); vP.textContent=P;
+  const vol=N*M*S;
+  const rev=vol*P;
+  oVol.textContent=fmt(Math.round(vol));
+  oRev.textContent=money(Math.round(rev));
+  let note;
+  if(N>=4&&S>=1.4) note='可寫進上櫃敘事';
+  else if(N>=3) note='穩定基本盤';
+  else note='仍屬接案階段';
+  oNote.textContent=note;
+  oNote.style.color = N>=3 ? 'var(--green)' : 'var(--amber)';
+}
+['rN','rM','rP','rS'].forEach(id=>document.getElementById(id).addEventListener('input',sim));
+sim();
+</script>
+</body>
+</html>
