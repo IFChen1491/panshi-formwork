@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>磐石 AI 導入建議｜Duolingo 案例 × 核心協作.Skill v2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --concrete:#E9E7E1; --cement:#D2CFC7; --struct:#9A968D;
+      --ink:#26261F; --ink-deep:#1A1A16; --vermilion:#9E4A33;
+      --white-soft:#F5F3EE; --text-body:#3A3A33;
+      --serif:"Noto Serif TC","Songti TC",serif;
+      --sans:"Noto Sans TC","PingFang TC",sans-serif;
+      --bg-photo:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjEwMDAiIHZpZXdCb3g9IjAgMCAxNjAwIDEwMDAiPjxkZWZzPjxmaWx0ZXIgaWQ9Im4iPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjAxMiIgbnVtT2N0YXZlcz0iNCIgc2VlZD0iOCIvPjxmZUNvbG9yTWF0cml4IHR5cGU9InNhdHVyYXRlIiB2YWx1ZXM9IjAiLz48ZmVDb21wb25lbnRUcmFuc2Zlcj48ZmVGdW5jQSB0eXBlPSJ0YWJsZSIgdGFibGVWYWx1ZXM9IjAgLjI4Ii8+PC9mZUNvbXBvbmVudFRyYW5zZmVyPjwvZmlsdGVyPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIxIiB4Mj0iMSIgeTI9IjAiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzE3MTcxMyIvPjxzdG9wIG9mZnNldD0iMC41MiIgc3RvcC1jb2xvcj0iIzZmNmI2MSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2Q4ZDNjOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjEwMDAiIGZpbGw9InVybCgjZykiLz48cmVjdCB3aWR0aD0iMTYwMCIgaGVpZ2h0PSIxMDAwIiBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9Ii41NSIvPjxwYXRoIGQ9Ik0wIDc0MCBDNDIwIDY1MCA4MjAgNzcwIDE2MDAgNTcwIEwxNjAwIDEwMDAgTDAgMTAwMCBaIiBmaWxsPSIjMjUyNTFmIiBvcGFjaXR5PSIuMjQiLz48L3N2Zz4=");
+      --signature:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgNDIwIDEyMCI+PHBhdGggZD0iTTI0IDcwIEM1NSAyNCA3MCAxMDQgMTA1IDU1IEMxMzIgMTggMTQ0IDgwIDE3MSA1MCBDMTk2IDIyIDIwNiA4NyAyNDAgNTYgQzI3MCAyOSAyOTQgNDAgMzE2IDUyIEMzNDEgNjYgMzY1IDYzIDM5NyA0MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRjVGM0VFIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik00NCA4NiBDMTI2IDEwNCAyNTAgOTYgMzc0IDgzIiBmaWxsPSJub25lIiBzdHJva2U9IiNGNUYzRUUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBvcGFjaXR5PSIuNjUiLz48L3N2Zz4=");
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--concrete);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.72;letter-spacing:0;overflow-x:hidden}
+    .progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--vermilion);z-index:20}
+    .dots{position:fixed;right:28px;top:50%;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;gap:13px}
+    .dots a{width:7px;height:7px;border-radius:50%;background:rgba(38,38,31,.24);display:block}
+    .dots a.active{background:var(--vermilion)}
+    .scene{min-height:100vh;position:relative;padding:86px 9vw 78px;display:grid;align-items:center;overflow:hidden}
+    .scene::before{content:"";position:absolute;inset:0;background-image:var(--bg-photo);background-size:cover;background-position:center;pointer-events:none}
+    .scene.light{background:var(--concrete)}
+    .scene.light::before{opacity:.10;filter:grayscale(1)}
+    .scene.dark{background:var(--ink-deep);color:var(--white-soft)}
+    .scene.dark::before{opacity:.62;filter:brightness(.62)}
+    .scene.dark::after{content:"";position:absolute;inset:0;background:linear-gradient(35deg,rgba(10,10,8,.86),rgba(10,10,8,.58) 42%,rgba(10,10,8,.18));pointer-events:none}
+    .inner{position:relative;z-index:1;max-width:1180px;width:100%;margin:0 auto}
+    .narrow{max-width:880px}
+    .index{position:absolute;top:42px;left:48px;z-index:3;display:flex;gap:12px;align-items:center;font-size:12px;color:var(--struct);letter-spacing:.08em}
+    .index .sq{width:18px;height:18px;background:var(--vermilion)}
+    .dark .index{color:rgba(245,243,238,.62)}
+    .page{position:absolute;right:44px;bottom:34px;z-index:3;font-size:11px;color:var(--struct)}
+    .dark .page{color:rgba(245,243,238,.52)}
+    h1,h2,h3,p{margin:0}
+    h1{font-family:var(--serif);font-weight:500;font-size:clamp(42px,7vw,92px);line-height:1.16;max-width:1020px}
+    h2{font-weight:500;font-size:clamp(30px,4vw,58px);line-height:1.2;max-width:960px}
+    h3{font-weight:500;font-size:20px;line-height:1.45}
+    .kicker{font-size:13px;color:var(--vermilion);margin-bottom:18px;letter-spacing:.12em}
+    .lede{font-family:var(--serif);font-size:clamp(18px,2vw,25px);line-height:1.85;color:var(--text-body);max-width:780px;margin-top:30px}
+    .dark .lede{color:rgba(245,243,238,.78)}
+    .signature{width:220px;height:70px;background-image:var(--signature);background-size:contain;background-repeat:no-repeat;margin-top:42px}
+    .chen{font-size:12px;letter-spacing:.22em;color:rgba(245,243,238,.68)}
+    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;margin-top:54px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:42px;margin-top:48px}
+    .panel{padding:0 8px}
+    .num{font-size:clamp(40px,6vw,82px);line-height:1;font-weight:300;color:var(--ink)}
+    .dark .num{color:var(--white-soft)}
+    .muted{color:var(--struct)}
+    .dark .muted{color:rgba(245,243,238,.56)}
+    .compact{font-size:15px;color:var(--text-body);margin-top:10px}
+    .dark .compact{color:rgba(245,243,238,.78)}
+    .table{display:grid;gap:1px;margin-top:42px;background:rgba(154,150,141,.24)}
+    .table.four{grid-template-columns:1fr 1.05fr 1.05fr 1.15fr}
+    .table.three{grid-template-columns:1fr 1fr 1fr}
+    .table.two{grid-template-columns:.88fr 1.4fr}
+    .cell{background:rgba(233,231,225,.94);padding:17px 18px;min-height:76px;font-size:15px;color:var(--text-body)}
+    .cell.head{font-weight:500;color:var(--ink);background:rgba(210,207,199,.76)}
+    .cell.mark{font-weight:500;color:var(--ink)}
+    .dark .cell{background:rgba(245,243,238,.08);color:rgba(245,243,238,.82)}
+    .dark .cell.head{background:rgba(245,243,238,.13);color:var(--white-soft)}
+    .flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:52px}
+    .step{background:rgba(245,243,238,.10);padding:20px;min-height:130px;font-size:15px}
+    .step b{display:block;font-size:13px;color:rgba(245,243,238,.88);margin-bottom:10px}
+    .quote{font-family:var(--serif);font-size:clamp(22px,2.7vw,35px);line-height:1.65;max-width:960px;margin-top:34px}
+    .barset{margin-top:48px;display:grid;gap:17px;max-width:780px}
+    .bar{display:grid;grid-template-columns:148px 1fr 60px;align-items:center;gap:18px;font-size:15px}
+    .track{height:8px;background:rgba(154,150,141,.24);overflow:hidden}
+    .fill{height:100%;width:0;background:var(--struct);transition:width 1200ms ease}
+    .seen .fill[data-w="88"]{width:88%}
+    .seen .fill[data-w="76"]{width:76%}
+    .seen .fill[data-w="62"]{width:62%}
+    .seen .fill[data-w="42"]{width:42%}
+    .cta{margin-top:42px;color:var(--vermilion);font-weight:500}
+    a{color:inherit;text-decoration-thickness:1px;text-underline-offset:4px}
+    @media(max-width:900px){
+      .scene{padding:84px 7vw 70px}
+      .index{left:24px;top:28px}
+      .page{right:24px;bottom:24px}
+      .dots{display:none}
+      .grid-3,.grid-2,.flow{grid-template-columns:1fr}
+      .table.four,.table.three,.table.two{grid-template-columns:1fr}
+      .cell{min-height:auto}
+      .bar{grid-template-columns:104px 1fr 42px}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <nav class="dots" aria-label="章節導覽">
+    <a href="#s1"></a><a href="#s2"></a><a href="#s3"></a><a href="#s4"></a><a href="#s5"></a><a href="#s6"></a>
+    <a href="#s7"></a><a href="#s8"></a><a href="#s9"></a><a href="#s10"></a><a href="#s11"></a><a href="#s12"></a>
+  </nav>
+
+  <section class="scene dark" id="s1">
+    <div class="index"><span class="sq"></span><span>00 / AI STRATEGY</span></div>
+    <div class="inner narrow reveal">
+      <div class="kicker">DUOLINGO CASE × PANSHI OS</div>
+      <h1>磐石的 AI，不該先做聊天功能，而該先做模主制度的大腦。</h1>
+      <p class="lede">依 `核心協作.Skill v2` 啟動全套模式：讀取 Duolingo 簡報、外部查證、多 Agent 壓力測試、五大主權紅線檢查，最後收斂成可執行建議。</p>
+      <div class="signature" aria-label="簽名"></div>
+      <div class="chen">CHEN YI-FU</div>
+    </div>
+    <div class="page">01</div>
+  </section>
+
+  <section class="scene light" id="s2">
+    <div class="index"><span class="sq"></span><span>01 / 主張</span></div>
+    <div class="inner reveal">
+      <h2>第一個 AI MVP 應是「模主 AI 閉環」，不是完整 AIoT 平台。</h2>
+      <div class="grid-3">
+        <div class="panel"><div class="num">01</div><h3>AI 日報 SSOT</h3><p class="compact">用語音、照片、表單把現場資料結構化，先建立可信資料源。</p></div>
+        <div class="panel"><div class="num">02</div><h3>AI 模主教練</h3><p class="compact">把 SOP、缺失改善、情境訓練放進每天可用的微學習流程。</p></div>
+        <div class="panel"><div class="num">03</div><h3>AI 派工建議</h3><p class="compact">依模主等級、案場難度、歷史表現推薦任務與風險提醒。</p></div>
+      </div>
+    </div>
+    <div class="page">02</div>
+  </section>
+
+  <section class="scene light" id="s3">
+    <div class="index"><span class="sq"></span><span>02 / Duolingo 啟示</span></div>
+    <div class="inner reveal">
+      <h2>Duolingo 的重點不是有 AI，而是 AI 進入每天的行為迴路。</h2>
+      <div class="table three">
+        <div class="cell head">Duolingo 機制</div><div class="cell head">核心價值</div><div class="cell head">磐石對應</div>
+        <div class="cell">Birdbrain</div><div class="cell">依學習者能力調整難度</div><div class="cell mark">依模主能力調整派工與訓練</div>
+        <div class="cell">Explain My Answer</div><div class="cell">錯誤即時解釋</div><div class="cell mark">施工缺失即時解釋與改善 SOP</div>
+        <div class="cell">Roleplay / Video Call</div><div class="cell">模擬真實對話</div><div class="cell mark">模主情境演練：主任、監造、客訴、安衛</div>
+        <div class="cell">AI 內容生成</div><div class="cell">擴大課程產能</div><div class="cell mark">快速生成 SOP、教材、檢核表、日報摘要</div>
+      </div>
+    </div>
+    <div class="page">03</div>
+  </section>
+
+  <section class="scene dark" id="s4">
+    <div class="index"><span class="sq"></span><span>03 / AI 價值鏈</span></div>
+    <div class="inner reveal">
+      <h2>磐石版 Duolingo loop：每一次派工，都讓下一次派工更準。</h2>
+      <div class="flow">
+        <div class="step"><b>派工</b>平台指派模主、樓層、工項與時程。</div>
+        <div class="step"><b>回報</b>模主用照片、語音、RFID 掃描完成日報。</div>
+        <div class="step"><b>理解</b>AI 轉成結構化資料，找缺漏、異常、風險。</div>
+        <div class="step"><b>評分</b>更新模主品質、速度、配合度、成本表現。</div>
+        <div class="step"><b>再派工</b>下一次任務更精準，平台治理更強。</div>
+      </div>
+      <p class="lede">這才是智慧營建 OS 的底層：不是把人替代掉，而是讓每一次施工都變成平台能力。</p>
+    </div>
+    <div class="page">04</div>
+  </section>
+
+  <section class="scene light" id="s5">
+    <div class="index"><span class="sq"></span><span>04 / Agent 協作</span></div>
+    <div class="inner reveal">
+      <h2>多 Agent 共識：AI 應優先強化制度，而不是先堆硬體。</h2>
+      <div class="table two">
+        <div class="cell head">Agent</div><div class="cell head">判斷</div>
+        <div class="cell">IF Agent</div><div class="cell">AI 是平台治理層，不是單點功能；先守住模主制度、派工權與 SSOT。</div>
+        <div class="cell">SaaS Agent</div><div class="cell">先做日報、評分、派工推薦，讓資料結構自然長出來。</div>
+        <div class="cell">CFO Agent</div><div class="cell">先做低硬體依賴的 AI 工作流，避免一開始就投入重 AIoT 成本。</div>
+        <div class="cell">Growth Agent</div><div class="cell">模主認證與 AI 品質報告可變成品牌背書與區域複製工具。</div>
+        <div class="cell">現場監測 Agent</div><div class="cell">現場最怕複雜輸入；必須從照片、語音、少量勾選開始。</div>
+      </div>
+    </div>
+    <div class="page">05</div>
+  </section>
+
+  <section class="scene light" id="s6">
+    <div class="index"><span class="sq"></span><span>05 / 產品模組</span></div>
+    <div class="inner reveal">
+      <h2>AI 導入分三層：先閉環，再資產，最後平台化。</h2>
+      <div class="table four">
+        <div class="cell head">階段</div><div class="cell head">模組</div><div class="cell head">先做什麼</div><div class="cell head">產生的資料資產</div>
+        <div class="cell head">P0｜90 天</div><div class="cell">AI 日報、模主評分、派工建議</div><div class="cell">1 案場、3 模主、50 張派工單</div><div class="cell mark">派工、照片、進度、缺失、模主分數</div>
+        <div class="cell head">P1｜180 天</div><div class="cell">RFID 資產 AI、成本毛利 AI、品質預警</div><div class="cell">接模板編號、使用次數、維修紀錄</div><div class="cell mark">模板壽命、週轉率、損壞率、每㎡毛利</div>
+        <div class="cell head">P2｜12 個月</div><div class="cell">模主學院、ESG 報告、對外 SaaS</div><div class="cell">把內部閉環產品化</div><div class="cell mark">認證、案例權、減碳數據、平台指標</div>
+      </div>
+    </div>
+    <div class="page">06</div>
+  </section>
+
+  <section class="scene dark" id="s7">
+    <div class="index"><span class="sq"></span><span>06 / 五大紅線</span></div>
+    <div class="inner reveal">
+      <h2>AI 可以建議，但五大主權必須留在磐石平台。</h2>
+      <div class="flow">
+        <div class="step"><b>模主制度</b>AI 輔助分級，認證規則由磐石制定。</div>
+        <div class="step"><b>派工權</b>AI 推薦派工，不允許模主私下接案取代平台。</div>
+        <div class="step"><b>財務</b>AI 功能必須連到毛利、回收期、成本節省。</div>
+        <div class="step"><b>數據 SSOT</b>照片、日報、RFID、成本全部回磐石資料庫。</div>
+        <div class="step"><b>品牌</b>AI 教練、報告、認證都使用磐石標準與品牌。</div>
+      </div>
+    </div>
+    <div class="page">07</div>
+  </section>
+
+  <section class="scene light" id="s8">
+    <div class="index"><span class="sq"></span><span>07 / 90 天 Roadmap</span></div>
+    <div class="inner reveal">
+      <h2>90 天內只驗證一件事：AI 能否讓模主制度形成閉環。</h2>
+      <div class="barset">
+        <div class="bar"><span>第 1-2 週</span><div class="track"><div class="fill" data-w="42"></div></div><span>定義</span></div>
+        <div class="bar"><span>第 3-6 週</span><div class="track"><div class="fill" data-w="62"></div></div><span>上線</span></div>
+        <div class="bar"><span>第 7-10 週</span><div class="track"><div class="fill" data-w="76"></div></div><span>評分</span></div>
+        <div class="bar"><span>第 11-13 週</span><div class="track"><div class="fill" data-w="88"></div></div><span>決策</span></div>
+      </div>
+      <div class="table four">
+        <div class="cell head">時間</div><div class="cell head">誰做</div><div class="cell head">先做什麼</div><div class="cell head">檢核點</div>
+        <div class="cell">1-2 週</div><div class="cell">IF + 現場主管</div><div class="cell">定義模主評分：準時、品質、回報、成本、配合度</div><div class="cell">評分表可被現場理解</div>
+        <div class="cell">3-6 週</div><div class="cell">SaaS Agent</div><div class="cell">AI 日報助手：照片/語音轉結構化日報</div><div class="cell">每日回報完整率達 80%</div>
+        <div class="cell">7-10 週</div><div class="cell">CFO + SaaS</div><div class="cell">接每㎡毛利、返工、缺失成本</div><div class="cell">能比較模主效率</div>
+        <div class="cell">11-13 週</div><div class="cell">IF Agent</div><div class="cell">決定是否擴到 RFID 與外部案場</div><div class="cell">形成 AI 導入 v2 決策</div>
+      </div>
+    </div>
+    <div class="page">08</div>
+  </section>
+
+  <section class="scene light" id="s9">
+    <div class="index"><span class="sq"></span><span>08 / KPI</span></div>
+    <div class="inner reveal">
+      <h2>AI MVP 不用看炫技，而是看閉環有沒有變強。</h2>
+      <div class="grid-3">
+        <div class="panel"><div class="num">80%</div><h3>日報完整率</h3><p class="compact">示意基礎：90 天試點目標；用來檢查 SSOT 是否長出來。</p></div>
+        <div class="panel"><div class="num">50</div><h3>派工閉環數</h3><p class="compact">示意基礎：至少 50 張派工單完成派工、回報、審核。</p></div>
+        <div class="panel"><div class="num">3</div><h3>模主樣本</h3><p class="compact">示意基礎：至少 3 位模主才看得出分級與派工推薦差異。</p></div>
+      </div>
+      <p class="cta">檢核不是「AI 有沒有回答」，而是「下一次派工有沒有更準」。</p>
+    </div>
+    <div class="page">09</div>
+  </section>
+
+  <section class="scene dark" id="s10">
+    <div class="index"><span class="sq"></span><span>09 / Premortem</span></div>
+    <div class="inner reveal">
+      <h2>最大風險不是 AI 不夠聰明，而是現場不願意餵資料。</h2>
+      <div class="table three">
+        <div class="cell head">失敗原因</div><div class="cell head">早期訊號</div><div class="cell head">防線</div>
+        <div class="cell">輸入太麻煩</div><div class="cell">模主回報延遲、照片缺漏</div><div class="cell">語音優先、照片優先、少打字</div>
+        <div class="cell">評分被認為不公平</div><div class="cell">模主抗拒、主管改分</div><div class="cell">評分透明，保留人工覆核</div>
+        <div class="cell">AI 與財務脫節</div><div class="cell">功能好用但看不到毛利</div><div class="cell">每個 AI 模組都接成本與回收期</div>
+        <div class="cell">資料沒有回 SSOT</div><div class="cell">Line、Excel、照片散落</div><div class="cell">所有回報先進磐石資料庫</div>
+      </div>
+    </div>
+    <div class="page">10</div>
+  </section>
+
+  <section class="scene light" id="s11">
+    <div class="index"><span class="sq"></span><span>10 / 收斂主張</span></div>
+    <div class="inner narrow reveal">
+      <h2>依目前背景，我傾向先做「AI 模主制度閉環」。</h2>
+      <p class="quote">因為它最貼近磐石護城河、最能自然產生 SSOT，也最像 Duolingo 的成功邏輯：把 AI 放進核心行為迴圈，而不是放在外圍做展示。</p>
+      <p class="lede">唯一會讓我改推「先做 RFID / AIoT 資產管理」的情況，是你現在最大痛點不是模主擴張，而是模板遺失、週轉率、租賃折舊與資產融資。</p>
+    </div>
+    <div class="page">11</div>
+  </section>
+
+  <section class="scene dark" id="s12">
+    <div class="index"><span class="sq"></span><span>11 / 來源與下一步</span></div>
+    <div class="inner narrow reveal">
+      <h2>下一步先把 AI 做成制度引擎，再把制度變成平台商品。</h2>
+      <p class="lede">建議 IF 先拍板：磐石 AI MVP 第一優先是否定為「AI 模主制度閉環」。確認後，下一份文件應產出 PRD、資料表與 90 天試點任務單。</p>
+      <p class="compact">資料依據：使用者提供之 Duolingo 簡報與磐石背景；外部參考包含 Duolingo Birdbrain、Duolingo Max、Duolingo AI 內容生成與 2024 投資人資料。</p>
+      <p class="compact"><a href="https://blog.duolingo.com/learning-how-to-help-you-learn-introducing-birdbrain/">Birdbrain</a> · <a href="https://blog.duolingo.com/duolingo-max/">Duolingo Max</a> · <a href="https://blog.duolingo.com/large-language-model-duolingo-lessons/">LLM Lessons</a> · <a href="https://investors.duolingo.com/news-releases/news-release-details/duolingo-finishes-2024-51-daus-growth-more-40-million-daus-and">2024 Investor Release</a></p>
+      <div class="signature" aria-label="簽名"></div>
+      <div class="chen">CHEN YI-FU</div>
+    </div>
+    <div class="page">12</div>
+  </section>
+
+  <script>
+    const progress = document.getElementById('progress');
+    const sections = Array.from(document.querySelectorAll('.scene'));
+    const dots = Array.from(document.querySelectorAll('.dots a'));
+    const update = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      progress.style.width = `${Math.max(0, scrollY / max) * 100}%`;
+      let active = 0;
+      sections.forEach((s, i) => {
+        if (s.getBoundingClientRect().top < innerHeight * 0.45) active = i;
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+    };
+    addEventListener('scroll', update, {passive:true});
+    addEventListener('resize', update);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('seen');
+      });
+    }, {threshold:.28});
+    document.querySelectorAll('.scene').forEach(el => io.observe(el));
+    update();
+  </script>
+</body>
+</html>
