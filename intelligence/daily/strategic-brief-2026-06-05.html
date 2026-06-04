@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>巨禾 × 磐石｜戰略晨報 2026-06-05</title>
+<style>
+:root{
+  --bg:#0c0e12; --panel:#13161c; --panel2:#171b22; --line:#262b34;
+  --ink:#e8eaed; --sub:#9aa0ab; --mut:#6c727d;
+  --red:#c8503b; --redink:#e08a76; --blue:#3b7dc8; --blueink:#7fb0e6;
+  --gold:#d9a441; --green:#4f9d6b; --rredbg:#1a1410;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;line-height:1.7;max-width:1000px;margin:0 auto;padding:0 18px 80px}
+section,header,footer{margin-top:18px}
+h2{font-size:17px;letter-spacing:.5px;margin-bottom:12px;padding-left:11px;border-left:4px solid var(--red)}
+h3{font-size:14px;color:var(--sub);margin:14px 0 6px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.meta{color:var(--mut);font-size:12px;border-top:1px solid var(--line);padding-top:12px;margin-top:24px;line-height:1.9}
+a{color:var(--blueink);text-decoration:none}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--sub);font-weight:700}
+.t-up{color:var(--red);font-weight:700}.t-flat{color:var(--gold);font-weight:700}.t-down{color:var(--blueink);font-weight:700}
+small{color:var(--mut)}
+.feedback-bar{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-top:18px}
+.feedback-bar button{background:#1f242d;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:7px 16px;font-size:14px;cursor:pointer;margin-right:8px}
+.feedback-bar button:hover{border-color:var(--red)}
+#comment-box{width:100%;background:#0e1116;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:9px;margin-top:10px;font-family:inherit;font-size:13px;min-height:54px}
+#json-out{display:none;margin-top:10px;background:#0e1116;border:1px solid var(--gold);border-radius:8px;padding:10px;font-family:monospace;font-size:12px;color:var(--gold);word-break:break-all}
+.hero{background:linear-gradient(135deg,#15191f,#0e1116);border:1px solid var(--line);border-radius:16px;padding:26px}
+.hero h1{font-size:25px;letter-spacing:1px}
+.hero .date{color:var(--gold);font-size:14px;margin-top:4px;letter-spacing:2px}
+.hero-signal{background:var(--rredbg);border:1px solid var(--red);border-radius:16px;padding:24px;text-align:center}
+.bignum{font-size:46px;font-weight:800;color:var(--redink);letter-spacing:1px}
+.pierce{font-size:16px;color:var(--ink);margin-top:8px;font-weight:700}
+.action-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px;border-top:3px solid var(--red)}
+.card .who{color:var(--gold);font-size:12px;font-weight:700;margin-top:8px}
+.card .num{font-size:13px;color:var(--mut)}
+.resp{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--blue)}
+.resp .said{color:var(--sub);font-size:13px}
+.resp .did{color:var(--ink);font-size:13.5px;margin-top:5px}
+.err-flag{border-left-color:var(--gold)!important}
+.warn{background:var(--rredbg);border:1px solid var(--red);border-radius:13px;padding:14px 16px;margin-bottom:10px}
+.anti{border:1px dashed var(--gold);border-radius:11px;padding:12px;margin-top:10px;background:#15130d}
+.anti b{color:var(--gold)}
+.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ai-card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px}
+.ai-card .hl{font-size:14px;font-weight:700;color:var(--ink)}
+.ai-card .sm{font-size:12.5px;color:var(--sub);margin-top:6px}
+.score{display:inline-block;border-radius:6px;padding:2px 9px;font-size:11px;font-weight:700;margin-top:8px}
+.s2{background:#1f3326;color:#7fd6a0}.s1{background:#2d2a14;color:var(--gold)}.s0{background:#262b34;color:var(--mut)}
+.demoted{opacity:.7}
+.svg-wrap{background:#0f1115;border:1px solid var(--line);border-radius:12px;padding:8px;margin:12px 0}
+@media(max-width:760px){.action-cards,.ai-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<section class="feedback-bar">
+  <div style="font-size:13px;color:var(--sub)">🎯 今日報告價值？
+    <button onclick="rate('high')">🔥 高</button>
+    <button onclick="rate('mid')">👀 普通</button>
+    <button onclick="rate('low')">❌ 低</button>
+  </div>
+  <textarea id="comment-box" placeholder="想說什麼？建言、抱怨、想看的角度…（送出後複製 JSON 貼回對話）"></textarea>
+  <button onclick="submitWithComment()" style="margin-top:8px">送出評分＋建言</button>
+  <div id="json-out"></div>
+</section>
+
+<header class="hero">
+  <h1>巨禾 × 磐石｜戰略晨報</h1>
+  <div class="date">2026 / 06 / 05　星期五　07:00 台北</div>
+  <p style="color:var(--sub);font-size:13.5px;margin-top:10px">資料主權三層定錨日：易安特角色校正完成，磐石護城河＝SaaS 入口＋五大數據；模主制度框架升級為「產業標準制定者」。</p>
+</header>
+
+<section class="hero-signal">
+  <div class="bignum">5.3 萬人</div>
+  <div class="pierce">營造業勞工缺口（基層佔 75.3%），模板工最缺、技術工日薪 5,000–8,000 元仍補不滿</div>
+  <p style="color:var(--sub);font-size:13px;margin-top:10px">這不是「市場痛點」這麼淺——這是磐石把模主制度做成「有標準、可複製、可落地」<b style="color:var(--redink)">產業新標準</b>的歷史窗口。誰定標準，誰收網路效應。</p>
+  <small>國土署 2024 營造業經濟概況調查｜國發會估 2028 勞動力缺口近 35 萬</small>
+</section>
+
+<section class="response-to-yesterday">
+  <h2>📬 回應董事長前日建言</h2>
+
+  <div class="resp err-flag">
+    <div class="said">您 6/4 提到（建言 1）：「易安特的『租賃 + 淨零顧問』與我們模主制度＋五大主權沒有關係。最重要的是資料收集的 SaaS 系統；漢源也希望主動加入 SaaS。」</div>
+    <div class="did"><b style="color:var(--gold)">軍師認錯並校正：</b>6/4 我把易安特「淨零顧問」誤判為「往上游爬、可能變競爭者」——框架完全相反。<b>已永久停用「供應商往上游爬變競爭者」框架。</b>真相是漢源「有求於磐石的 SaaS」。<br>
+    <b style="color:var(--redink)">今日落實：</b>在「易安特供應鏈」段嵌入「資料主權三層」圖——易安特在第 1 層（物件）無威脅，磐石護城河＝第 2 層 SaaS 入口＋第 3 層五大數據；易安特碳數據經 SaaS 流入第 ④ 塊（材料供應鏈數據），但<b>數據所有權與變現權留在磐石</b>。</div>
+  </div>
+
+  <div class="resp">
+    <div class="said">您 6/4 提到（建言 2）：「模板工缺口最重、移工月薪衝上 3.5 萬，我們要建立有標準、可複製、可落地的制度，造產業新標準。」</div>
+    <div class="did"><b style="color:var(--blueink)">軍師回應：</b>模主制度框架已升級——不再只講「派工 SaaS」，改以<b>「產業標準制定者」</b>定位（對標新加坡 BCA 建築生產力標準 + Amazon 賣家評級制度）。<br>
+    <b style="color:var(--redink)">今日落實：</b>Hero 大數字直接打「5.3 萬缺口 → 標準化制度」；三層圖第 2 層標註「產業標準制定者・誰定標準收網效」。</div>
+  </div>
+
+  <div class="resp">
+    <div class="said">持續執行的既有指示：馥邑京華自主更新會關鍵人物追蹤、根基生態系切入、「資金+顧問」非總包、核心四營造商模板議題。</div>
+    <div class="did"><b style="color:var(--blueink)">軍師回應：</b>本日 tracking 段與資金顧問表全數延續；身分驗證模組維持「⏳ 思考中、不主動推進、每 7 天提示一次」。</div>
+  </div>
+</section>
+
+<section>
+  <h2>今日三件事</h2>
+  <div class="action-cards">
+    <div class="card">
+      <b>① 鎖死易安特數據所有權條款</b>
+      <p class="num">趁漢源「想加入 SaaS」的議價低點，把條款談死：易安特拿「自己那筆碳數據使用權」，磐石保有<b>所有權＋變現權</b>。這是三層護城河的法律地基，晚談就被反咬。</p>
+      <div class="who">誰做：陳董 + 法務／磐石技術長　何時：本週內起草 MOU 草案</div>
+    </div>
+    <div class="card">
+      <b>② 模主制度「標準化文件」立項</b>
+      <p class="num">把技能分級／打卡品質／晉升軌跡寫成可對外公布的「磐石模主標準 v1」。對標 BCA——標準先行，數據才會照標準流進 SaaS。缺工 5.3 萬正是市場願意接受新標準的時點。</p>
+      <div class="who">誰做：COO 主導、技術長配合　何時：6 月底前出標準大綱</div>
+    </div>
+    <div class="card">
+      <b>③ 潤泰預鑄＝科技廠 FAB 切入情報</b>
+      <p class="num">潤泰精密楊梅預鑄廠同時承攬根基／互助／達欣的台積電 FAB 預鑄工程。這條鏈是磐石科技廠 SaaS 的現成入口名單，先盤點哪一段次包「市場小、技術重、依賴度高」。</p>
+      <div class="who">誰做：軍師＋業務　何時：併入根基生態系週報</div>
+    </div>
+  </div>
+</section>
+
+<section class="tracking">
+  <h2>昨日訊號追蹤</h2>
+  <div class="panel" style="padding:10px">
+  <table>
+    <tr><th width="20%">議題</th><th width="12%">趨勢</th><th>更新（含為什麼還在追）</th></tr>
+    <tr>
+      <td>馥邑京華<br>自主更新會</td><td class="t-flat">→ 持平</td>
+      <td>拆除經費 1.19 億（中央全額）、工期約 6 個月；6 棟 150 戶。<b>真實架構</b>：花蓮縣府建設處（處長鄧子榆）+ 國土署北區都市基礎工程分署主拆，<b>無外部開發顧問</b>。重建走都更、營造商選擇權落更新會。<small>為什麼還在追：營造商徵選窗口未開，關鍵委員名單仍待確認，這是巨禾災後重建品牌切入點。</small></td>
+    </tr>
+    <tr>
+      <td>央行信用管制</td><td class="t-flat">→ 持平</td>
+      <td>Q4 理監事會「連 7 凍」；2026 起不動產貸款總量回歸各銀行內部控管，但須按月申報＋專案金檢。理事口徑：房價所得比／房貸負擔率仍偏高，「初見效、暫不放手」。<small>為什麼還在追：「回歸自控」易被建商誤判為鬆綁，實為「硬性總量→精準控管」，巨禾土建融議價節奏不可賭錯邊。</small></td>
+    </tr>
+    <tr>
+      <td>易安特／漢源</td><td class="t-up">↑ 升溫</td>
+      <td>角色定錨完成（見下方三層圖）。漢源 2013 起即有租賃模式、2025Q4 起強化「淨零顧問」對外論述、TABC 低碳工法認證。<small>為什麼還在追：漢源「想加入磐石 SaaS」是談數據所有權的黃金議價窗口，須追碳數據 API/串接後續。</small></td>
+    </tr>
+    <tr>
+      <td>根基生態系</td><td class="t-flat">→ 持平</td>
+      <td>潤泰精密楊梅預鑄廠承攬根基／互助／達欣多座台積電 FAB 預鑄工程，預鑄＝科技廠建廠關鍵節點。<small>為什麼還在追：要找「市場小、技術重、根基依賴度高」的次包位置切入，預鑄供應鏈是高潛力切點。</small></td>
+    </tr>
+    <tr>
+      <td>身分驗證模組</td><td class="t-flat">⏳ 思考中</td>
+      <td>陳董思考中，軍師不主動推進。<small>為什麼還在追：距上次更新已逾 7 天無新動向（依指示提示）；失聯移工從事營建議題持續，模主制度「實名可追溯」可隨時接上。</small></td>
+    </tr>
+    <tr>
+      <td>科技廠建廠</td><td class="t-up">↑ 升溫</td>
+      <td>台積電美國先進封裝廠 Q2 提前動工；台中 2 奈米、高雄第 3 廠、嘉義 CoWoS 2 廠並進；A16/2 奈米排單至 2028。<small>為什麼還在追：科技廠是磐石「成本下殺 SaaS」最強拉力，但須保留花蓮基本盤 B 計畫防 AI 修正。</small></td>
+    </tr>
+  </table>
+  </div>
+</section>
+
+<section class="real-estate">
+  <h2>不動產市場（含花蓮災後重建）</h2>
+  <div class="panel">
+    <h3>新竹竹科廊帶｜只打蛋黃，外圍重劃區為死亡谷</h3>
+    <p style="font-size:13.5px">竹北縣治／台科大重劃區預售屋每坪約 55 萬、指標案站上 70–80 萬／坪（坤山臻真 79.89、椰林唯吾 73.05）。竹北 AI 智慧園區（緯創、智邦、義隆 2026 完工／2027 啟用）+ 宏匯「未來之心」200m 摩天樓（2028）撐蛋黃剛需。<b style="color:var(--redink)">巨禾北擴策略不變：只打寶山／竹北蛋黃、捨外圍重劃區。</b>關埔二期純住比例低（商辦／產服佔 70%），不是住宅戰場。</p>
+    <h3 style="margin-top:16px">花蓮 0403 災後重建｜品牌聲量切入點</h3>
+    <p style="font-size:13.5px">馥邑京華（6 棟 150 戶）拆除經費 1.19 億由中央支付、工期約 6 個月，國土署主拆、縣府負責周邊動線安置。全縣強拆重建 14 案：3 處已成立更新會自辦都更（天王星、統帥、北濱街）、1 處住都中心公辦都更（花一邨）。<b>營造商選擇權在自主更新會手上</b>——這是巨禾以「資金+顧問」角色切入、做品牌聲量的關鍵時點。</p>
+  </div>
+</section>
+
+<section>
+  <h2>易安特供應鏈｜資料主權三層</h2>
+  <div class="panel">
+    <p style="font-size:13.5px">漢源實業（2012 成立，福建海源集團台灣辦事處）旗下「易安特」長纖維 PP 複合材料系統模板，2013 進台灣即推租賃；2025Q4 起隨碳法規升溫，強化「淨零減碳諮詢顧問」對外定位。<b style="color:var(--redink)">關鍵校正：</b>這些都是<b>第 1 層（物件層）</b>的賣法，與磐石「模主制度＋五大主權數據」不在同一層、無競爭。</p>
+    <div class="svg-wrap">
+<svg viewBox="0 0 760 600" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif" role="img" aria-label="磐石資料主權三層架構與易安特數據納管" style="width:100%;height:auto;display:block">
+<title>磐石資料主權三層</title>
+<desc>三層由外而內：物件層、SaaS 入口層、數據資產層；易安特碳數據從物件層經 SaaS 流入磐石五大數據資產，僅取回自己那筆使用權。</desc>
+<defs>
+  <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#c8503b"/></marker>
+  <marker id="arrB" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#3b7dc8"/></marker>
+</defs>
+<rect x="0" y="0" width="760" height="600" fill="#0f1115"/>
+<text x="40" y="46" fill="#e8eaed" font-size="23" font-weight="800">磐石資料主權三層</text>
+<text x="40" y="72" fill="#9aa0ab" font-size="14">模板物件是入口，SaaS 是管道，數據才是終局資產</text>
+<rect x="500" y="34" width="13" height="13" rx="3" fill="#222732" stroke="#2a2f3a"/>
+<text x="519" y="45" fill="#9aa0ab" font-size="12">外層・最易被取代</text>
+<rect x="500" y="54" width="13" height="13" rx="3" fill="#c8503b"/>
+<text x="519" y="65" fill="#9aa0ab" font-size="12">核心・不可替代護城河</text>
+<rect x="40" y="100" width="680" height="92" rx="12" fill="#171a21" stroke="#2a2f3a" stroke-width="1.5"/>
+<text x="60" y="128" fill="#9aa0ab" font-size="13" font-weight="700">第 1 層｜物件（產品層）</text>
+<text x="60" y="152" fill="#e8eaed" font-size="16" font-weight="700">易安特系統模板</text>
+<text x="60" y="174" fill="#8b919c" font-size="12.5">租賃（2013 起）＋淨零顧問定位（2025Q4 起）｜減碳 7.32 kgCO2e/m²</text>
+<rect x="556" y="120" width="144" height="54" rx="8" fill="#1e222b" stroke="#2a2f3a"/>
+<text x="628" y="142" fill="#9aa0ab" font-size="11.5" text-anchor="middle">漢源有求於磐石</text>
+<text x="628" y="161" fill="#d9a441" font-size="12.5" font-weight="700" text-anchor="middle">想加入 SaaS</text>
+<rect x="40" y="222" width="680" height="92" rx="12" fill="#171a21" stroke="#3b7dc8" stroke-width="1.8"/>
+<text x="60" y="250" fill="#7fb0e6" font-size="13" font-weight="700">第 2 層｜SaaS（資料入口・管道）</text>
+<text x="60" y="274" fill="#e8eaed" font-size="16" font-weight="700">磐石模主制度 + 派工 SaaS 系統</text>
+<text x="60" y="296" fill="#8b919c" font-size="12.5">標準化打卡／技能分級／晉升軌跡 → 把現場行為變成可收集的數據</text>
+<rect x="556" y="242" width="144" height="54" rx="8" fill="#10202a" stroke="#3b7dc8"/>
+<text x="628" y="264" fill="#9aa0ab" font-size="11.5" text-anchor="middle">產業標準制定者</text>
+<text x="628" y="283" fill="#7fb0e6" font-size="12.5" font-weight="700" text-anchor="middle">誰定標準收網效</text>
+<rect x="40" y="344" width="680" height="150" rx="12" fill="#1a1410" stroke="#c8503b" stroke-width="2.2"/>
+<text x="60" y="372" fill="#e08a76" font-size="13" font-weight="700">第 3 層｜五大主權數據（終局資產・不可替代）</text>
+<g font-size="11.5">
+  <rect x="60" y="388" width="124" height="46" rx="7" fill="#2a1c16" stroke="#c8503b"/>
+  <text x="122" y="409" fill="#e8eaed" text-anchor="middle">①模主行為</text>
+  <text x="122" y="426" fill="#a98" text-anchor="middle" font-size="10.5">打卡/品質/晉升</text>
+  <rect x="194" y="388" width="124" height="46" rx="7" fill="#2a1c16" stroke="#c8503b"/>
+  <text x="256" y="409" fill="#e8eaed" text-anchor="middle">②營建工程</text>
+  <text x="256" y="426" fill="#a98" text-anchor="middle" font-size="10.5">工法/工序/工時</text>
+  <rect x="328" y="388" width="124" height="46" rx="7" fill="#2a1c16" stroke="#c8503b"/>
+  <text x="390" y="409" fill="#e8eaed" text-anchor="middle">③建築設計</text>
+  <text x="390" y="426" fill="#a98" text-anchor="middle" font-size="10.5">BIM/結構/坪效</text>
+  <rect x="462" y="388" width="124" height="46" rx="7" fill="#3a2a16" stroke="#d9a441" stroke-width="1.8"/>
+  <text x="524" y="409" fill="#e8eaed" text-anchor="middle">④材料供應鏈</text>
+  <text x="524" y="426" fill="#d9a441" text-anchor="middle" font-size="10.5">含易安特碳數據</text>
+  <rect x="596" y="388" width="104" height="46" rx="7" fill="#2a1c16" stroke="#c8503b"/>
+  <text x="648" y="409" fill="#e8eaed" text-anchor="middle">⑤工程隊移動</text>
+  <text x="648" y="426" fill="#a98" text-anchor="middle" font-size="10.5">跨案場調度</text>
+</g>
+<text x="60" y="462" fill="#e08a76" font-size="12.5" font-weight="700">數據所有權與變現權 = 磐石</text>
+<text x="60" y="481" fill="#8b919c" font-size="12">變現：碳權只是其一，另有保險／融資／人力市場／材料議價</text>
+<line x1="260" y1="192" x2="260" y2="220" stroke="#c8503b" stroke-width="2.5" marker-end="url(#arr)"/>
+<text x="272" y="210" fill="#c8503b" font-size="11.5" font-weight="700">碳數據流入</text>
+<line x1="260" y1="314" x2="260" y2="342" stroke="#c8503b" stroke-width="2.5" marker-end="url(#arr)"/>
+<text x="272" y="332" fill="#c8503b" font-size="11.5" font-weight="700">收集沉澱</text>
+<path d="M648 388 C 700 360, 700 300, 700 240 L 700 200" fill="none" stroke="#3b7dc8" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrB)"/>
+<text x="540" y="350" fill="#7fb0e6" font-size="11">易安特僅取回「自己那筆碳數據使用權」</text>
+<rect x="40" y="516" width="680" height="60" rx="10" fill="#15191f" stroke="#2a2f3a"/>
+<text x="60" y="540" fill="#e8eaed" font-size="13.5" font-weight="700">護城河校準：層級由外而內愈不可替代。</text>
+<text x="60" y="562" fill="#9aa0ab" font-size="12.5">易安特在第 1 層無威脅；綁死數據所有權，他加入 SaaS 反而餵厚磐石第 ④ 塊。</text>
+</svg>
+    </div>
+    <p style="font-size:12.5px;color:var(--sub)"><b>圖說：</b>磐石資料主權三層——物件是入口、SaaS 是管道、五大數據是終局資產；易安特碳數據經 SaaS 流入第 ④ 塊（材料供應鏈數據），漢源僅取回自己那筆使用權，所有權與變現權留在磐石。</p>
+  </div>
+</section>
+
+<section class="policy">
+  <h2>政策倒數</h2>
+  <div class="panel">
+    <table>
+      <tr><th>政策</th><th>狀態</th><th>對巨禾／磐石意涵</th></tr>
+      <tr><td>央行第 8 波信用管制</td><td class="t-flat">→ 連 7 凍、2026 回歸銀行自控</td><td>仍須按月申報＋專案金檢，<b>非鬆綁</b>。巨禾土建融按「精準控管」節奏走，不賭全面放。</td></tr>
+      <tr class="demoted"><td>屋頂光電強制法（8/1）</td><td class="t-down">巨禾合規成本（非磐石業務）</td><td>已降階：此為太陽光電業者業務，對磐石模板工程無關，僅巨禾建案合規層面留意。</td></tr>
+      <tr><td>營造缺工／移工政策</td><td class="t-up">↑ 缺口 5.3 萬、2028 估近 35 萬</td><td>磐石模主制度「以制度換人力＋標準化」最硬的政策順風；標準制定者卡位時機。</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="capital-market">
+  <h2>資金 + 顧問商業模式（台灣為主）</h2>
+  <div class="panel" style="padding:10px">
+  <table>
+    <tr><th width="24%">案例</th><th width="30%">角色定位</th><th>對巨禾／磐石可借鑑點</th></tr>
+    <tr><td>馥邑京華自主更新會（花蓮 0403）</td><td>住戶自主更新會為實施主體；國土署代拆、縣府輔導；營造商選擇權在更新會</td><td><b>巨禾以「資金+顧問」切入</b>：不當總包，提供資金媒合＋營建專業顧問，賺顧問費＋品牌聲量，風險只扛專業責任。</td></tr>
+    <tr><td>久舜營造（5547，2026/6/3 上櫃）</td><td>以 BIM＋AI 數據管理從 B2B 承攬延伸到 B2C 委建「城市更新整合者」</td><td>驗證「數位管理＋委建」是新世代營造的溢價來源；磐石 SaaS＋數據正是這條路的底層，但磐石走中立平台不下場承攬。</td></tr>
+    <tr><td>住都中心公辦都更（花一邨案）</td><td>政府設立之專業實施者，代住戶整合、發包、監造</td><td>公辦都更實施者＝「顧問型角色」的公部門版；巨禾可在民間案複製「實施者顧問」定位，收整合服務費。</td></tr>
+    <tr><td><small>國際對照</small>　Procore（NYSE:PCOR）</td><td>純營建管理 SaaS 平台，不下場施工，靠訂閱＋生態系變現</td><td>證明「純平台、不碰工程」可成立；磐石終局參照——但磐石多一層「五大數據」資產，天花板高於純工具。</td></tr>
+  </table>
+  </div>
+</section>
+
+<section class="warning-section">
+  <h2>盲點警示</h2>
+  <div class="warn">
+    <b style="color:var(--redink)">警示 1｜數據所有權若不先談死，三層護城河是空的。</b>
+    <p style="font-size:13.5px;margin-top:6px">漢源「想加入 SaaS」現在是議價低點，但一旦易安特碳數據量起來、淨零顧問業務做大，它會反過來要數據所有權。<b>趁低點把「所有權＋變現權＝磐石、使用權＝易安特」寫進 MOU</b>，否則第 ④ 塊數據資產拱手讓人，三層圖只是漂亮投影片。</p>
+  </div>
+  <div class="warn">
+    <b style="color:var(--redink)">警示 2｜「產業標準制定者」野心大，但磐石現在連模主制度閉環都還沒跑通。</b>
+    <p style="font-size:13.5px;margin-top:6px">BCA 是政府、Amazon 是壟斷級流量，磐石兩者都不是。標準要被產業接受，得先有「夠多模主在用、夠多案場數據」當底氣。別讓「標準制定者」變成自我感覺良好——先把單一案場閉環做出可複製樣板，再談標準。</p>
+  </div>
+  <div class="anti">
+    <b>🔄 反偏好挑戰（軍師故意不順著說）：</b>
+    <p style="font-size:13.5px;margin-top:6px">您 6/2 定的鐵則是「平台穩當才談碳權、執行順序不可顛倒」，我認同。但本週易安特碳數據可串接的窗口已開——我建議的不是跳層，而是<b>「數據所有權條款」要超前部署</b>：談判可以現在做，啟動第二/三層仍等現金流穩當。把「談條款」與「啟動補貼層」分開，前者不該被執行順序鐵則綁住，否則錯過議價低點。請陳董裁示：是否同意「條款超前、執行照序」？</p>
+  </div>
+</section>
+
+<section class="world-frontier">
+  <h2>🌍 世界視野｜每日 5 則</h2>
+
+  <section class="ai-frontier">
+  <h3>AI 前沿 3 則（每則 ≥1 官方 primary source）</h3>
+  <div class="ai-grid">
+    <div class="ai-card">
+      <div class="hl">Google DeepMind 結盟五大顧問巨頭，推 agentic AI 企業轉型</div>
+      <div class="sm">DeepMind 與 Accenture、Bain、BCG、Deloitte、McKinsey 合作，將 agentic AI 規模化導入各產業，由顧問端負責落地實作。等於把「AI＋產業 know-how」打包成可交付的轉型服務。</div>
+      <div><span class="score s2">impact 2｜直接</span></div>
+      <small>領導人：機構名義發布，未明示單一領導人｜<a href="https://deepmind.google/blog/partnering-with-industry-leaders-to-accelerate-ai-transformation">deepmind.google（官方）</a>｜台北 07:00 採</small>
+    </div>
+    <div class="ai-card">
+      <div class="hl">Anthropic 擴 Claude 金融服務：connectors＋Agent Skills＋1 億美元夥伴網</div>
+      <div class="sm">新增即時市場數據／投組分析 connectors、預建 Agent Skills（DCF 模型、覆蓋報告），並投入 1 億美元成立 Claude Partner Network 助企業導入。「connectors＋skills＋夥伴生態」正是可改寫現場 OS 的範式。</div>
+      <div><span class="score s2">impact 2｜直接</span></div>
+      <small>領導人：機構名義發布｜<a href="https://www.anthropic.com/news/advancing-claude-for-financial-services">anthropic.com/news（官方）</a></small>
+    </div>
+    <div class="ai-card">
+      <div class="hl">Frontier Model Forum：四大廠共建 AI 安全治理與評測標準</div>
+      <div class="sm">Anthropic、Google、Microsoft、OpenAI 共組產業治理體，推技術評測／benchmark 與最佳實務公共庫。治理與 evals 標準化將外溢到所有要「可審計 AI」的垂直領域。</div>
+      <div><span class="score s1">impact 1｜間接</span></div>
+      <small>領導人：Brad Smith(MS)、Kent Walker(Google) 等具名引述｜<a href="https://blog.google/outreach-initiatives/public-policy/google-microsoft-openai-anthropic-frontier-model-forum">blog.google（官方）</a></small>
+    </div>
+  </div>
+  <h3 style="margin-top:14px">AI 比較表</h3>
+  <div class="panel" style="padding:10px">
+  <table>
+    <tr><th>事件</th><th>領導人</th><th>對磐石可執行動作</th><th>impact</th><th>來源</th></tr>
+    <tr><td>DeepMind × 五大顧問</td><td>機構發布</td><td>磐石「資金+顧問」可借「AI＋顧問打包」敘事對外募資</td><td>2</td><td>deepmind.google</td></tr>
+    <tr><td>Claude 金融 connectors</td><td>機構發布</td><td>磐石 SaaS 應預留 connector/skill 架構，未來把五大數據對接 AI agent</td><td>2</td><td>anthropic.com</td></tr>
+    <tr><td>Frontier Model Forum</td><td>Smith/Walker 等</td><td>磐石做「可審計營建 OS」時，治理/evals 標準可直接借用</td><td>1</td><td>blog.google</td></tr>
+  </table>
+  </div>
+  </section>
+
+  <section class="mgmt-knowledge">
+  <h3>📚 管理知識 1 則</h3>
+  <div class="panel">
+    <b>平台網路效應 ≠ 萬靈丹，「黏著度」才是護城河；標準制定者吃網路效應紅利。</b>
+    <p style="font-size:13.5px;margin-top:6px">平台靠雙邊網路效應建立護城河（Uber、Airbnb、App Store），但 HBR 提醒：軟體時代切換成本下降，網路效應只對「黏著（sticky）產品」有效。真正穩固的是「誰定標準」——標準把參與者鎖進你的規則，數據與交易自然沉澱。這正對應磐石「模主制度＝標準、SaaS＝管道、數據＝資產」的三層邏輯。</p>
+    <p style="font-size:13px;color:var(--gold);margin-top:8px"><b>今日可執行動作：</b>把「模主標準 v1」當作磐石的黏著點來設計——不是先想怎麼變現，而是先想「為什麼模主離不開這套標準」（技能履歷可攜、跨案場接得到工、晉升被業界認）。</p>
+    <small>來源：<a href="https://hbr.org/2019/04/network-effects-arent-enough">HBR「Network Effects Aren't Enough」</a>｜<a href="https://www.stratrix.com/learn/frameworks/platform-business-model">Platform Business Model 框架（網路效應與護城河）</a></small>
+  </div>
+  </section>
+
+  <section class="surprise-world">
+  <h3>✨ 驚奇世界 1 則</h3>
+  <div class="panel">
+    <b>2026 營建機器人／3D 列印「物種爆發」：自動綁筋、磚砌、3D 列印鋼筋混凝土結構已成商用清單</b>
+    <p style="font-size:13.5px;margin-top:6px">AEC Business 2026 圖譜列出數十家商用化營建機器人公司：Dusty Robotics（地面印 BIM 放樣）、FBR Hadrian X（自動砌磚）、Hyperion Robotics（3D 列印配筋混凝土）、Promise Robotics（圖紙→預鑄工廠機器人）。「缺工 5.3 萬」的另一面，是自動化正從實驗室衝進工地——令人意外的是進度比多數台灣業者想像得快。</p>
+    <p style="font-size:13px;color:var(--blueink);margin-top:8px"><b>長期戰略意涵：</b>當機器人接手綁筋／砌磚／放樣，磐石「人＋制度」的模主價值會被稀釋——但「數據」價值反而上升（機器人需要工序、工法、品質數據才能訓練）。磐石的五大數據是自動化時代的燃料，這強化「數據才是終局資產」的判斷。</p>
+    <small>來源：<a href="https://aec-business.com/construction-robotics-and-3d-printing-firms-2026">AEC Business｜Construction Robotics and 3D-Printing Firms 2026</a></small>
+  </div>
+  </section>
+</section>
+
+<footer>
+  <h2>引用來源・數字核對</h2>
+  <div class="panel">
+    <h3>數字－單位－來源核對表</h3>
+    <table>
+      <tr><th>數字</th><th>單位／基準</th><th>來源</th></tr>
+      <tr><td>52,963</td><td>營造業勞工空缺「總人數」（基層佔 75.3%＝39,859）</td><td>國土署 2024 營造業經濟概況調查（udn 陽光行動轉述）</td></tr>
+      <tr><td>7.32</td><td>kgCO2e/m²（易安特「工法」減碳，vs 傳統木模＋泥作，減碳 80.16%）</td><td>TABC 低碳工法認證／漢源對外論述</td></tr>
+      <tr><td>1.19 億</td><td>新台幣（馥邑京華「拆除」經費，中央全額）</td><td>更生新聞網／中央社 2026-03</td></tr>
+      <tr><td>連 7 凍</td><td>央行政策利率（重貼現率 2%）</td><td>央行 Q4 理監事會（時報/風傳媒 2025-12）</td></tr>
+      <tr><td>~55 萬</td><td>萬元/坪（竹北縣治/台科大重劃區「預售屋」均價）</td><td>HouseFeel 實價登錄彙整</td></tr>
+    </table>
+    <h3 style="margin-top:14px">台灣本地名稱驗名來源</h3>
+    <p style="font-size:12.5px;color:var(--sub)">漢源實業股份有限公司（旗下品牌易安特）— archi.net.tw 廠商頁；馥邑京華輔導架構（花蓮縣府建設處鄧子榆、國土署北區都市基礎工程分署）— 更生新聞網/中央社/匯流新聞網；潤泰精密楊梅預鑄廠承攬名單 — rtc.com.tw 官網；麗明營造（吳春山）— 維基/天下。<b>無新增不確定具名單位；「專稼」類捏造未復發。</b></p>
+    <h3 style="margin-top:14px">主要來源連結</h3>
+    <p style="font-size:12.5px">
+      <a href="https://hk.finance.yahoo.com/news/%E5%A4%AE%E8%A1%8C%E7%90%86%E7%9B%A3%E4%BA%8B%E6%9C%83%E8%A8%98%E9%8C%84-%E7%90%86%E4%BA%8B%E9%BD%8A%E7%99%BC%E8%81%B2-%E6%88%BF%E5%83%B9%E6%89%80%E5%BE%97%E6%AF%94%E9%81%8E%E9%AB%98-%E4%BF%A1%E7%94%A8%E7%AE%A1%E5%88%B6%E5%88%9D%E8%A6%8B%E6%95%88%E6%9A%AB%E4%B8%8D%E6%94%BE%E6%89%8B-122444569.html">央行理監事會記錄</a>　·
+      <a href="https://www.ksnews.com.tw/e/85109">馥邑京華擬 5 月開拆（更生）</a>　·
+      <a href="https://www.rtc.com.tw/company/news/%E3%80%90%E5%B7%A5%E7%A0%94%E9%99%A2%E5%8F%83%E8%A8%AA%E6%A5%8A%E6%A2%85%E9%A0%90%E9%91%84%E5%BB%A0%E3%80%91.70.html">潤泰楊梅預鑄廠承攬名單</a>　·
+      <a href="https://www.archi.net.tw/tw/company/132535/index.html">漢源實業（易安特）</a>　·
+      <a href="https://sdgs.udn.com/sdgs/story/124688/9220077">營造缺工 5 萬多人（udn）</a>　·
+      <a href="https://www.chinatimes.com/newspapers/20260312000308-260206">沛米 Jobdone 營建 SaaS</a>　·
+      <a href="https://www.fbs168.com/news/10282">久舜營造數位轉型</a>
+    </p>
+  </div>
+  <p class="meta">資料截止 07:00 台北｜Tavily: search ×11, extract ×0（搜尋摘要已涵蓋核心事實＋官方公告全文，省 token）, crawl ×0｜歷史對照: 過去 7 天｜陳董建言落實: 易安特角色校正＋產業標準制定者＋三層圖嵌入 共 3 條｜世界視野: AI ×3／管理 ×1／驚奇 ×1｜Prompt: v4.4</p>
+</footer>
+
+<script>
+let _rating='';
+function rate(r){_rating=r;document.querySelectorAll('.feedback-bar button').forEach(b=>b.style.borderColor='var(--line)');event.target.style.borderColor='var(--red)';}
+function submitWithComment(){
+  const c=document.getElementById('comment-box').value.replace(/"/g,'\\"');
+  const j='{"date":"2026-06-05","rating":"'+(_rating||'unrated')+'","comment":"'+c+'","prompt_version":"v4.4"}';
+  const o=document.getElementById('json-out');o.style.display='block';o.textContent='複製此行貼回對話：　'+j;
+}
+</script>
+</body>
+</html>
