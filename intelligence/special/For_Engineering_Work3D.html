@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>轉角配模問題 互動3D(給工務)</title>
+<style>
+html,body{margin:0;height:100%;background:#e8e6e1;font-family:"Microsoft JhengHei",sans-serif;color:#37474f;overflow:hidden}
+#bar{position:fixed;top:0;left:0;right:0;padding:10px 16px;z-index:10;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#bar .k{letter-spacing:.2em;font-size:11px;color:#9c4a2f;font-weight:700;margin-right:6px}
+button{font-family:inherit;font-size:13px;padding:6px 12px;border:1px solid #cfcabf;background:#f4f3f0;color:#37474f;cursor:pointer;border-radius:3px}
+button.on{background:#9c4a2f;color:#fff;border-color:#9c4a2f}
+#panel{position:fixed;left:16px;bottom:16px;max-width:430px;background:rgba(244,243,240,.93);border:1px solid #cfcabf;border-left:3px solid #9c4a2f;padding:12px 16px;z-index:10;font-size:13px}
+#panel h2{margin:0 0 6px;font-size:16px}
+#panel .lab{font-size:11px;letter-spacing:.1em;color:#6b7785;font-weight:700;margin-top:6px}
+#panel .lab.q{color:#9c4a2f}
+#panel ul{margin:3px 0;padding-left:18px} #panel li{margin:3px 0}
+#legend{position:fixed;right:16px;top:54px;background:rgba(244,243,240,.9);border:1px solid #cfcabf;padding:8px 12px;font-size:12px;z-index:10}
+.sw{display:inline-block;width:11px;height:11px;margin-right:5px;vertical-align:-1px;border:1px solid #888}
+#tip{position:fixed;right:16px;bottom:16px;font-size:11px;color:#8a93a0;z-index:10}
+#lbl{position:fixed;padding:2px 6px;background:#37474f;color:#fff;font-size:11px;border-radius:3px;pointer-events:none;display:none;z-index:20}
+</style></head><body>
+<div id="bar"><span class="k">PANSHI · 轉角配模問題 互動檢視</span>
+<button data-k="P1">1 不對稱330≠300</button><button data-k="P2">2 T接</button><button data-k="P3">3 十字</button><button data-k="P4">4 柱牆</button><button data-k="P5">5 開口</button></div>
+<div id="legend"><span class="sw" style="background:#b8c4cc"></span>牆/混凝土
+ <span class="sw" style="background:#5b7fa6"></span>外角E-WJ
+ <span class="sw" style="background:#c8813a"></span>內角E-NJ
+ <span class="sw" style="background:#7a8690"></span>柱
+ <span class="sw" style="background:#c0392b"></span>開口側壁</div>
+<div id="panel"></div><div id="tip">左鍵旋轉 · 滾輪縮放 · 右鍵平移 · 點件看名稱 · 上方按鈕切換 5 題</div><div id="lbl"></div>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three'; import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const SC={"P1": {"t": "問題1 ｜ 內外角不對稱 330≠300（合龍根因）", "d": "外角 E-WJ 腿 330、內角 E-NJ 腿 300，差 30mm → 牆內外兩面被吃掉的長度不等。", "w": "兩面起點差 30mm → 兩面板縫無法同時對齊；殘量要決定塞哪端。", "q": ["角件腿 330/300 實際吃進牆面多少？含不含模厚 80？", "殘量集中的『隱蔽端』怎麼判？"], "b": [{"c": [1.33, 0.6, 0.0], "s": [2.0, 1.2, 0.3], "col": "#b8c4cc", "nm": "牆A"}, {"c": [0.0, 0.6, 1.13], "s": [0.3, 1.2, 1.6], "col": "#b8c4cc", "nm": "牆B"}, {"c": [0.09, 0.6, 0.09], "s": [0.48, 1.2, 0.48], "col": "#5b7fa6", "nm": "外角 E-WJ 330"}, {"c": [0.3, 0.6, 0.3], "s": [0.3, 1.2, 0.3], "col": "#c8813a", "nm": "內角 E-NJ 300"}]}, "P2": {"t": "問題2 ｜ T 形接點（三牆交會）", "d": "支牆接主牆中段，主牆靠支牆那面被切兩段、對面連續整道。", "w": "一面連續、一面被切兩段 → 兩面板縫無法同時對齊。", "q": ["可否『孔對齊、縫各排』(只對拉螺栓孔對穿)？", "還是堅持兩面板縫對齊？"], "b": [{"c": [2.0, 0.6, 0.0], "s": [4.0, 1.2, 0.3], "col": "#b8c4cc", "nm": "主牆"}, {"c": [2.0, 0.6, 1.05], "s": [0.3, 1.2, 1.8], "col": "#b8c4cc", "nm": "支牆"}, {"c": [1.7, 0.6, 0.3], "s": [0.3, 1.2, 0.3], "col": "#c8813a", "nm": "內角L"}, {"c": [2.3, 0.6, 0.3], "s": [0.3, 1.2, 0.3], "col": "#c8813a", "nm": "內角R"}]}, "P3": {"t": "問題3 ｜ 十字接點（四牆交會）", "d": "四道牆交會於一點，繞中心一圈是 4 個內凹角(全內角、零外角)。", "w": "4 片內角 E-NJ 在中心互相打架；現役無『十字芯』件。", "q": ["現場現在怎麼收？", "要不要請磐石開『E-NJ 十字芯』客訂件？"], "b": [{"c": [0.0, 0.6, 0.0], "s": [3.6, 1.2, 0.3], "col": "#b8c4cc", "nm": "牆X"}, {"c": [0.0, 0.6, 0.0], "s": [0.3, 1.2, 3.6], "col": "#b8c4cc", "nm": "牆Y"}, {"c": [0.3, 0.6, 0.3], "s": [0.3, 1.2, 0.3], "col": "#c8813a", "nm": "內角1"}, {"c": [0.3, 0.6, -0.3], "s": [0.3, 1.2, 0.3], "col": "#c8813a", "nm": "內角2"}, {"c": [-0.3, 0.6, 0.3], "s": [0.3, 1.2, 0.3], "col": "#c8813a", "nm": "內角3"}, {"c": [-0.3, 0.6, -0.3], "s": [0.3, 1.2, 0.3], "col": "#c8813a", "nm": "內角4"}]}, "P4": {"t": "問題4 ｜ 柱打斷牆（柱牆交界）", "d": "柱把牆打斷成左右兩段；柱凸出時牆一面被切兩段、對面可能連續。", "w": "兩面欄數/錨點不同 → 合龍漂移在柱處復活。", "q": ["柱凸出有幾型(雙面齊/單凸/雙凸)？各用什麼角件幾片？", "柱旁<150窄縫一律木模嗎？"], "b": [{"c": [0.85, 0.6, 0.0], "s": [1.7, 1.2, 0.3], "col": "#b8c4cc", "nm": "牆左段"}, {"c": [3.15, 0.6, 0.0], "s": [1.7, 1.2, 0.3], "col": "#b8c4cc", "nm": "牆右段"}, {"c": [2.0, 0.625, 0.0], "s": [0.6, 1.25, 0.6], "col": "#7a8690", "nm": "柱"}]}, "P5": {"t": "問題5 ｜ 牆中門窗開口（側壁=第3,4面）", "d": "開口側壁(左右垛內緣、楣底、檻頂)橫跨牆厚，是第3、4面。", "w": "現有『內外兩面』模型沒有側壁這欄位。", "q": ["側壁(牆厚−模厚)用什麼收？現役 E-WJ 腿長對得上嗎？", "門/窗側壁標準做法？"], "b": [{"c": [0.7, 0.6, 0.0], "s": [1.4, 1.2, 0.3], "col": "#b8c4cc", "nm": "左垛"}, {"c": [3.3, 0.6, 0.0], "s": [1.4, 1.2, 0.3], "col": "#b8c4cc", "nm": "右垛"}, {"c": [2.0, 1.075, 0.0], "s": [1.2, 0.25, 0.3], "col": "#b8c4cc", "nm": "楣上"}, {"c": [2.0, 0.2, 0.0], "s": [1.2, 0.4, 0.3], "col": "#b8c4cc", "nm": "檻下"}, {"c": [1.415, 0.675, 0.0], "s": [0.03, 0.55, 0.3], "col": "#c0392b", "nm": "左側壁reveal"}, {"c": [2.585, 0.675, 0.0], "s": [0.03, 0.55, 0.3], "col": "#c0392b", "nm": "右側壁reveal"}, {"c": [2.0, 0.945, 0.0], "s": [1.2, 0.03, 0.3], "col": "#c0392b", "nm": "楣底reveal"}]}};
+const sc=new THREE.Scene(); sc.background=new THREE.Color('#e8e6e1');
+const cam=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.05,2000);
+const rd=new THREE.WebGLRenderer({antialias:true}); rd.setSize(innerWidth,innerHeight); rd.setPixelRatio(devicePixelRatio); document.body.appendChild(rd.domElement);
+sc.add(new THREE.HemisphereLight('#fff','#9aa3ab',1.15)); const dl=new THREE.DirectionalLight('#fff',1.2); dl.position.set(6,10,8); sc.add(dl);
+const ct=new OrbitControls(cam,rd.domElement); ct.enableDamping=true;
+let grp=new THREE.Group(); sc.add(grp); const picks=[];
+function load(k){
+ [...picks].forEach(()=>{}); while(grp.children.length)grp.remove(grp.children[0]); picks.length=0;
+ const S=SC[k]; const ctr=new THREE.Vector3();let n=0;
+ for(const b of S.b){
+  const g=new THREE.BoxGeometry(...b.s);
+  const m=new THREE.Mesh(g,new THREE.MeshLambertMaterial({color:b.col,transparent:b.col=='#c0392b',opacity:b.col=='#c0392b'?1:0.92}));
+  m.position.set(...b.c); m.userData={nm:b.nm}; grp.add(m); picks.push(m);
+  const e=new THREE.LineSegments(new THREE.EdgesGeometry(g),new THREE.LineBasicMaterial({color:'#37474f'})); e.position.set(...b.c); grp.add(e);
+  ctr.add(m.position); n++;
+ }
+ ctr.divideScalar(n||1);
+ cam.position.set(ctr.x+4,ctr.y+3,ctr.z+5); ct.target.copy(ctr);
+ const ql=S.q.map(x=>`<li>${x}</li>`).join('');
+ document.getElementById('panel').innerHTML=`<h2>${S.t}</h2><div class="lab">問題</div>${S.d}<div class="lab">為什麼難</div>${S.w}<div class="lab q">請工務回答</div><ul>${ql}</ul>`;
+ document.querySelectorAll('#bar button').forEach(x=>x.classList.toggle('on',x.dataset.k==k));
+}
+document.querySelectorAll('#bar button').forEach(b=>b.onclick=()=>load(b.dataset.k));
+const ray=new THREE.Raycaster(),mo=new THREE.Vector2(),lbl=document.getElementById('lbl');
+rd.domElement.addEventListener('click',e=>{mo.x=(e.clientX/innerWidth)*2-1;mo.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mo,cam);
+ const h=ray.intersectObjects(picks)[0]; if(h){lbl.style.display='block';lbl.style.left=(e.clientX+10)+'px';lbl.style.top=(e.clientY+8)+'px';lbl.innerHTML='<b>'+h.object.userData.nm+'</b>';}else lbl.style.display='none';});
+addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();rd.setSize(innerWidth,innerHeight);});
+load('P1');
+(function loop(){requestAnimationFrame(loop);ct.update();rd.render(sc,cam);})();
+</script></body></html>
