@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>配模 O 問題 互動3D</title>
+<style>
+html,body{margin:0;height:100%;background:#e8e6e1;font-family:"Microsoft JhengHei",sans-serif;color:#37474f;overflow:hidden}
+#bar{position:fixed;top:0;left:0;right:0;padding:9px 14px;z-index:10;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+#bar .k{letter-spacing:.2em;font-size:11px;color:#9c4a2f;font-weight:700;margin-right:6px}
+button{font-family:inherit;font-size:12.5px;padding:5px 10px;border:1px solid #cfcabf;background:#f4f3f0;color:#37474f;cursor:pointer;border-radius:3px}
+button.on{background:#9c4a2f;color:#fff;border-color:#9c4a2f}
+#panel{position:fixed;left:14px;bottom:14px;max-width:440px;background:rgba(244,243,240,.94);border:1px solid #cfcabf;border-left:3px solid #9c4a2f;padding:12px 16px;z-index:10;font-size:13px}
+#panel h2{margin:0 0 6px;font-size:15.5px}
+#panel .lab{font-size:11px;letter-spacing:.1em;color:#6b7785;font-weight:700;margin-top:6px}
+#panel .lab.q{color:#9c4a2f} #panel ul{margin:3px 0;padding-left:18px}
+#tip{position:fixed;right:14px;bottom:14px;font-size:11px;color:#8a93a0;z-index:10}
+#lbl{position:fixed;padding:2px 6px;background:#37474f;color:#fff;font-size:11px;border-radius:3px;pointer-events:none;display:none;z-index:20}
+</style></head><body>
+<div id="bar"><span class="k">PANSHI · 配模 O 問題 互動檢視</span>
+<button data-k="O1">O1 角件腿</button><button data-k="O-B">O-B NJ短腿</button><button data-k="O-C">O-C 轉角孔</button><button data-k="O-A">O-A 板接</button><button data-k="O5">O5 段差</button><button data-k="O8">O8 開口</button><button data-k="O6">O6 柱nib</button></div>
+<div id="panel"></div><div id="tip">左鍵旋轉·滾輪縮放·右鍵平移·點件看名稱·上方按鈕切換</div><div id="lbl"></div>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three'; import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const SC={"O1": {"t": "O1 ｜ 角件腿 330/300 含不含模厚？(量產關鍵)", "d": "外角 WJ 腿標 330、內角 NJ 腿標 300。問題：這數字<b>實際吃進牆面</b>的淨長是多少？含不含模板本體厚 80mm？", "q": ["量測：把 WJ/NJ 放牆角，量它沿牆面實際蓋住多長(含不含80)。"], "b": [{"c": [1.13, 0.6, 0.0], "s": [1.6, 1.2, 0.3], "col": "#b8c4cc", "nm": "牆A"}, {"c": [0.0, 0.6, 0.98], "s": [0.3, 1.2, 1.3], "col": "#b8c4cc", "nm": "牆B"}, {"c": [0.09, 0.6, 0.09], "s": [0.48, 1.2, 0.48], "col": "#5b7fa6", "nm": "外角WJ 腿330 ←含80模厚?"}]}, "O-B": {"t": "O-B ｜ 內角 NJ 短腿 100 實際外露淨長？(量產關鍵)", "d": "內角 NJ＝L型：長腿 300(沿牆A)＋<b>短腿 100(折到牆B那面)</b>。問題：短腿 100 在鄰面實際蓋住的淨長是多少？", "q": ["量測：NJ 裝好後，量短腿在牆B那面蓋住多長。"], "b": [{"c": [0.95, 0.6, 0.3], "s": [1.3, 1.2, 0.3], "col": "#b8c4cc", "nm": "牆A內面"}, {"c": [0.3, 0.6, 0.7], "s": [0.3, 1.2, 1.2], "col": "#b8c4cc", "nm": "牆B內面"}, {"c": [0.3, 0.6, 0.19], "s": [0.3, 1.2, 0.08], "col": "#c8813a", "nm": "NJ 長腿300"}, {"c": [0.19, 0.6, 0.2], "s": [0.08, 1.2, 0.1], "col": "#e0a060", "nm": "NJ 短腿100 ←淨長?"}]}, "O-C": {"t": "O-C ｜ 轉角孔列高 155/100 vs 牆身 75/150？(量產關鍵)", "d": "牆身面孔在 75,225,375…(間距150)；<b>轉角WJ段面孔卻在 155,255…(間距100)</b>，兩系不同。問題：成因為何？轉角螺桿能跟牆身共桿嗎？", "q": ["確認：看WJ上對拉孔位；轉角螺桿是獨立穿還是接牆身。"], "b": [{"c": [0.45, 0.6, 0.0], "s": [0.9, 1.2, 0.3], "col": "#b8c4cc", "nm": "牆身板(孔75/150)"}, {"c": [1.55, 0.6, 0.0], "s": [0.9, 1.2, 0.3], "col": "#5b7fa6", "nm": "轉角WJ段(孔155/100)"}, {"c": [0.2, 0.075, -0.2], "s": [0.07, 0.07, 0.07], "col": "#37474f", "nm": "牆身孔75"}, {"c": [0.2, 0.225, -0.2], "s": [0.07, 0.07, 0.07], "col": "#37474f", "nm": "225"}, {"c": [0.2, 0.375, -0.2], "s": [0.07, 0.07, 0.07], "col": "#37474f", "nm": "375"}, {"c": [0.2, 0.525, -0.2], "s": [0.07, 0.07, 0.07], "col": "#37474f", "nm": "525"}, {"c": [1.3, 0.155, -0.2], "s": [0.07, 0.07, 0.07], "col": "#37474f", "nm": "轉角孔155"}, {"c": [1.3, 0.255, -0.2], "s": [0.07, 0.07, 0.07], "col": "#37474f", "nm": "255"}, {"c": [1.3, 0.355, -0.2], "s": [0.07, 0.07, 0.07], "col": "#37474f", "nm": "355"}]}, "O-A": {"t": "O-A ｜ 板對接手柄怎麼裝？", "d": "兩塊板<b>並肩對接</b>，邊孔(離邊75)對齊→穿連結手柄(Φ23.5)+梢片鎖緊。問題：手柄只接同面相鄰板，還是也用於轉角鉸接？", "q": ["拍一張：兩板對接+手柄+梢片實裝特寫。"], "b": [{"c": [0.45, 0.6, 0.0], "s": [0.9, 1.2, 0.3], "col": "#b8c4cc", "nm": "板A"}, {"c": [1.37, 0.6, 0.0], "s": [0.9, 1.2, 0.3], "col": "#c9d2d8", "nm": "板B"}, {"c": [0.92, 0.6, -0.17], "s": [0.12, 1.2, 0.04], "col": "#2e7d32", "nm": "接縫手柄+梢片"}, {"c": [0.85, 0.4, -0.21], "s": [0.07, 0.07, 0.07], "col": "#37474f", "nm": "板A邊孔75"}, {"c": [0.99, 0.4, -0.21], "s": [0.07, 0.07, 0.07], "col": "#37474f", "nm": "板B邊孔75"}]}, "O5": {"t": "O5 ｜ 內角 20mm 段差怎麼收？(品項缺口)", "d": "內角 NJ 厚 <b>100</b>，牆板/外角厚 <b>80</b> → 交界處有 <b>20mm 段差</b>(凸出一條線)。問題：有專用段差條嗎？還是一律木模壓條？", "q": ["現場段差收法；有無專用件。"], "b": [{"c": [0.8, 0.6, 0.19], "s": [1.0, 1.2, 0.08], "col": "#b8c4cc", "nm": "牆板 厚80"}, {"c": [0.2, 0.6, 0.2], "s": [0.1, 1.2, 0.1], "col": "#c8813a", "nm": "NJ 厚100"}, {"c": [0.8, 0.6, 0.24], "s": [1.0, 1.2, 0.02], "col": "#c0392b", "nm": "20mm 段差線 ←怎麼收?"}]}, "O8": {"t": "O8 ｜ 開口側壁(reveal)用什麼收？", "d": "門窗開口<b>側壁</b>(寬=牆厚−模厚)是第3/4面。問題：現役 WJ 腿長(330/300/360-200/310-150)對得上牆厚嗎？對不上用木模還是客訂？", "q": ["量：常見牆厚的開口側壁實際怎麼收。"], "b": [{"c": [0.4, 0.6, 0.0], "s": [0.8, 1.2, 0.3], "col": "#b8c4cc", "nm": "左垛"}, {"c": [1.8, 0.6, 0.0], "s": [0.8, 1.2, 0.3], "col": "#b8c4cc", "nm": "右垛"}, {"c": [1.1, 1.025, 0.0], "s": [0.6, 0.35, 0.3], "col": "#b8c4cc", "nm": "楣上"}, {"c": [1.1, 0.175, 0.0], "s": [0.6, 0.35, 0.3], "col": "#b8c4cc", "nm": "檻下"}, {"c": [0.805, 0.6, 0.0], "s": [0.03, 0.5, 0.3], "col": "#c0392b", "nm": "左側壁reveal ←怎麼收?"}, {"c": [1.395, 0.6, 0.0], "s": [0.03, 0.5, 0.3], "col": "#c0392b", "nm": "右側壁reveal"}]}, "O6": {"t": "O6 ｜ 柱旁 nib<150 窄縫怎麼收？", "d": "柱打斷牆，柱邊常留 <b>窄縫 nib</b>。問題：nib<150mm(小於最小嵌補件)時一律木模，還是有 <150 的小件可用？", "q": ["現場柱邊窄縫收法。"], "b": [{"c": [0.5, 0.6, 0.0], "s": [1.0, 1.2, 0.3], "col": "#b8c4cc", "nm": "牆"}, {"c": [1.35, 0.625, -0.05], "s": [0.5, 1.25, 0.5], "col": "#7a8690", "nm": "柱"}, {"c": [1.05, 0.6, 0.0], "s": [0.1, 1.2, 0.3], "col": "#c0392b", "nm": "nib窄縫<150 ←木模?"}]}};
+const sc=new THREE.Scene(); sc.background=new THREE.Color('#e8e6e1');
+const cam=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.05,2000);
+const rd=new THREE.WebGLRenderer({antialias:true}); rd.setSize(innerWidth,innerHeight); rd.setPixelRatio(devicePixelRatio); document.body.appendChild(rd.domElement);
+sc.add(new THREE.HemisphereLight('#fff','#9aa3ab',1.15)); const dl=new THREE.DirectionalLight('#fff',1.2); dl.position.set(6,10,8); sc.add(dl);
+const ct=new OrbitControls(cam,rd.domElement); ct.enableDamping=true;
+let grp=new THREE.Group(); sc.add(grp); const picks=[];
+function load(k){
+ while(grp.children.length)grp.remove(grp.children[0]); picks.length=0;
+ const S=SC[k]; const ctr=new THREE.Vector3();let n=0;
+ for(const b of S.b){
+  const g=new THREE.BoxGeometry(...b.s);
+  const m=new THREE.Mesh(g,new THREE.MeshLambertMaterial({color:b.col,transparent:b.col=='#c0392b',opacity:b.col=='#c0392b'?1:0.92}));
+  m.position.set(...b.c); m.userData={nm:b.nm}; grp.add(m); picks.push(m);
+  const e=new THREE.LineSegments(new THREE.EdgesGeometry(g),new THREE.LineBasicMaterial({color:'#37474f'})); e.position.set(...b.c); grp.add(e);
+  ctr.add(m.position); n++;
+ }
+ ctr.divideScalar(n||1); cam.position.set(ctr.x+3,ctr.y+2.5,ctr.z+4); ct.target.copy(ctr);
+ const ql=S.q.map(x=>`<li>${x}</li>`).join('');
+ document.getElementById('panel').innerHTML=`<h2>${S.t}</h2><div class="lab">問題</div>${S.d}<div class="lab q">請工務回答/量測</div><ul>${ql}</ul>`;
+ document.querySelectorAll('#bar button').forEach(x=>x.classList.toggle('on',x.dataset.k==k));
+}
+document.querySelectorAll('#bar button').forEach(b=>b.onclick=()=>load(b.dataset.k));
+const ray=new THREE.Raycaster(),mo=new THREE.Vector2(),lbl=document.getElementById('lbl');
+rd.domElement.addEventListener('click',e=>{mo.x=(e.clientX/innerWidth)*2-1;mo.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mo,cam);
+ const h=ray.intersectObjects(picks)[0]; if(h){lbl.style.display='block';lbl.style.left=(e.clientX+10)+'px';lbl.style.top=(e.clientY+8)+'px';lbl.innerHTML='<b>'+h.object.userData.nm+'</b>';}else lbl.style.display='none';});
+addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();rd.setSize(innerWidth,innerHeight);});
+load('O1');
+(function loop(){requestAnimationFrame(loop);ct.update();rd.render(sc,cam);})();
+</script></body></html>
