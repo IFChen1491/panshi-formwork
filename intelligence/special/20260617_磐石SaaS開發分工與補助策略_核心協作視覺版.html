@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>磐石 SaaS 開發分工與政府補助策略｜核心協作視覺版</title>
+  <style>
+    :root {
+      --ink: #24231f;
+      --ink-2: #403e37;
+      --paper: #eeece5;
+      --paper-2: #dfdacf;
+      --cement: #c9c3b6;
+      --line: rgba(36, 35, 31, .16);
+      --line-strong: rgba(36, 35, 31, .34);
+      --red: #9d4632;
+      --green: #426454;
+      --blue: #304d65;
+      --gold: #8b6a34;
+      --white: #f7f5ef;
+      --shadow: 0 18px 50px rgba(36, 35, 31, .10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(36, 35, 31, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(36, 35, 31, .035) 1px, transparent 1px),
+        var(--paper);
+      background-size: 54px 54px, 54px 54px, auto;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button, input { font: inherit; }
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px clamp(18px, 4vw, 48px);
+      border-bottom: 1px solid rgba(247, 245, 239, .12);
+      color: var(--white);
+      background: rgba(28, 28, 24, .88);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--white);
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .brand span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 14px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .nav a {
+      color: rgba(247, 245, 239, .74);
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .nav a:hover { color: var(--white); background: rgba(247, 245, 239, .08); }
+
+    .scene {
+      min-height: 100vh;
+      padding: clamp(84px, 10vw, 128px) clamp(20px, 6vw, 78px) clamp(56px, 7vw, 86px);
+      display: grid;
+      align-items: center;
+      position: relative;
+    }
+
+    .scene.dark {
+      color: var(--white);
+      background:
+        linear-gradient(120deg, rgba(25, 25, 21, .96), rgba(25, 25, 21, .80)),
+        repeating-linear-gradient(90deg, rgba(247, 245, 239, .05) 0 1px, transparent 1px 22px);
+    }
+
+    .scene.cement { background: rgba(201, 195, 182, .34); }
+    .wrap { width: min(1180px, 100%); margin: 0 auto; }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(320px, .94fr);
+      gap: clamp(28px, 6vw, 76px);
+      align-items: center;
+    }
+
+    .kicker {
+      margin: 0 0 18px;
+      color: var(--red);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .dark .kicker { color: #cf8b78; }
+
+    h1, h2 {
+      margin: 0;
+      font-family: "Noto Serif TC", "PMingLiU", serif;
+      font-weight: 500;
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h1 { font-size: clamp(42px, 6vw, 78px); max-width: 1080px; }
+    h2 { font-size: clamp(30px, 4vw, 56px); max-width: 960px; }
+    h3 { margin: 0; font-size: 19px; line-height: 1.45; }
+    p { line-height: 1.82; }
+
+    .lede {
+      margin: 26px 0 0;
+      max-width: 860px;
+      font-size: clamp(18px, 2vw, 23px);
+      line-height: 1.85;
+      color: rgba(247, 245, 239, .86);
+    }
+
+    .body {
+      margin: 22px 0 0;
+      max-width: 780px;
+      color: var(--ink-2);
+      font-size: 17px;
+    }
+
+    .dark .body { color: rgba(247, 245, 239, .78); }
+
+    .hero-meta, .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 42px;
+    }
+
+    .meta-box, .metric, .card, .agent, .risk, .gate, .path-panel, .timeline-item {
+      border: 1px solid var(--line);
+      background: rgba(247, 245, 239, .64);
+      border-radius: 8px;
+    }
+
+    .dark .meta-box, .dark .metric {
+      border-color: rgba(247, 245, 239, .18);
+      background: rgba(247, 245, 239, .06);
+    }
+
+    .meta-box {
+      min-height: 104px;
+      padding: 18px;
+    }
+
+    .label {
+      display: block;
+      color: rgba(36, 35, 31, .58);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .dark .label { color: rgba(247, 245, 239, .58); }
+    .meta-box strong { display: block; font-size: 16px; line-height: 1.55; }
+
+    .verdict {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: center;
+      padding: 24px;
+      border: 1px solid rgba(207, 139, 120, .42);
+      border-radius: 8px;
+      background: rgba(157, 70, 50, .10);
+    }
+
+    .verdict strong { font-size: 22px; line-height: 1.55; }
+    .verdict .tag {
+      color: var(--white);
+      background: var(--red);
+      border-radius: 999px;
+      padding: 9px 14px;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .decision-map {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .card {
+      padding: 22px;
+      min-height: 244px;
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(157, 70, 50, .46);
+      box-shadow: var(--shadow);
+    }
+
+    .card .no {
+      display: inline-block;
+      color: var(--red);
+      margin-bottom: 18px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .card p { color: var(--ink-2); margin: 12px 0 0; }
+
+    .score {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 10px;
+      align-items: center;
+      margin-top: 18px;
+      font-size: 13px;
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(36, 35, 31, .10);
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--green);
+      width: var(--value);
+    }
+
+    .segmented {
+      display: inline-grid;
+      grid-template-columns: repeat(4, minmax(96px, 1fr));
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(247, 245, 239, .62);
+      margin-top: 30px;
+      max-width: 100%;
+    }
+
+    .segmented button {
+      min-height: 42px;
+      border: 0;
+      border-radius: 6px;
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .segmented button.active {
+      color: var(--white);
+      background: var(--ink);
+    }
+
+    .path-panel {
+      display: none;
+      margin-top: 18px;
+      padding: 26px;
+    }
+
+    .path-panel.active { display: block; }
+    .path-panel h3 { font-size: 25px; }
+
+    .path-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .mini {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      min-height: 128px;
+    }
+
+    .mini b { color: var(--red); }
+    .mini p { margin: 8px 0 0; color: var(--ink-2); }
+
+    .agents {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .agent {
+      min-height: 220px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .agent:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--agent-color, var(--green));
+    }
+
+    .agent small {
+      display: block;
+      color: var(--red);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .agent p { margin: 10px 0 0; color: var(--ink-2); font-size: 15px; }
+
+    .flow {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .flow-step {
+      border: 1px solid var(--line);
+      background: rgba(247, 245, 239, .66);
+      border-radius: 8px;
+      min-height: 160px;
+      padding: 18px;
+      position: relative;
+    }
+
+    .flow-step:not(:last-child):after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      width: 16px;
+      height: 1px;
+      background: var(--line-strong);
+    }
+
+    .flow-step b { color: var(--red); }
+    .flow-step p { margin: 10px 0 0; color: var(--ink-2); font-size: 15px; }
+
+    .risk-grid, .gate-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .risk, .gate { padding: 22px; min-height: 176px; }
+    .risk h3, .gate h3 { display: flex; align-items: center; gap: 10px; }
+    .risk h3 span, .gate h3 span {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: var(--red);
+      border-radius: 50%;
+      font-size: 13px;
+      flex: 0 0 auto;
+    }
+
+    .risk p, .gate p { color: var(--ink-2); margin: 12px 0 0; }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 150px 1fr 210px;
+      gap: 18px;
+      align-items: start;
+      padding: 18px;
+    }
+
+    .timeline-item b { color: var(--red); }
+    .timeline-item p { margin: 0; color: var(--ink-2); }
+
+    .closure {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 34px;
+    }
+
+    .closure .card { min-height: 190px; }
+
+    .signature {
+      margin-top: 42px;
+      color: rgba(247, 245, 239, .62);
+      font-family: "Noto Serif TC", "PMingLiU", serif;
+      font-size: 18px;
+    }
+
+    .reveal {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 980px) {
+      .nav { display: none; }
+      .grid, .hero-meta, .metric-row, .decision-map, .path-grid, .agents, .flow, .risk-grid, .gate-grid, .closure {
+        grid-template-columns: 1fr;
+      }
+      .timeline-item { grid-template-columns: 1fr; }
+      .flow-step:not(:last-child):after { display: none; }
+      .segmented { grid-template-columns: 1fr; width: 100%; }
+      h1 { font-size: clamp(36px, 12vw, 52px); }
+      h2 { font-size: clamp(28px, 10vw, 42px); }
+      .verdict { grid-template-columns: 1fr; }
+      .verdict .tag { width: fit-content; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">PS</div>
+      <span>磐石 SaaS 開發分工與補助策略｜核心協作視覺版</span>
+    </div>
+    <nav class="nav" aria-label="頁面導覽">
+      <a href="#verdict">結論</a>
+      <a href="#paths">路徑</a>
+      <a href="#agents">分工</a>
+      <a href="#risks">風險</a>
+      <a href="#closure">閉環</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="scene dark" id="cover">
+      <div class="wrap reveal">
+        <p class="kicker">2026-06-17｜核心協作 v2.4｜IF.md v2.7 校正</p>
+        <h1>磐石 SaaS 不該被外包成別人的資料庫</h1>
+        <p class="lede">本次決策不是「外包或內製」二選一，而是要切出主權邊界：營運速度可以外借，資料主權、派工邏輯、3D 配模演算法與品牌敘事必須長在磐石自己身上。</p>
+        <div class="hero-meta">
+          <div class="meta-box"><span class="label">會議主題</span><strong>SaaS 系統開發分工與政府補助申請策略</strong></div>
+          <div class="meta-box"><span class="label">核心衝突</span><strong>速度與補助 vs 長期資料主權</strong></div>
+          <div class="meta-box"><span class="label">主推路線</span><strong>ERP 試營運 + 內部 SaaS + 外部底層協作</strong></div>
+          <div class="meta-box"><span class="label">第一檢核</span><strong>本週完成內部分工與文件清單</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="verdict">
+      <div class="wrap reveal">
+        <p class="kicker">01｜先結論</p>
+        <h2>採用混合路線：買速度，不賣主權</h2>
+        <p class="body">套裝 ERP 可以先跑營運，讓現場流程、打卡、進銷存、工人坪效先有資料回流。內部團隊負責第一線介面、3D 配模操作、ERP 經驗內化。洞察團隊只承接底層架構、演算法、資安、補助文件與後端規格，不取得磐石主資料庫與派工主控權。</p>
+        <div class="verdict">
+          <strong>AI 傾向：C 路線，外部做底層與補助，內部掌產品與資料，ERP 只當過渡驗證工具。</strong>
+          <span class="tag">建議定案方向</span>
+        </div>
+        <div class="decision-map">
+          <article class="card">
+            <span class="no">A｜全外包 SaaS</span>
+            <h3>快，但長期危險</h3>
+            <p>短期可拿補助、規格書漂亮，但資料庫、迭代節奏與演算法會被外部牽動。</p>
+            <div class="score"><span>速度</span><div class="bar"><span style="--value: 88%"></span></div></div>
+            <div class="score"><span>主權</span><div class="bar"><span style="--value: 28%"></span></div></div>
+          </article>
+          <article class="card">
+            <span class="no">B｜全內部自建</span>
+            <h3>健康，但太慢</h3>
+            <p>最符合長期演化，但第一線營運、補助文件與資安架構會拖慢啟動速度。</p>
+            <div class="score"><span>速度</span><div class="bar"><span style="--value: 42%"></span></div></div>
+            <div class="score"><span>主權</span><div class="bar"><span style="--value: 95%"></span></div></div>
+          </article>
+          <article class="card">
+            <span class="no">C｜混合路線</span>
+            <h3>最符合磐石階段</h3>
+            <p>ERP 買速度，內部掌產品，洞察補底層，補助文件同步成形。</p>
+            <div class="score"><span>速度</span><div class="bar"><span style="--value: 76%"></span></div></div>
+            <div class="score"><span>主權</span><div class="bar"><span style="--value: 82%"></span></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene cement" id="paths">
+      <div class="wrap reveal">
+        <p class="kicker">02｜路徑建議</p>
+        <h2>四條路徑，只有一條適合現在的磐石</h2>
+        <div class="segmented" role="tablist" aria-label="路徑切換">
+          <button class="active" data-path="mix">主推混合</button>
+          <button data-path="erp">ERP 過渡</button>
+          <button data-path="internal">內部自建</button>
+          <button data-path="outsource">全外包</button>
+        </div>
+
+        <article class="path-panel active" id="path-mix">
+          <h3>主推：ERP 先跑，磐石 SaaS 內化，洞察補底層</h3>
+          <div class="path-grid">
+            <div class="mini"><b>適用情境</b><p>需要快速營運、同步準備補助、又不能讓資料主權外流。</p></div>
+            <div class="mini"><b>關鍵條件</b><p>主資料庫歸磐石，外部只拿 API 與同步副本，補助文件不可把主體寫成供應商。</p></div>
+            <div class="mini"><b>第一步</b><p>Apple 本週定義內部 SaaS 模組，誠致列補助文件清單，洞察後續補架構圖。</p></div>
+          </div>
+        </article>
+
+        <article class="path-panel" id="path-erp">
+          <h3>ERP 過渡：15 萬買一個現場驗證場</h3>
+          <div class="path-grid">
+            <div class="mini"><b>適用情境</b><p>先確認公司流程是否真的能跑，不急著把全部 SaaS 一次寫完。</p></div>
+            <div class="mini"><b>關鍵條件</b><p>必須可匯出資料、可定義欄位、可接 API，否則 ERP 會變成第二個資料孤島。</p></div>
+            <div class="mini"><b>第一步</b><p>用一個案場或一個工種試跑，30 天後決定哪些流程移植到內部 SaaS。</p></div>
+          </div>
+        </article>
+
+        <article class="path-panel" id="path-internal">
+          <h3>內部自建：長期正確，但不能孤軍慢跑</h3>
+          <div class="path-grid">
+            <div class="mini"><b>適用情境</b><p>磐石要把 3D 配模、模主制度、派工權、施工回饋變成長期護城河。</p></div>
+            <div class="mini"><b>關鍵條件</b><p>需要明確 90 天 MVP，不可陷入「整套 SaaS 一次到位」。</p></div>
+            <div class="mini"><b>第一步</b><p>只做三件事：模板 ID、師傅回饋、配模施工圖與數量表回流。</p></div>
+          </div>
+        </article>
+
+        <article class="path-panel" id="path-outsource">
+          <h3>全外包：只有在合約主權完整時才可考慮</h3>
+          <div class="path-grid">
+            <div class="mini"><b>適用情境</b><p>外部公司願意明確交付原始碼、資料匯出、API、部署文件與演算法成果授權。</p></div>
+            <div class="mini"><b>關鍵條件</b><p>維護費、客製費、資料所有權、品牌案例權都要白紙黑字。</p></div>
+            <div class="mini"><b>第一步</b><p>未簽主權條款前，不進入正式開發，只允許做補助規格與技術顧問。</p></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="scene" id="agents">
+      <div class="wrap reveal">
+        <p class="kicker">03｜多 Agent 協作分工</p>
+        <h2>把外包問題拆成八個可控責任面</h2>
+        <div class="agents">
+          <article class="agent" style="--agent-color: var(--red)"><small>IF 決策 Agent</small><h3>主權裁決</h3><p>決定外部合作邊界，確保數據、派工、財務、品牌不失守。</p></article>
+          <article class="agent" style="--agent-color: var(--blue)"><small>SaaS 架構 Agent</small><h3>系統藍圖</h3><p>切分內部 SaaS、ERP、洞察後端與 GCP/PostgreSQL 的責任。</p></article>
+          <article class="agent" style="--agent-color: var(--green)"><small>數據主權 Agent</small><h3>SSOT 守門</h3><p>定義 NoSQL 與 PostgreSQL 的同步、備份、權限與主資料庫。</p></article>
+          <article class="agent" style="--agent-color: var(--gold)"><small>現場 UX Agent</small><h3>師傅介面</h3><p>設計師傅看圖、回報、拍照、缺陷碼與 3D 配模施工圖回饋。</p></article>
+          <article class="agent" style="--agent-color: var(--blue)"><small>ERP 整合 Agent</small><h3>快速營運</h3><p>用套裝 ERP 驗證流程，盤點欄位、匯出能力與內化價值。</p></article>
+          <article class="agent" style="--agent-color: var(--red)"><small>補助 PM Agent</small><h3>申請控管</h3><p>整理文件清單、送件主題、補助時程與審查合規性。</p></article>
+          <article class="agent" style="--agent-color: var(--green)"><small>洞察協作 Agent</small><h3>底層技術</h3><p>提供演算法、資安、API、雲端架構與補助用技術規格。</p></article>
+          <article class="agent" style="--agent-color: var(--gold)"><small>財務 ROI Agent</small><h3>成本效益</h3><p>比較補助、外包費、內部延誤成本與長期維護費。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene cement" id="flow">
+      <div class="wrap reveal">
+        <p class="kicker">04｜工作流</p>
+        <h2>從 CAD 到師傅回饋，必須形成資料閉環</h2>
+        <div class="flow">
+          <div class="flow-step"><b>01</b><h3>CAD 抓取</h3><p>由內部 3D 配模能力與工程圖資料建立初始模型。</p></div>
+          <div class="flow-step"><b>02</b><h3>AI 疊代</h3><p>洞察可協助演算法，但資料標準與成果歸磐石。</p></div>
+          <div class="flow-step"><b>03</b><h3>施工圖與數量表</h3><p>輸出師傅版配模施工圖、模板數量與模板 ID。</p></div>
+          <div class="flow-step"><b>04</b><h3>現場回饋</h3><p>師傅依圖施工，回傳照片、缺陷碼、耗時與坪效。</p></div>
+          <div class="flow-step"><b>05</b><h3>ERP / SaaS 回流</h3><p>工人打卡、模板 ID、施工進度與成本回到 SSOT。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="risks">
+      <div class="wrap reveal">
+        <p class="kicker">05｜風險與紅線</p>
+        <h2>本案最大風險不是花錢，是資料被拆散</h2>
+        <div class="risk-grid">
+          <article class="risk"><h3><span>1</span>NoSQL / PostgreSQL 分裂</h3><p>若沒有主資料庫與 ETL 規格，雲端、地端、ERP、SaaS 會各自說真話。控制方式：定義磐石 SSOT，外部資料庫只能是同步副本。</p></article>
+          <article class="risk"><h3><span>2</span>補助牽著產品走</h3><p>若為了補助題目過度客製，會把產品主線帶偏。控制方式：補助文件服務於磐石路線，不讓補助變成產品總設計師。</p></article>
+          <article class="risk"><h3><span>3</span>派工權外移</h3><p>ERP 或外部演算法若開始替平台決定派工，就踩到主權紅線。控制方式：AI 可建議，派工權留在磐石制度。</p></article>
+          <article class="risk"><h3><span>4</span>品牌敘事被供應商拿走</h3><p>補助案、Demo、架構圖若把主體寫成技術供應商，磐石會失去案例敘事權。控制方式：所有對外材料主詞是磐石系統模板平台。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene cement" id="timeline">
+      <div class="wrap reveal">
+        <p class="kicker">06｜時程與責任</p>
+        <h2>先把本週的邊界畫清楚，才讓外部開始報價</h2>
+        <div class="timeline">
+          <div class="timeline-item"><b>24 小時內</b><p>誠致顧問陳志</p><p>列出補助所需文件清單：架構圖、模型說明、規格書、預算表。</p></div>
+          <div class="timeline-item"><b>本週內</b><p>陳總 + Apple</p><p>完成內部會議，盤點 SaaS 前後端、ERP 試用範圍與不可外包項目。</p></div>
+          <div class="timeline-item"><b>7 天內</b><p>Apple + 洞察技術長</p><p>定義 NoSQL / PostgreSQL 同步、API、備份與權限規格。</p></div>
+          <div class="timeline-item"><b>14 天內</b><p>洞察團隊</p><p>提供後端系統規劃、報價單、補助用系統企劃書與底層架構圖。</p></div>
+          <div class="timeline-item"><b>30 天內</b><p>補助 PM Agent</p><p>決定第一案送件題目，建議優先以 3D 模板數量與智慧施工 RFID 整合切入。</p></div>
+          <div class="timeline-item"><b>60 至 90 天</b><p>內部團隊 + 現場</p><p>完成 ERP 試營運回顧，決定哪些流程內化到磐石 SaaS。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="closure">
+      <div class="wrap reveal">
+        <p class="kicker">07｜Gate 與閉環</p>
+        <h2>每一輪都要有可交付物，不靠會議感覺推進</h2>
+        <div class="gate-grid">
+          <article class="gate"><h3><span>A</span>主權 Gate</h3><p>外部不得掌握主資料庫、派工規則、品牌敘事與不可替代的核心演算法。</p></article>
+          <article class="gate"><h3><span>B</span>ERP Gate</h3><p>套裝 ERP 必須可匯出、可接 API、可定義模板 ID 與工人紀錄欄位。</p></article>
+          <article class="gate"><h3><span>C</span>補助 Gate</h3><p>架構圖、模型說明、規格書、報價單、可行性說明齊備才進入送件。</p></article>
+          <article class="gate"><h3><span>D</span>內化 Gate</h3><p>ERP 試營運資料必須轉成磐石 SaaS 欄位、流程與產品待辦。</p></article>
+        </div>
+        <div class="closure">
+          <article class="card">
+            <span class="no">強制收斂主張</span>
+            <h3>採用混合路線</h3>
+            <p>短期 ERP 買營運速度，中期內部 SaaS 掌主權，外部洞察承接底層演算法、資安與補助文件。</p>
+          </article>
+          <article class="card">
+            <span class="no">唯一反轉條件</span>
+            <h3>全外包必須先簽主權條款</h3>
+            <p>除非外部公司承諾原始碼、全量資料匯出、部署文件、API、演算法成果使用權與合理維護費，否則不建議全外包。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene dark">
+      <div class="wrap reveal">
+        <p class="kicker">Closing Mission</p>
+        <h2>磐石要建立的是營建業 OS，不是買一套表單系統</h2>
+        <p class="lede">補助是燃料，ERP 是過渡工具，洞察是底層協力者。真正的主體是磐石自己的資料、流程、現場回饋、模主制度與可持續演化的 SaaS 核心。</p>
+        <div class="signature">CHEN YI-FU STRATEGIC OPERATING PAGE</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const revealTargets = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.18 });
+    revealTargets.forEach((target) => observer.observe(target));
+
+    const pathButtons = document.querySelectorAll("[data-path]");
+    const panels = {
+      mix: document.getElementById("path-mix"),
+      erp: document.getElementById("path-erp"),
+      internal: document.getElementById("path-internal"),
+      outsource: document.getElementById("path-outsource")
+    };
+
+    pathButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        pathButtons.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        Object.values(panels).forEach((panel) => panel.classList.remove("active"));
+        panels[button.dataset.path].classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
