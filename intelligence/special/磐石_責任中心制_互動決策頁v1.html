@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>磐石責任中心制｜互動決策頁</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --concrete:#E9E7E1; --cement:#D2CFC7; --struct:#9A968D;
+  --ink:#26261F; --ink-deep:#1A1A16; --vermilion:#9E4A33;
+  --white-soft:#F5F3EE; --text-body:#3A3A33;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;color:var(--text-body);background:var(--concrete);line-height:1.7;-webkit-font-smoothing:antialiased}
+.serif{font-family:'Noto Serif TC',serif}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--vermilion);width:0;z-index:100;transition:width .1s}
+#dots{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:14px}
+#dots a{width:9px;height:9px;border-radius:50%;background:var(--struct);opacity:.45;transition:all .3s}
+#dots a.active{opacity:1;background:var(--vermilion);transform:scale(1.35)}
+.scene{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8vh 9vw;position:relative;overflow:hidden}
+.scene--dark{background:var(--ink-deep);color:var(--white-soft)}
+.scene--light{background:var(--concrete)}
+.scene--cement{background:var(--cement)}
+.idx{position:absolute;top:5vh;left:9vw;display:flex;align-items:center;gap:10px;font-size:.72rem;letter-spacing:.22em;color:var(--struct)}
+.idx::before{content:'';width:11px;height:11px;background:var(--vermilion);display:inline-block}
+.pageno{position:absolute;bottom:5vh;right:9vw;font-size:.7rem;letter-spacing:.18em;color:var(--struct)}
+.scene--dark .pageno,.scene--dark .idx{color:#7d7a70}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.reveal.in{opacity:1;transform:none}
+.kicker{font-size:.78rem;letter-spacing:.28em;color:var(--struct);text-transform:uppercase;margin-bottom:1.8rem}
+.scene--dark .kicker{color:var(--vermilion)}
+h1.cover{font-family:'Noto Serif TC',serif;font-weight:500;font-size:clamp(2.4rem,6.2vw,4.6rem);line-height:1.25;color:var(--white-soft)}
+h2{font-family:'Noto Serif TC',serif;font-weight:500;font-size:clamp(1.9rem,4.6vw,3.1rem);line-height:1.3;color:var(--ink);max-width:20em}
+.scene--dark h2{color:var(--white-soft)}
+.lede{font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(1.05rem,1.8vw,1.3rem);line-height:1.9;max-width:36em;margin-top:1.6rem;color:var(--text-body)}
+.scene--dark .lede{color:#c9c6bd}
+.bignum{font-weight:300;font-size:clamp(3rem,11vw,7rem);color:var(--vermilion);line-height:1;letter-spacing:-.02em}
+.note{font-size:.82rem;color:var(--struct);margin-top:1.4rem;letter-spacing:.04em}
+.vermilion{color:var(--vermilion)}
+.signature{margin-top:3rem;font-size:.8rem;letter-spacing:.3em;color:var(--struct)}
+.signature b{display:block;font-family:'Noto Serif TC',serif;font-size:1.6rem;letter-spacing:.12em;font-weight:500;color:var(--white-soft);margin-bottom:.4rem}
+/* 漏斗 */
+.funnel{display:flex;flex-direction:column;gap:.5rem;margin-top:2.5rem;max-width:48em}
+.fstep{display:flex;align-items:center;gap:1.5rem;padding:1.2rem 1.8rem;background:var(--cement);border-left:3px solid var(--vermilion);border-radius:2px}
+.fstep .fn{font-size:.72rem;letter-spacing:.18em;color:var(--vermilion);min-width:3em}
+.fstep h3{font-size:1.1rem;font-weight:500;color:var(--ink);margin-bottom:.2rem}
+.fstep p{font-size:.85rem;color:var(--text-body)}
+.fstep:nth-child(1){width:100%}.fstep:nth-child(2){width:88%}.fstep:nth-child(3){width:76%}.fstep:nth-child(4){width:64%}
+/* 三中心交互（同心圓 Venn） */
+.venn{margin-top:2rem;display:flex;justify-content:flex-start}
+.venn svg{max-width:560px;width:100%;height:auto;display:block}
+/* 三中心（舊並列卡片，保留樣式以防他用） */
+.centers{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;max-width:62em}
+.ccard{background:var(--cement);padding:1.8rem;border-radius:2px;border-top:2px solid var(--struct)}
+.ccard.hero{border-top-color:var(--vermilion)}
+.ccard .ct{font-size:.78rem;letter-spacing:.12em;color:var(--struct);margin-bottom:.6rem}
+.ccard h3{font-size:1.3rem;font-weight:500;color:var(--ink);margin-bottom:.8rem}
+.ccard p{font-size:.86rem;color:var(--text-body);line-height:1.7}
+/* 引擎切換 */
+.toggle{display:flex;gap:0;margin:2.5rem 0 2rem;border:1px solid var(--struct);width:fit-content;border-radius:2px;overflow:hidden;flex-wrap:wrap}
+.toggle button{font-family:inherit;font-size:.9rem;padding:.7rem 1.4rem;background:transparent;border:none;color:var(--struct);cursor:pointer;letter-spacing:.04em;transition:all .25s}
+.toggle button.active{background:var(--vermilion);color:var(--white-soft)}
+.enginebody{max-width:52em}
+.erow{display:flex;justify-content:space-between;padding:1rem 0;border-bottom:1px solid var(--cement);font-size:1rem;gap:2rem}
+.erow span:first-child{color:var(--struct);min-width:8em}
+.erow span:last-child{font-weight:500;color:var(--ink);text-align:right}
+.verdict{margin-top:1.8rem;padding:1.2rem 1.5rem;background:var(--cement);border-left:3px solid var(--vermilion);font-size:.95rem;line-height:1.7;max-width:50em}
+/* 主權表 */
+.sov{margin-top:2.5rem;max-width:60em;border-collapse:collapse;width:100%}
+.sov th,.sov td{text-align:left;padding:.9rem 1.1rem;border-bottom:1px solid var(--cement);font-size:.92rem}
+.sov th{color:var(--vermilion);font-weight:500;letter-spacing:.06em;font-size:.8rem}
+.sov td:first-child{font-weight:500;color:var(--ink)}
+.sov .risk-hi{color:var(--vermilion);font-weight:500}
+/* 晉升雙閘門 */
+.verdict--core{margin-top:1.6rem;background:var(--white-soft);border-left-width:4px}
+.gates{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:2rem;max-width:60em}
+.gate{background:var(--white-soft);padding:1.5rem 1.6rem;border-radius:2px;border-top:3px solid var(--vermilion)}
+.gate .gn{font-size:.72rem;letter-spacing:.2em;color:var(--vermilion);margin-bottom:.5rem}
+.gate h3{font-size:1.15rem;font-weight:500;color:var(--ink);margin-bottom:.8rem}
+.gate ul{list-style:none;font-size:.85rem;line-height:1.85}
+.gate li{padding-left:1.1em;position:relative;margin-bottom:.15rem}
+.gate li::before{content:'—';position:absolute;left:0;color:var(--vermilion)}
+.gate li b{color:var(--ink)}
+.gate-and{text-align:center;font-family:'Noto Serif TC',serif;font-size:1.05rem;color:var(--ink);margin:1.2rem 0 .4rem;letter-spacing:.04em;max-width:60em}
+/* 兩階段 */
+.stages{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.5rem;max-width:60em}
+.stage{background:var(--cement);padding:1.8rem;border-radius:2px}
+.stage.s2{background:#2a2a23;color:var(--white-soft)}
+.stage .sn{font-size:.72rem;letter-spacing:.2em;color:var(--vermilion);margin-bottom:.6rem}
+.stage h3{font-size:1.25rem;font-weight:500;margin-bottom:1rem;color:var(--ink)}
+.stage.s2 h3{color:var(--white-soft)}
+.stage ul{list-style:none;font-size:.86rem;line-height:1.9}
+.stage li{padding-left:1.1em;position:relative}
+.stage li::before{content:'—';position:absolute;left:0;color:var(--vermilion)}
+/* 四共法則 */
+.lawtabs{display:flex;gap:1rem;margin:2.5rem 0 2rem;flex-wrap:wrap}
+.lawtabs button{font-family:inherit;background:transparent;border:1px solid #44443a;color:#8a877d;padding:.55rem 1.1rem;cursor:pointer;font-size:.85rem;letter-spacing:.08em;border-radius:2px;transition:all .25s}
+.lawtabs button.active{border-color:var(--vermilion);color:var(--white-soft)}
+.lawpanel{max-width:44em;min-height:180px}
+.lawpanel .lnum{font-weight:300;font-size:clamp(2.6rem,7vw,4.5rem);color:var(--vermilion);line-height:1}
+.lawpanel .len{font-size:.78rem;letter-spacing:.26em;color:var(--struct);margin:.6rem 0 .3rem}
+.lawpanel .lzh{font-family:'Noto Serif TC',serif;font-size:1.7rem;color:var(--white-soft);margin-bottom:1rem}
+.lawpanel .ldesc{font-size:.98rem;line-height:1.85;color:#c9c6bd}
+/* 紅線 */
+.risklist{max-width:54em;margin-top:2rem}
+.riskitem{display:flex;gap:1.2rem;padding:1.2rem 0;border-bottom:1px solid var(--cement)}
+.riskitem .tag{flex-shrink:0;font-size:.72rem;letter-spacing:.1em;padding:.3rem .7rem;height:fit-content;border-radius:2px;background:var(--vermilion);color:var(--white-soft)}
+.riskitem .tag.law{background:var(--ink);color:var(--white-soft)}
+.riskitem .txt{font-size:.94rem;line-height:1.7}
+.riskitem .txt b{color:var(--ink)}
+@media(max-width:760px){
+  .centers,.stages,.gates{grid-template-columns:1fr}
+  .scene{padding:10vh 7vw}
+  #dots{display:none}
+  .fstep{width:100%!important}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<nav id="dots"></nav>
+
+<!-- 01 封面 -->
+<section class="scene scene--dark" id="s1">
+  <div class="idx">RESPONSIBILITY CENTER</div>
+  <div class="reveal">
+    <div class="kicker">磐石智慧系統 ・ 責任中心制辦法 v1.0</div>
+    <h1 class="cover">把傳統木模主，<br>變成磐石的<span class="vermilion">資本階級</span>。</h1>
+    <p class="lede">這套制度賺的不是模板差價，是「管理財」——用制度、ERP、3D AI 配圖，把沒制度的木模主養強。他變強、賺更多，就離不開你。</p>
+    <div class="signature"><b>CHEN YI-FU</b>磐石智慧系統股份有限公司 ・ 2026</div>
+  </div>
+  <div class="pageno">01 / 09</div>
+</section>
+
+<!-- 02 賺管理財 -->
+<section class="scene scene--dark" id="s2">
+  <div class="idx">核心洞察</div>
+  <div class="reveal">
+    <div class="kicker">這個行業賺什麼</div>
+    <h2>磐石不賣模板差價，<br>賣的是「讓人變強的系統」。</h2>
+    <p class="lede">制度培訓＋ERP 管理＋3D AI 配圖。同樣的工，加入磐石後做得更快、更穩、更賺——這中間多出來的錢，就是<span class="vermilion">管理溢價</span>。當一個人靠你的系統賺得比以前多，他就不想走了。這就是真正的護城河。</p>
+  </div>
+  <div class="pageno">02 / 09</div>
+</section>
+
+<!-- 03 人才漏斗 -->
+<section class="scene scene--light" id="s3">
+  <div class="idx">人才升級漏斗</div>
+  <div class="reveal">
+    <div class="kicker">這套制度的主軸</div>
+    <h2>一條漏斗，不是三個並列職位。</h2>
+    <div class="funnel">
+      <div class="fstep"><span class="fn">① 進場</span><div><h3>傳統木模主加入</h3><p>穩定底薪＋學制度 ・ 模主制度（成本中心）</p></div></div>
+      <div class="fstep"><span class="fn">② 養強</span><div><h3>認證 / 區域模主</h3><p>效率分潤，越強越賺 ・ 模主制度（成本中心）</p></div></div>
+      <div class="fstep"><span class="fn">③ 升業務</span><div><h3>工程顧問</h3><p>案件 KPI＋季度 OKR ・ 工程顧問制度（收益中心）</p></div></div>
+      <div class="fstep"><span class="fn">④ 當老闆</span><div><h3>責任中心夥伴 / 分公司</h3><p>分公司分潤＋股權 ・ 本辦法（責任中心制）</p></div></div>
+    </div>
+    <p class="note">先打造模主平台（①②）是地基。責任中心制是漏斗終點，不是起點——只有內部養成、證明過自己的人，才有資格開分公司。</p>
+  </div>
+  <div class="pageno">03 / 09</div>
+</section>
+
+<!-- 04 三中心交互於磐石平台 -->
+<section class="scene scene--light" id="s4">
+  <div class="idx">組織架構</div>
+  <div class="reveal">
+    <div class="kicker">董事長手繪架構</div>
+    <h2>磐石居中，三中心交互圍繞。</h2>
+    <div class="venn">
+      <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三同心圓交互於磐石平台">
+        <!-- 三個交互圓：朱赭／struct 半透明，重疊處顏色加深呈現交互 -->
+        <!-- 上方圓：模主制度（成本中心） -->
+        <circle cx="300" cy="168" r="150" fill="#9E4A33" fill-opacity="0.20" stroke="#9E4A33" stroke-opacity="0.45" stroke-width="1.5"/>
+        <!-- 右方圓：工程顧問（收益中心） -->
+        <circle cx="392" cy="300" r="150" fill="#9A968D" fill-opacity="0.22" stroke="#9A968D" stroke-opacity="0.5" stroke-width="1.5"/>
+        <!-- 左下圓：磐石 BU（責任中心） -->
+        <circle cx="208" cy="300" r="150" fill="#9E4A33" fill-opacity="0.18" stroke="#9E4A33" stroke-opacity="0.4" stroke-width="1.5"/>
+
+        <!-- 中央磐石圓（平台中樞）：較深的 ink/vermilion 描邊強調 -->
+        <circle cx="300" cy="256" r="74" fill="#F5F3EE" fill-opacity="0.92" stroke="#26261F" stroke-width="2.4"/>
+        <circle cx="300" cy="256" r="74" fill="none" stroke="#9E4A33" stroke-width="1" stroke-opacity="0.8" stroke-dasharray="3 4"/>
+
+        <!-- 上方圓標籤 -->
+        <text x="300" y="92" text-anchor="middle" font-family="'Noto Serif TC',serif" font-size="24" fill="#26261F" font-weight="500">模主制度</text>
+        <text x="300" y="116" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="13" letter-spacing="1.5" fill="#9E4A33">成本中心</text>
+
+        <!-- 右方圓標籤 -->
+        <text x="452" y="356" text-anchor="middle" font-family="'Noto Serif TC',serif" font-size="24" fill="#26261F" font-weight="500">工程顧問</text>
+        <text x="452" y="380" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="13" letter-spacing="1.5" fill="#6c6a60">收益中心</text>
+
+        <!-- 左下圓標籤 -->
+        <text x="148" y="356" text-anchor="middle" font-family="'Noto Serif TC',serif" font-size="24" fill="#26261F" font-weight="500">磐石 BU</text>
+        <text x="148" y="380" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="13" letter-spacing="1.5" fill="#9E4A33">責任中心</text>
+
+        <!-- 中央磐石 -->
+        <text x="300" y="250" text-anchor="middle" font-family="'Noto Serif TC',serif" font-size="30" fill="#9E4A33" font-weight="600">磐石</text>
+        <text x="300" y="278" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="12" letter-spacing="2" fill="#26261F">平台中樞</text>
+      </svg>
+    </div>
+    <p class="lede">三中心並非各據一方，而是<span class="vermilion">交互重疊、共用磐石平台這個中樞</span>——制度、ERP、3D AI 配圖在中央流通，重疊處才是真正創造管理財的地方。縱向看，人才沿著漏斗向上流動：成本中心養強 → 升收益中心 → 證明過自己才進責任中心開分公司；橫向看，三中心同時並列、彼此咬合，共同支撐同一個平台。</p>
+    <p class="note">封建定位：巨禾控股＝皇室／資產庫；磐石平台＝朝廷／制度中樞；各地分公司＝軍團／封地。BU 不是分店，是地方軍團司令部。</p>
+  </div>
+  <div class="pageno">04 / 09</div>
+</section>
+
+<!-- 05 三引擎切換 -->
+<section class="scene scene--light" id="s5">
+  <div class="idx">三條收入引擎</div>
+  <div class="reveal">
+    <div class="kicker">必須分開記帳</div>
+    <h2>三條引擎，性質不同，會計上切開。</h2>
+    <div class="toggle" id="engToggle">
+      <button data-e="A" class="active">① 管理財／授權</button>
+      <button data-e="B">② 模板供應</button>
+      <button data-e="C">③ SaaS 訂閱</button>
+    </div>
+    <div class="enginebody" id="engineBody"></div>
+    <div class="verdict" id="engineVerdict"></div>
+  </div>
+  <div class="pageno">05 / 09</div>
+</section>
+
+<!-- 06 兩階段 + 晉升雙閘門 -->
+<section class="scene scene--cement" id="s6">
+  <div class="idx">兩階段路徑</div>
+  <div class="reveal">
+    <div class="kicker">人才認證 × 財務數據 → 達標升級</div>
+    <h2>升分公司不只看數字，<br>先過人才認證雙閘門。</h2>
+    <div class="verdict verdict--core">
+      磐石的核心不是收加盟，是「<span class="vermilion">持續培育優秀人才</span>」——內部養成（傳統木模主 → 認證模主 → 工程顧問 → 開分公司）是主路徑，比衝加盟數更重要。雙閘門的人才認證關（L4／L2），就是把「培育」寫進晉升硬規則裡。
+    </div>
+
+    <div class="gates">
+      <div class="gate">
+        <div class="gn">閘門一</div><h3>人才認證（硬性資格）</h3>
+        <ul>
+          <li>升合資子公司／開分公司前，該責任中心團隊必須<b>集體達標</b></li>
+          <li>團隊中至少一人通過「模主制度 <b>L4 等級</b>」認證</li>
+          <li>至少一位工程顧問通過「<b>L2 等級</b>」認證</li>
+          <li>硬性資格——未過不得升級，數字再漂亮也不行</li>
+        </ul>
+      </div>
+      <div class="gate">
+        <div class="gn">閘門二</div><h3>財務數據（系統自動量測）</h3>
+        <ul>
+          <li>年營收貢獻達標（比照 <b>5,000 萬</b>量級）</li>
+          <li>毛利率 ≥ 平台標準</li>
+          <li>工期準時率 ≥ <b>95%</b></li>
+          <li>數據回填完整度達標</li>
+          <li>零重大制度違規</li>
+        </ul>
+      </div>
+    </div>
+    <p class="gate-and">閘門一 <span class="vermilion">＋</span> 閘門二 必須「<span class="vermilion">同時</span>」通過才升級。</p>
+
+    <div class="stages">
+      <div class="stage">
+        <div class="sn">階段一</div><h3>加盟授權夥伴</h3>
+        <ul>
+          <li>獨立法人，不進合併報表</li>
+          <li>收三筆：加盟金＋模板租賃＋SaaS</li>
+          <li>控制權零稀釋</li>
+          <li>磐石提供品牌、3D AI 配圖、SOP、模板、系統</li>
+          <li>外部加盟（輔）路徑仍保留，但非主路徑</li>
+        </ul>
+      </div>
+      <div class="stage s2">
+        <div class="sn">階段二</div><h3>合資子公司</h3>
+        <ul>
+          <li>須同時通過<b>雙閘門</b>（人才認證 L4／L2＋財務數據）才升級</li>
+          <li>磐石以模板現物折股持 51%、夥伴現金 49%</li>
+          <li>納合併報表、衝營業額</li>
+          <li>走 cost-plus 移轉訂價</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">升級門檻（閘門二）必須系統自動量測、不可人為調整——因為升級時點＝合併報表變動時點，門檻可操弄會被上市審查質疑刻意美化財報。</p>
+  </div>
+  <div class="pageno">06 / 09</div>
+</section>
+
+<!-- 07 五大主權 -->
+<section class="scene scene--light" id="s7">
+  <div class="idx">五大主權</div>
+  <div class="reveal">
+    <div class="kicker">對齊十年地圖與董事長手繪</div>
+    <h2>品牌・模主制度・派工・財務・數據。</h2>
+    <table class="sov">
+      <thead><tr><th>主權（手繪序）</th><th>法律載體</th><th>資本衝突風險</th><th>防禦方式</th></tr></thead>
+      <tbody>
+        <tr><td>① 品牌權</td><td>商標</td><td>中</td><td>巨禾持有</td></tr>
+        <tr><td>② 模主制度權</td><td>平台規章</td><td>高</td><td>授權＋章程</td></tr>
+        <tr><td>③ 派工權</td><td>SaaS 系統</td><td class="risk-hi">極高</td><td>API 封裝（核心層不落地）</td></tr>
+        <tr><td>④ 財務權</td><td>金流系統</td><td class="risk-hi">極高</td><td>集中結算</td></tr>
+        <tr><td>⑤ 數據權</td><td>資料庫</td><td class="risk-hi">極高</td><td>控股公司</td></tr>
+      </tbody>
+    </table>
+    <p class="note">行使力度分兩軌：對內部受控模主／分公司可強制；對外部獨立法人夥伴，「計價」「派工」改建議／媒合，去除限制競爭（RPM）外觀。</p>
+  </div>
+  <div class="pageno">07 / 09</div>
+</section>
+
+<!-- 08 四共法則 -->
+<section class="scene scene--dark" id="s8">
+  <div class="idx">組織 DNA</div>
+  <div class="reveal">
+    <div class="kicker">這套制度，仍受四共法則約束</div>
+    <h2>讓盤子可以長久轉下去。</h2>
+    <div class="lawtabs" id="lawtabs"></div>
+    <div class="lawpanel" id="lawpanel"></div>
+  </div>
+  <div class="pageno">08 / 09</div>
+</section>
+
+<!-- 09 紅線結尾 -->
+<section class="scene scene--dark" id="s9">
+  <div class="idx">必守紅線</div>
+  <div class="reveal">
+    <div class="kicker">送律師＋會計師前自查</div>
+    <h2>共榮・共贏・共好，<br>但盤子始終由磐石掌舵。</h2>
+    <div class="risklist">
+      <div class="riskitem"><span class="tag">控制權</span><div class="txt"><b>外部夥伴永不持磐石總部股權</b>，只持分公司 49%。守巨禾 60%、五大主權不下放。</div></div>
+      <div class="riskitem"><span class="tag law">會計</span><div class="txt"><b>Buy-back 寫 call option</b>（磐石有權買回），守住 49% 是權益不是負債。</div></div>
+      <div class="riskitem"><span class="tag law">法律</span><div class="txt"><b>SaaS 定位「技術整合環境」</b>，保留陽春版選項，避公平交易法搭售。</div></div>
+      <div class="riskitem"><span class="tag law">稅務</span><div class="txt"><b>模板鑑價、租賃、cost-plus 移轉訂價三位一體</b>，數字自洽，否則國稅局＋券商雙打。</div></div>
+    </div>
+    <div class="signature"><b>CHEN YI-FU</b>估值給市場，股權讓一些，制度與主權，一寸不讓。</div>
+  </div>
+  <div class="pageno">09 / 09</div>
+</section>
+
+<script>
+// 四共法則 SSOT（從 if-ps-html skill 取，不改寫）
+const LAWS=[
+ {num:"01",zh:"現場為王",en:"GROUND TRUTH FIRST",desc:"所有決策回到工地驗證。辦公室的 PPT 不算數，工地的數據才算數。每天回報的工地數據——才是磐石最重要的資產。"},
+ {num:"02",zh:"系統大於英雄",en:"SYSTEM OVER HEROES",desc:"一個人解決十個問題，不如一個系統防止一個問題再發生。我們不怕犯錯，我們怕的是同樣的錯讓下一個人重踩。"},
+ {num:"03",zh:"共好利他",en:"WIN TOGETHER",desc:"合作對象賺錢，磐石才賺錢。業主、模主、工班都有合理利潤空間——這是共好，不是讓利，是讓盤子可以長久轉下去。"},
+ {num:"04",zh:"誠實比聰明重要",en:"TRUTH OVER SPIN",desc:"壞消息愈早講愈好。對上、對下、對客戶都一樣。公司不要只報喜不報憂——一個問題提出來，就是大家一起進步的機會。"}
+];
+// 三引擎
+const ENGINES={
+ A:{rows:[["收什麼","加盟金、品牌授權金、管理顧問費"],["性質","權利金／服務收入"],["怎麼認列","IFRS 15 履約期間分期遞延"],["關係人交易","管理顧問費須有服務交付證據鏈"]],
+    verdict:"管理財是核心引擎。加盟金按 IFRS 15 遞延（壓低當期 EPS，但創新板不看 EPS）。管理顧問費＝關係人交易，須提早 2–3 年布局移轉訂價依據。"},
+ B:{rows:[["收什麼","模板租賃費（階段一）／現物折股（階段二）"],["性質","租賃／出資"],["怎麼認列","同一份移轉訂價報告橋接兩階段"],["會計鐵律","租賃隱含價值與折股鑑價必須自洽"]],
+    verdict:"同一套模板，階段一收租賃、階段二做現物折股，兩個價必須用同一套估值假設橋接。否則國稅局查移轉訂價、券商查鑑價合理性，會同時打你。"},
+ C:{rows:[["收什麼","ERP＋3D AI 配圖系統訂閱費"],["性質","經常性收入（ARR）"],["怎麼認列","平台 take rate，估值核心"],["法律定位","技術整合環境，非強制搭售（避公平法）"]],
+    verdict:"SaaS 是數據入口與估值王牌。每個夥伴＝一個數據節點，多 Agent 協作的神經中樞。估值敘事：工程營收＝平台 GMV，SaaS＋抽成＝take rate，把 ARR 單獨拉出來當估值錨。"}
+};
+function renderEngine(e){
+ const d=ENGINES[e];
+ document.getElementById('engineBody').innerHTML=d.rows.map(r=>`<div class="erow"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
+ document.getElementById('engineVerdict').textContent=d.verdict;
+}
+document.querySelectorAll('#engToggle button').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('#engToggle button').forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');renderEngine(b.dataset.e);
+}));
+renderEngine('A');
+// 四共法則 tabs
+const tabs=document.getElementById('lawtabs'),panel=document.getElementById('lawpanel');
+LAWS.forEach((l,i)=>{const btn=document.createElement('button');btn.textContent=l.num+' '+l.zh;
+ btn.addEventListener('click',()=>{document.querySelectorAll('#lawtabs button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');renderLaw(i);});
+ if(i===0)btn.classList.add('active');tabs.appendChild(btn);});
+function renderLaw(i){const l=LAWS[i];panel.innerHTML=`<div class="lnum">${l.num}</div><div class="len">${l.en}</div><div class="lzh">${l.zh}</div><div class="ldesc">${l.desc}</div>`;}
+renderLaw(0);
+// 進場
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+// dots
+const secs=[...document.querySelectorAll('.scene')];
+const dots=document.getElementById('dots');
+secs.forEach(s=>{const a=document.createElement('a');a.href='#'+s.id;dots.appendChild(a);});
+const dotEls=[...dots.children];
+function onScroll(){
+ const h=document.documentElement;
+ const sc=h.scrollTop/(h.scrollHeight-h.clientHeight);
+ document.getElementById('progress').style.width=(sc*100)+'%';
+ let cur=0;secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<=window.innerHeight*0.5)cur=i;});
+ dotEls.forEach((d,i)=>d.classList.toggle('active',i===cur));
+}
+window.addEventListener('scroll',onScroll);onScroll();
+</script>
+</body>
+</html>
