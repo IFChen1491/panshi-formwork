@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>磐石智慧系統｜模板平台簡介</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --concrete:#E9E7E1; --cement:#D2CFC7; --struct:#9A968D;
+  --ink:#26261F; --ink-deep:#1A1A16; --vermilion:#9E4A33;
+  --white-soft:#F5F3EE; --text-body:#3A3A33; --gold:#B08D57;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;color:var(--text-body);background:var(--concrete);line-height:1.8;-webkit-font-smoothing:antialiased}
+.serif{font-family:'Noto Serif TC',serif}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--vermilion);width:0;z-index:100;transition:width .1s}
+#dots{position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:12px}
+#dots a{width:9px;height:9px;border-radius:50%;background:var(--struct);opacity:.4;transition:all .3s;display:block}
+#dots a.active{opacity:1;background:var(--vermilion);transform:scale(1.35)}
+.scene{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8vh 9vw;position:relative;overflow:hidden}
+.scene--dark{background:var(--ink-deep);color:var(--white-soft)}
+.scene--dark::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(120% 90% at 18% 88%, rgba(0,0,0,.55), transparent 60%),
+  linear-gradient(135deg,#23231d 0%,#1a1a16 55%,#14140f 100%);opacity:1;z-index:0}
+.scene--dark>*{position:relative;z-index:1}
+.scene--light{background:var(--concrete)}
+.scene--cement{background:var(--cement)}
+.idx{position:absolute;top:5vh;left:9vw;display:flex;align-items:center;gap:10px;font-size:.72rem;letter-spacing:.24em;color:var(--struct);z-index:2}
+.idx::before{content:'';width:11px;height:11px;background:var(--vermilion);display:inline-block}
+.pageno{position:absolute;bottom:5vh;right:9vw;font-size:.7rem;letter-spacing:.18em;color:var(--struct);z-index:2}
+.scene--dark .pageno,.scene--dark .idx{color:#8a877d}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 1s ease,transform 1s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.12s}.reveal[data-d="2"]{transition-delay:.24s}.reveal[data-d="3"]{transition-delay:.36s}
+.kicker{font-size:.78rem;letter-spacing:.3em;color:var(--struct);text-transform:uppercase;margin-bottom:1.8rem}
+.scene--dark .kicker{color:var(--vermilion)}
+h1.cover{font-family:'Noto Serif TC',serif;font-weight:500;font-size:clamp(2.4rem,6vw,4.4rem);line-height:1.26;color:var(--white-soft)}
+h2{font-family:'Noto Serif TC',serif;font-weight:500;font-size:clamp(1.9rem,4.4vw,3.2rem);line-height:1.3;color:var(--ink);max-width:20em}
+.scene--dark h2{color:var(--white-soft)}
+h2.sans{font-family:'Noto Sans TC',sans-serif;font-weight:500;font-size:clamp(1.5rem,3.4vw,2.4rem)}
+.lede{font-family:'Noto Serif TC',serif;font-weight:400;font-size:clamp(1.05rem,1.8vw,1.3rem);line-height:1.95;max-width:37em;margin-top:1.6rem;color:var(--text-body)}
+.scene--dark .lede{color:#c9c6bd}
+.bignum{font-weight:300;font-size:clamp(3rem,11vw,7rem);color:var(--vermilion);line-height:1;letter-spacing:-.02em}
+.note{font-size:.82rem;color:var(--struct);margin-top:1.4rem;letter-spacing:.03em;max-width:48em}
+.vermilion{color:var(--vermilion)}
+.gold{color:var(--gold)}
+.signature{margin-top:3rem;font-size:.8rem;letter-spacing:.3em;color:var(--struct)}
+.signature b{display:block;font-family:'Noto Serif TC',serif;font-size:1.6rem;letter-spacing:.12em;font-weight:500;color:var(--white-soft);margin-bottom:.4rem}
+svg{display:block}
+.figwrap{margin-top:2.2rem;max-width:62em}
+/* 三句定性 */
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2.4rem;max-width:62em}
+.tricard{background:rgba(255,255,255,.04);border:1px solid #33332b;padding:1.5rem;border-radius:3px}
+.tricard .n{font-size:.74rem;letter-spacing:.2em;color:var(--vermilion);margin-bottom:.7rem}
+.tricard h3{font-family:'Noto Serif TC',serif;font-size:1.35rem;font-weight:500;color:var(--white-soft);margin-bottom:.6rem;line-height:1.4}
+.tricard p{font-size:.86rem;color:#bdbab1;line-height:1.7}
+/* 估值情境切換 */
+.toggle{display:flex;margin:2.2rem 0 1.6rem;border:1px solid var(--struct);width:fit-content;border-radius:3px;overflow:hidden;flex-wrap:wrap}
+.toggle button{font-family:inherit;font-size:.9rem;padding:.7rem 1.5rem;background:transparent;border:none;color:var(--struct);cursor:pointer;letter-spacing:.04em;transition:all .25s}
+.toggle button.active{background:var(--vermilion);color:var(--white-soft)}
+.valbody{max-width:54em}
+.valgrid{display:grid;grid-template-columns:auto 1fr;gap:.5rem 2rem;margin-top:.5rem}
+.valgrid .k{color:var(--struct);font-size:.95rem;padding:.5rem 0}
+.valgrid .v{text-align:right;font-weight:500;color:var(--ink);font-size:1.05rem;padding:.5rem 0;border-bottom:1px solid var(--cement)}
+.valverdict{margin-top:1.6rem;padding:1.1rem 1.4rem;background:var(--cement);border-left:3px solid var(--vermilion);font-size:.95rem;line-height:1.75;max-width:52em}
+/* 分眾 */
+.aud{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:2.4rem;max-width:64em}
+.audcard{background:rgba(255,255,255,.04);border-top:2px solid var(--vermilion);padding:1.7rem 1.5rem;border-radius:3px}
+.audcard .who{font-size:.78rem;letter-spacing:.16em;color:var(--vermilion);margin-bottom:.6rem}
+.audcard h3{font-family:'Noto Serif TC',serif;font-size:1.45rem;font-weight:500;color:var(--white-soft);margin-bottom:.9rem}
+.audcard p{font-size:.88rem;color:#c4c1b8;line-height:1.75}
+@media(max-width:820px){
+  .tri,.aud{grid-template-columns:1fr}
+  .scene{padding:10vh 7vw}
+  #dots{display:none}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<nav id="dots"></nav>
+
+<!-- 01 封面 -->
+<section class="scene scene--dark" id="s1">
+  <div class="idx">PANSHI SMART SYSTEMS</div>
+  <div class="reveal">
+    <div class="kicker">磐石智慧系統 ・ 模板平台簡介</div>
+    <h1 class="cover">我們不是營造商，<br>是<span class="vermilion">營建業的作業系統</span>。</h1>
+    <p class="lede">磐石把傳統木模工法，變成一套可複製、可規模化、可上市的平台。制度＋ERP＋3D AI 配圖，讓加入的人變強、讓變強的人致富、讓致富的人成為磐石的股東。</p>
+    <div class="signature"><b>CHEN YI-FU</b>磐石智慧系統股份有限公司 ・ 2026</div>
+  </div>
+  <div class="pageno">01 / 11</div>
+</section>
+
+<!-- 02 是平台公司 -->
+<section class="scene scene--light" id="s2">
+  <div class="idx">我們是誰</div>
+  <div class="reveal">
+    <div class="kicker">先講清楚一件事</div>
+    <h2>磐石是一間平台公司，<br>不是工程公司。</h2>
+    <p class="lede">工程公司賺的是「一個案子的工程差價」，做完就歸零，明年重來。平台公司賺的是「每一個用我們系統的人，持續貢獻的經常性收入」——夥伴越多，平台越值錢。這是兩種完全不同的估值邏輯，差 2–3 倍本益比。</p>
+    <p class="note">＊ 上述本益比為市場對兩類公司之一般參考區間，非磐石之估值承諾。</p>
+    <div class="figwrap">
+    <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="工程公司vs平台公司" style="width:100%;height:auto;max-width:780px">
+      <rect x="20" y="40" width="400" height="120" rx="4" fill="#cfcbc1"/>
+      <text x="44" y="78" font-family="'Noto Sans TC'" font-size="14" letter-spacing="1.5" fill="#6c6a60">傳統工程公司</text>
+      <text x="44" y="112" font-family="'Noto Serif TC'" font-size="20" fill="#3a3a33">一次性工程差價</text>
+      <text x="44" y="140" font-family="'Noto Sans TC'" font-size="13" fill="#6c6a60">做完歸零 ・ 市場參考 5–15 倍</text>
+      <text x="445" y="108" font-family="'Noto Serif TC'" font-size="30" fill="#9E4A33">→</text>
+      <rect x="490" y="40" width="400" height="120" rx="4" fill="#9E4A33"/>
+      <text x="514" y="78" font-family="'Noto Sans TC'" font-size="14" letter-spacing="1.5" fill="#f3d9d0">磐石平台公司</text>
+      <text x="514" y="112" font-family="'Noto Serif TC'" font-size="20" fill="#fff">經常性收入 × 成長飛輪</text>
+      <text x="514" y="140" font-family="'Noto Sans TC'" font-size="13" fill="#f3d9d0">越用越強 ・ 市場參考 25–40 倍</text>
+    </svg>
+    </div>
+  </div>
+  <div class="pageno">02 / 11</div>
+</section>
+
+<!-- 03 三大中心 -->
+<section class="scene scene--light" id="s3">
+  <div class="idx">組織架構</div>
+  <div class="reveal">
+    <div class="kicker">磐石如何運轉</div>
+    <h2>磐石居中，三大責任中心交互圍繞。</h2>
+    <div class="figwrap">
+    <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="磐石三大中心交互" style="width:100%;height:auto;max-width:780px">
+      <circle cx="300" cy="150" r="138" fill="#9E4A33" fill-opacity="0.16" stroke="#9E4A33" stroke-opacity="0.4" stroke-width="1.4"/>
+      <circle cx="382" cy="278" r="138" fill="#9A968D" fill-opacity="0.20" stroke="#9A968D" stroke-opacity="0.48" stroke-width="1.4"/>
+      <circle cx="218" cy="278" r="138" fill="#9E4A33" fill-opacity="0.14" stroke="#9E4A33" stroke-opacity="0.36" stroke-width="1.4"/>
+      <circle cx="300" cy="232" r="68" fill="#F5F3EE" fill-opacity="0.95" stroke="#26261F" stroke-width="2.2"/>
+      <circle cx="300" cy="232" r="68" fill="none" stroke="#9E4A33" stroke-width="1" stroke-opacity="0.75" stroke-dasharray="3 4"/>
+      <text x="300" y="76" text-anchor="middle" font-family="'Noto Serif TC'" font-size="21" fill="#26261F" font-weight="500">模主制度</text>
+      <text x="300" y="98" text-anchor="middle" font-family="'Noto Sans TC'" font-size="12" letter-spacing="1.5" fill="#9E4A33">成本中心</text>
+      <text x="300" y="118" text-anchor="middle" font-family="'Noto Sans TC'" font-size="11" fill="#6c6a60">效率・品質・損耗</text>
+      <text x="448" y="318" text-anchor="middle" font-family="'Noto Serif TC'" font-size="21" fill="#26261F" font-weight="500">工程顧問</text>
+      <text x="448" y="340" text-anchor="middle" font-family="'Noto Sans TC'" font-size="12" letter-spacing="1.5" fill="#6c6a60">收益中心</text>
+      <text x="448" y="360" text-anchor="middle" font-family="'Noto Sans TC'" font-size="11" fill="#6c6a60">毛利・客戶・回款</text>
+      <text x="152" y="318" text-anchor="middle" font-family="'Noto Serif TC'" font-size="21" fill="#26261F" font-weight="500">磐石 BU</text>
+      <text x="152" y="340" text-anchor="middle" font-family="'Noto Sans TC'" font-size="12" letter-spacing="1.5" fill="#9E4A33">責任中心</text>
+      <text x="152" y="360" text-anchor="middle" font-family="'Noto Sans TC'" font-size="11" fill="#6c6a60">分公司整體損益</text>
+      <text x="300" y="226" text-anchor="middle" font-family="'Noto Serif TC'" font-size="26" fill="#9E4A33" font-weight="600">磐石</text>
+      <text x="300" y="250" text-anchor="middle" font-family="'Noto Sans TC'" font-size="11" letter-spacing="2" fill="#26261F">平台中樞</text>
+      <g font-family="'Noto Sans TC'">
+        <line x1="645" y1="70" x2="645" y2="410" stroke="#9A968D" stroke-width="1.5" stroke-dasharray="2 3"/>
+        <circle cx="645" cy="90" r="6" fill="#9E4A33"/><text x="666" y="95" font-size="13.5" fill="#26261f">① 進場：傳統木模主</text>
+        <circle cx="645" cy="180" r="6" fill="#9E4A33"/><text x="666" y="185" font-size="13.5" fill="#26261f">② 養強：認證模主</text>
+        <circle cx="645" cy="270" r="6" fill="#9E4A33"/><text x="666" y="275" font-size="13.5" fill="#26261f">③ 升業務：工程顧問</text>
+        <circle cx="645" cy="360" r="7" fill="#9E4A33"/><text x="666" y="365" font-size="13.5" fill="#26261f" font-weight="500">④ 當老闆：開分公司</text>
+        <text x="666" y="400" font-size="11.5" fill="#9A968D">縱向＝人才漏斗　／　橫向＝三中心並列</text>
+      </g>
+    </svg>
+    </div>
+    <p class="note">三大中心各對不同結果負責、賺不同的錢：成本中心（模主）對效率負責、收益中心（顧問）對毛利負責、責任中心（BU）對分公司損益負責。人才沿漏斗縱向流動——進場當模主、升業務當顧問、最強者開分公司、成為股東。</p>
+  </div>
+  <div class="pageno">03 / 11</div>
+</section>
+
+<!-- 04 賺管理財 -->
+<section class="scene scene--dark" id="s4">
+  <div class="idx">核心模式</div>
+  <div class="reveal">
+    <div class="kicker">磐石到底賺什麼</div>
+    <h2>我們賺的是「管理財」，<br>不是模板差價。</h2>
+    <p class="lede">傳統木模主一個人單打獨鬥、靠經驗、沒數據。加入磐石後，靠制度、靠系統、靠數據——同樣的工，做得更快、更穩、更賺。這中間多出來的錢，就是磐石賺的管理溢價。當一個人靠你的系統賺得比以前多，他就不想走了。這就是磐石真正的護城河。</p>
+  </div>
+  <div class="pageno">04 / 11</div>
+</section>
+
+<!-- 05 五大主權 -->
+<section class="scene scene--light" id="s5">
+  <div class="idx">護城河</div>
+  <div class="reveal">
+    <div class="kicker">磐石為什麼難以被取代</div>
+    <h2>五大主權，全部握在平台手裡。</h2>
+    <div class="figwrap">
+    <svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="五大主權" style="width:100%;height:auto;max-width:820px">
+      <!-- 中央平台 -->
+      <circle cx="450" cy="165" r="62" fill="#26261f"/>
+      <text x="450" y="160" text-anchor="middle" font-family="'Noto Serif TC'" font-size="20" fill="#F5F3EE">磐石</text>
+      <text x="450" y="182" text-anchor="middle" font-family="'Noto Sans TC'" font-size="11" letter-spacing="1.5" fill="#c9c6bd">平台主權</text>
+      <!-- 五個主權節點 -->
+      <g font-family="'Noto Sans TC'">
+        <!-- 品牌 -->
+        <line x1="450" y1="103" x2="450" y2="55" stroke="#9A968D" stroke-width="1.2"/>
+        <rect x="370" y="18" width="160" height="40" rx="4" fill="#9A968D" fill-opacity="0.18" stroke="#9A968D" stroke-width="1"/>
+        <text x="450" y="36" text-anchor="middle" font-size="14" fill="#26261f" font-weight="500">① 品牌權</text>
+        <text x="450" y="52" text-anchor="middle" font-size="11" fill="#6c6a60">商標 ・ 巨禾持有</text>
+        <!-- 模主制度 -->
+        <line x1="508" y1="135" x2="650" y2="75" stroke="#9A968D" stroke-width="1.2"/>
+        <rect x="650" y="55" width="190" height="40" rx="4" fill="#9A968D" fill-opacity="0.18" stroke="#9A968D" stroke-width="1"/>
+        <text x="745" y="73" text-anchor="middle" font-size="14" fill="#26261f" font-weight="500">② 模主制度權</text>
+        <text x="745" y="89" text-anchor="middle" font-size="11" fill="#6c6a60">平台規章 ・ 授權＋章程</text>
+        <!-- 派工 極高 -->
+        <line x1="512" y1="180" x2="660" y2="200" stroke="#9E4A33" stroke-width="1.4"/>
+        <rect x="660" y="180" width="190" height="42" rx="4" fill="#9E4A33" fill-opacity="0.14" stroke="#9E4A33" stroke-width="1.2"/>
+        <text x="755" y="199" text-anchor="middle" font-size="14" fill="#9E4A33" font-weight="500">③ 派工權（極高）</text>
+        <text x="755" y="215" text-anchor="middle" font-size="11" fill="#6c6a60">SaaS ・ API 封裝核心不落地</text>
+        <!-- 財務 極高 -->
+        <line x1="450" y1="227" x2="450" y2="270" stroke="#9E4A33" stroke-width="1.4"/>
+        <rect x="355" y="270" width="190" height="42" rx="4" fill="#9E4A33" fill-opacity="0.14" stroke="#9E4A33" stroke-width="1.2"/>
+        <text x="450" y="289" text-anchor="middle" font-size="14" fill="#9E4A33" font-weight="500">④ 財務權（極高）</text>
+        <text x="450" y="305" text-anchor="middle" font-size="11" fill="#6c6a60">金流 ・ 集中結算</text>
+        <!-- 數據 極高 -->
+        <line x1="392" y1="180" x2="240" y2="200" stroke="#9E4A33" stroke-width="1.4"/>
+        <rect x="50" y="180" width="190" height="42" rx="4" fill="#9E4A33" fill-opacity="0.14" stroke="#9E4A33" stroke-width="1.2"/>
+        <text x="145" y="199" text-anchor="middle" font-size="14" fill="#9E4A33" font-weight="500">⑤ 數據權（極高）</text>
+        <text x="145" y="215" text-anchor="middle" font-size="11" fill="#6c6a60">資料庫 ・ 控股公司</text>
+        <!-- 品牌左連 -->
+        <line x1="392" y1="150" x2="240" y2="75" stroke="#9A968D" stroke-width="1.2"/>
+      </g>
+    </svg>
+    </div>
+    <p class="note">品牌、模主制度、派工、財務、數據——五項主權各有法律載體與防禦方式，全部留在平台（巨禾控股／磐石）手裡，不下放給夥伴。這是磐石上市時抵禦資本衝突、也是長期不被繞過、不被複製的根本護城河。</p>
+  </div>
+  <div class="pageno">05 / 11</div>
+</section>
+
+<!-- 06 成長飛輪 -->
+<section class="scene scene--dark" id="s6">
+  <div class="idx">為什麼會越來越強</div>
+  <div class="reveal">
+    <div class="kicker">平台成長飛輪</div>
+    <h2 class="sans">每多一個夥伴，平台就更強一分。</h2>
+    <div class="figwrap">
+    <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="平台成長飛輪" style="width:100%;height:auto;max-width:600px">
+      <g font-family="'Noto Sans TC'">
+        <circle cx="380" cy="210" r="150" fill="none" stroke="#9E4A33" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <!-- 四節點 -->
+        <g>
+          <circle cx="380" cy="60" r="48" fill="#23231d" stroke="#9E4A33" stroke-width="1.4"/>
+          <text x="380" y="56" text-anchor="middle" font-size="13" fill="#F5F3EE">更多夥伴</text>
+          <text x="380" y="74" text-anchor="middle" font-size="11" fill="#bdbab1">加入平台</text>
+        </g>
+        <g>
+          <circle cx="560" cy="210" r="48" fill="#23231d" stroke="#9E4A33" stroke-width="1.4"/>
+          <text x="560" y="206" text-anchor="middle" font-size="13" fill="#F5F3EE">數據更完整</text>
+          <text x="560" y="224" text-anchor="middle" font-size="11" fill="#bdbab1">每人一節點</text>
+        </g>
+        <g>
+          <circle cx="380" cy="360" r="48" fill="#23231d" stroke="#9E4A33" stroke-width="1.4"/>
+          <text x="380" y="356" text-anchor="middle" font-size="13" fill="#F5F3EE">AI 決策更準</text>
+          <text x="380" y="374" text-anchor="middle" font-size="11" fill="#bdbab1">3D 配圖優化</text>
+        </g>
+        <g>
+          <circle cx="200" cy="210" r="48" fill="#23231d" stroke="#9E4A33" stroke-width="1.4"/>
+          <text x="200" y="206" text-anchor="middle" font-size="13" fill="#F5F3EE">平台更強</text>
+          <text x="200" y="224" text-anchor="middle" font-size="11" fill="#bdbab1">吸引更多人</text>
+        </g>
+        <!-- 旋轉箭頭 -->
+        <polygon points="490,108 470,118 488,128" fill="#9E4A33"/>
+        <polygon points="490,312 488,292 470,302" fill="#9E4A33"/>
+        <polygon points="270,312 290,302 272,292" fill="#9E4A33"/>
+        <polygon points="270,108 272,128 290,118" fill="#9E4A33"/>
+      </g>
+    </svg>
+    </div>
+    <p class="note">這就是網路效應：夥伴越多 → 數據越完整 → AI 配圖與決策越準 → 平台越強 → 吸引更多夥伴。SaaS 系統是讓整個飛輪轉起來的神經中樞，也是磐石估值的核心錨。</p>
+  </div>
+  <div class="pageno">06 / 11</div>
+</section>
+
+<!-- 07 三條收入引擎 -->
+<section class="scene scene--light" id="s7">
+  <div class="idx">怎麼賺錢</div>
+  <div class="reveal">
+    <div class="kicker">三條收入引擎</div>
+    <h2>不是一條收入，是三條同時轉。</h2>
+    <div class="figwrap">
+    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三條收入引擎" style="width:100%;height:auto;max-width:820px">
+      <g font-family="'Noto Sans TC'">
+        <rect x="20" y="30" width="280" height="160" rx="4" fill="#cfcbc1"/>
+        <text x="44" y="64" font-size="13" letter-spacing="1.5" fill="#6c6a60">引擎 ①</text>
+        <text x="44" y="96" font-family="'Noto Serif TC'" font-size="20" fill="#26261f">管理財／授權</text>
+        <text x="44" y="126" font-size="13" fill="#3a3a33">加盟金・品牌授權</text>
+        <text x="44" y="148" font-size="13" fill="#3a3a33">・管理顧問費</text>
+        <text x="44" y="176" font-size="12" fill="#6c6a60">IFRS 15 分期遞延</text>
+        <rect x="310" y="30" width="280" height="160" rx="4" fill="#cfcbc1"/>
+        <text x="334" y="64" font-size="13" letter-spacing="1.5" fill="#6c6a60">引擎 ②</text>
+        <text x="334" y="96" font-family="'Noto Serif TC'" font-size="20" fill="#26261f">模板供應</text>
+        <text x="334" y="126" font-size="13" fill="#3a3a33">模板租賃（階段一）</text>
+        <text x="334" y="148" font-size="13" fill="#3a3a33">現物折股（階段二）</text>
+        <text x="334" y="176" font-size="12" fill="#6c6a60">同一份移轉訂價橋接</text>
+        <rect x="600" y="30" width="280" height="160" rx="4" fill="#9E4A33"/>
+        <text x="624" y="64" font-size="13" letter-spacing="1.5" fill="#f3d9d0">引擎 ③ ・ 估值核心</text>
+        <text x="624" y="96" font-family="'Noto Serif TC'" font-size="20" fill="#fff">SaaS 訂閱</text>
+        <text x="624" y="126" font-size="13" fill="#f3d9d0">ERP＋3D AI 配圖</text>
+        <text x="624" y="148" font-size="13" fill="#f3d9d0">經常性收入 ARR</text>
+        <text x="624" y="176" font-size="12" fill="#f3d9d0">平台 take rate</text>
+      </g>
+    </svg>
+    </div>
+    <p class="note">三條引擎性質不同、會計上分開記帳。其中 SaaS 訂閱是估值核心——把工程營收定位為平台 GMV（交易總額），SaaS 訂閱＋交易抽成定位為 take rate，市場才會用「平台估值」而非「營造股本益比」來看磐石。</p>
+  </div>
+  <div class="pageno">07 / 11</div>
+</section>
+
+<!-- 08 估值曲線 情境切換 -->
+<section class="scene scene--light" id="s8">
+  <div class="idx">十年估值曲線</div>
+  <div class="reveal">
+    <div class="kicker">點選年期，看平台規模如何長大</div>
+    <h2>同一套平台邏輯，三個資本里程碑。</h2>
+    <div class="toggle" id="valToggle">
+      <button data-y="y5" class="active">第 5 年・興櫃準備</button>
+      <button data-y="y6">第 6 年・興櫃掛牌</button>
+      <button data-y="y10">第 10 年・上市</button>
+    </div>
+    <div class="valbody">
+      <div class="valgrid" id="valGrid"></div>
+      <div class="valverdict" id="valVerdict"></div>
+    </div>
+    <p class="note">※ 數字取自《磐石 10 年資本市場進階地圖 v2.0》，為內部規劃之<b>目標預估值，非保證或承諾</b>，實際結果取決於市場、執行與外部環境。本頁僅供說明平台成長邏輯，不構成投資要約或財務意見。</p>
+  </div>
+  <div class="pageno">08 / 11</div>
+</section>
+
+<!-- 09 股東怎麼賺 -->
+<section class="scene scene--dark" id="s9">
+  <div class="idx">投資人與股東</div>
+  <div class="reveal">
+    <div class="kicker">股東的錢，從哪裡長出來</div>
+    <h2 class="sans">三個賺錢來源，疊在一起。</h2>
+    <div class="figwrap">
+    <svg viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="股東三個賺錢來源" style="width:100%;height:auto;max-width:820px">
+      <g font-family="'Noto Sans TC'">
+        <rect x="20" y="40" width="270" height="160" rx="4" fill="#23231d" stroke="#9E4A33" stroke-width="1.3"/>
+        <text x="44" y="76" font-size="13" letter-spacing="1.5" fill="#9E4A33">① 經營分潤</text>
+        <text x="44" y="110" font-family="'Noto Serif TC'" font-size="19" fill="#F5F3EE">每年現金流</text>
+        <text x="44" y="140" font-size="13" fill="#c4c1b8">平台＋各 BU 持續</text>
+        <text x="44" y="160" font-size="13" fill="#c4c1b8">獲利，按持股分派</text>
+        <rect x="315" y="40" width="270" height="160" rx="4" fill="#23231d" stroke="#9E4A33" stroke-width="1.3"/>
+        <text x="339" y="76" font-size="13" letter-spacing="1.5" fill="#9E4A33">② 股權增值</text>
+        <text x="339" y="110" font-family="'Noto Serif TC'" font-size="19" fill="#F5F3EE">估值成長</text>
+        <text x="339" y="140" font-size="13" fill="#c4c1b8">平台規模長大，</text>
+        <text x="339" y="160" font-size="13" fill="#c4c1b8">每股價值跟著漲</text>
+        <rect x="610" y="40" width="270" height="160" rx="4" fill="#9E4A33"/>
+        <text x="634" y="76" font-size="13" letter-spacing="1.5" fill="#f3d9d0">③ 上市流動性</text>
+        <text x="634" y="110" font-family="'Noto Serif TC'" font-size="19" fill="#fff">創新板掛牌</text>
+        <text x="634" y="140" font-size="13" fill="#f3d9d0">紙上富貴變</text>
+        <text x="634" y="160" font-size="13" fill="#f3d9d0">可交易的市值</text>
+      </g>
+    </svg>
+    </div>
+    <p class="note">股東不是只賺「分紅」一條。經營分潤是每年的現金流；股權增值是平台規模長大帶來的每股價值提升；上市流動性是創新板掛牌後，把帳面價值變成可交易市值。三者疊加，才是平台型公司給股東的完整報酬結構。<br><span class="vermilion">＊ 上述為報酬「結構」說明，非報酬保證；投資均有風險。</span></p>
+  </div>
+  <div class="pageno">09 / 11</div>
+</section>
+
+<!-- 10 分眾收尾 -->
+<section class="scene scene--dark" id="s10">
+  <div class="idx">給三種人的一句話</div>
+  <div class="reveal">
+    <div class="kicker">投資人 ・ 客戶 ・ 會計師</div>
+    <h2 class="sans">為什麼你該站在磐石這邊。</h2>
+    <div class="aud">
+      <div class="audcard">
+        <div class="who">給投資人</div>
+        <h3>賺的是平台，不是工地。</h3>
+        <p>三條收入引擎＋成長飛輪＋五大主權護城河，估值用平台邏輯（GMV × take rate），不被工程營收稀釋。先創新板進場、再轉板，路徑有彈性。</p>
+      </div>
+      <div class="audcard">
+        <div class="who">給客戶（模主／加盟主）</div>
+        <h3>加入我，你有機會變強、升級、致富。</h3>
+        <p>從木模主進場，靠制度＋ERP＋3D AI 配圖養強；過模主 L4＋顧問 L2 雙閘門，即有資格開分公司、持自己 BU 的股、成為磐石的資本階級。實際成果視個人努力與市場而定。</p>
+      </div>
+      <div class="audcard">
+        <div class="who">給會計師</div>
+        <h3>股權乾淨、合併報表站得住。</h3>
+        <p>雙層股權（BU 層 51:49）、模板現物折股獨立鑑價、cost-plus 移轉訂價、加盟金 IFRS 15 遞延——結構依上市規範自我檢核設計，待會計師／律師正式覆核。</p>
+      </div>
+    </div>
+  </div>
+  <div class="pageno">10 / 11</div>
+</section>
+
+<!-- 11 結尾 -->
+<section class="scene scene--dark" id="s11">
+  <div class="idx">磐石的承諾</div>
+  <div class="reveal">
+    <h2>讓加入的人變強，<br>讓變強的人致富，<br>讓致富的人成為<span class="vermilion">磐石的股東</span>。</h2>
+    <p class="lede">共榮・共贏・共好——同時，磐石守住控制權與系統主權。這就是一間為了長久而設計的平台公司。</p>
+    <div class="signature"><b>CHEN YI-FU</b>磐石智慧系統股份有限公司 ・ 巨禾建設</div>
+    <p class="note" style="margin-top:2.2rem;border-top:1px solid #33332b;padding-top:1.2rem;color:#8a877d">免責聲明：本簡介僅供一般說明，不構成投資要約、招攬或任何獲利／報酬之保證。文中估值、營收、本益比等前瞻性數字為內部規劃之目標預估，非承諾，實際結果取決於市場、執行與外部環境，投資均有風險。各項制度與財務架構之法律效力與會計處理，以正式法律及會計意見為準。</p>
+  </div>
+  <div class="pageno">11 / 11</div>
+</section>
+
+<script>
+// 估值情境切換（數字取自十年地圖 v2.0，標示為目標預估）
+const VAL={
+  y5:{rows:[["階段","興櫃準備 / Pre-IPO"],["合併營業額","約 6.0 億（13 BU × 5,000 萬量級）"],["平台抽成（take rate）","約 1.2 億"],["平台毛利率","約 85%"],["估值區間","40–60 億"],["創辦人＋巨禾持股","約 45%（安全控制）"]],
+    verdict:"第 5 年是關鍵轉折：合併營業額站上 6 億、平台毛利率 85%，市場開始把磐石當「制度型平台」而非營造商來估值。"},
+  y6:{rows:[["階段","興櫃掛牌"],["合併營業額","約 9.0 億"],["平台抽成（take rate）","約 1.8 億"],["平台毛利率","約 88%"],["估值區間","80–120 億"],["創辦人＋巨禾持股","約 42%（安全控制）"]],
+    verdict:"興櫃掛牌＝估值正式被市場定價。平台毛利率 88%、ARR 結構清晰，是把敘事從營造股徹底拉向平台股的籌碼。"},
+  y10:{rows:[["階段","上市 / IPO"],["合併營業額","約 35 億"],["平台抽成（take rate）","約 7 億"],["平台毛利率","約 92%"],["估值區間","800–1,200 億"],["創辦人＋巨禾持股","約 30%（制度鎖定）"]],
+    verdict:"第 10 年上市：估值千億級，創辦人＋巨禾仍守住 30% 與五大主權。股東的紙上價值，至此轉為可交易的市值。"}
+};
+function renderVal(y){
+  const d=VAL[y];
+  document.getElementById('valGrid').innerHTML=d.rows.map(r=>`<div class="k">${r[0]}</div><div class="v">${r[1]}</div>`).join('');
+  document.getElementById('valVerdict').textContent=d.verdict;
+}
+document.querySelectorAll('#valToggle button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#valToggle button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');renderVal(b.dataset.y);
+}));
+renderVal('y5');
+// 進場 + dots + progress
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const secs=[...document.querySelectorAll('.scene')];
+const dots=document.getElementById('dots');
+secs.forEach(s=>{const a=document.createElement('a');a.href='#'+s.id;dots.appendChild(a);});
+const dotEls=[...dots.children];
+function onScroll(){
+ const h=document.documentElement;
+ const sc=h.scrollTop/(h.scrollHeight-h.clientHeight);
+ document.getElementById('progress').style.width=(sc*100)+'%';
+ let cur=0;secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<=window.innerHeight*0.5)cur=i;});
+ dotEls.forEach((d,i)=>d.classList.toggle('active',i===cur));
+}
+window.addEventListener('scroll',onScroll);onScroll();
+</script>
+</body>
+</html>
