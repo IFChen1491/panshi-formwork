@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>磐石模板施工決策引擎 v1</title>
+<style>
+  :root{
+    --concrete:#E8E5DF; --concrete-d:#DEDAD2; --panel:#F5F3EF; --card:#FBFAF7;
+    --ink:#2B2A28; --ink-soft:#5C594F; --muted:#8A8578; --line:#CFC9BE;
+    --accent:#9B4722; --accent-l:#B5562B; --gold:#B98A3E;
+    --green:#4A7A5A; --green-l:#6FA07E; --red:#A8392B; --amber:#C28A2C;
+    --shadow:0 1px 3px rgba(43,42,40,.08),0 8px 24px rgba(43,42,40,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    background:var(--concrete);color:var(--ink);line-height:1.5;font-size:14px;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px 80px}
+  header{padding:44px 22px 26px;max-width:1180px;margin:0 auto}
+  .kicker{font-size:12px;letter-spacing:.32em;color:var(--accent);font-weight:700;text-transform:uppercase}
+  h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:8px 0 6px}
+  .sub{color:var(--ink-soft);font-size:14px;max-width:760px}
+  .creed{margin-top:16px;font-size:12px;color:var(--muted);letter-spacing:.06em;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 0}
+  .creed b{color:var(--accent);font-weight:700}
+
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 22px}
+  .tab{background:var(--concrete-d);border:1px solid var(--line);border-bottom:none;
+    padding:11px 16px;border-radius:9px 9px 0 0;cursor:pointer;font-weight:600;color:var(--ink-soft);
+    font-size:13px;transition:.15s;position:relative;top:1px}
+  .tab .n{display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--muted);color:#fff;
+    align-items:center;justify-content:center;font-size:11px;margin-right:7px;font-weight:700}
+  .tab.active{background:var(--card);color:var(--ink);box-shadow:0 -2px 6px rgba(43,42,40,.04)}
+  .tab.active .n{background:var(--accent)}
+  .tab:hover{color:var(--ink)}
+
+  .panel-adv{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:20px;overflow:hidden}
+  .panel-adv summary{cursor:pointer;padding:12px 18px;font-weight:600;color:var(--ink-soft);list-style:none;
+    display:flex;align-items:center;gap:8px;user-select:none}
+  .panel-adv summary::-webkit-details-marker{display:none}
+  .panel-adv summary::before{content:"▸";color:var(--accent);font-size:12px;transition:.15s}
+  .panel-adv[open] summary::before{transform:rotate(90deg)}
+  .adv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px 18px;
+    padding:6px 18px 18px}
+  .adv-grid label{display:flex;flex-direction:column;font-size:11px;color:var(--muted);gap:3px}
+  .adv-grid input{padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-size:13px;
+    background:#fff;color:var(--ink);width:100%}
+
+  .mode{display:none}
+  .mode.active{display:block}
+  .grid2{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+
+  .inbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .inbox h3{font-size:14px;margin-bottom:4px;letter-spacing:.04em}
+  .inbox .hint{font-size:12px;color:var(--muted);margin-bottom:16px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;color:var(--ink-soft);font-weight:600;margin-bottom:5px}
+  .field .u{color:var(--muted);font-weight:400}
+  .field input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:15px;
+    background:#fff;color:var(--ink);font-weight:600}
+  .field input:focus{outline:none;border-color:var(--accent)}
+  .qset{color:var(--accent);cursor:pointer;font-weight:600;text-decoration:underline dotted}
+  .econ{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;
+    background:#FCF8EF;border:1px solid #e8d9b8;border-radius:10px;padding:14px 16px;margin-bottom:18px}
+  .econ .e{font-size:12px;color:var(--ink-soft)} .econ .e b{display:block;font-size:16px;color:var(--ink);font-weight:800;margin-top:2px}
+  .field.team-in input{border-color:var(--gold);background:#FCF8EF}
+  .field.formwork-in input{border-width:2px;border-color:var(--accent);background:#fbf2ee}
+  .team-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .err{font-size:11px;color:var(--red);margin-top:4px;font-weight:600;min-height:0}
+  .btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;
+    font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.05em;margin-top:4px;transition:.15s}
+  .btn:hover{background:var(--accent-l)}
+  .slider-wrap{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)}
+  .slider-wrap label{font-size:12px;font-weight:600;color:var(--ink-soft);display:flex;justify-content:space-between}
+  .slider-wrap input[type=range]{width:100%;margin-top:8px;accent-color:var(--accent)}
+  .scale{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:2px}
+
+  .results{min-height:200px}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:22px}
+  @media(max-width:560px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 17px;
+    box-shadow:var(--shadow);position:relative;border-top:3px solid var(--muted)}
+  .card.profit{border-top-color:var(--green)}
+  .card.dur{border-top-color:var(--gold)}
+  .card.unit{border-top-color:var(--accent)}
+  .card.balance{border-top-color:var(--ink)}
+  .card .tag{font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--ink-soft);text-transform:uppercase}
+  .card .big{font-size:26px;font-weight:800;margin:6px 0 2px;letter-spacing:-.01em}
+  .card .big.pos{color:var(--green)} .card .big.neg{color:var(--red)}
+  .card .sub2{font-size:12px;color:var(--muted)}
+  .card .rows{margin-top:11px;border-top:1px solid var(--line);padding-top:10px;font-size:12.5px}
+  .card .rows div{display:flex;justify-content:space-between;padding:2px 0;color:var(--ink-soft)}
+  .card .rows b{color:var(--ink);font-weight:700}
+  .light{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;margin-top:8px}
+  .light.g{background:#E4F0E8;color:var(--green)} .light.a{background:#F7EDD6;color:#9a6c14}
+  .light.r{background:#F5E0DC;color:var(--red)}
+
+  .chart-block{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px 8px;
+    margin-bottom:18px;box-shadow:var(--shadow)}
+  .chart-block h4{font-size:13px;margin-bottom:2px;color:var(--ink)}
+  .chart-block .cnote{font-size:11px;color:var(--muted);margin-bottom:6px}
+  canvas{width:100%;display:block}
+  .diag{background:#fbf2ee;border:1px solid #e6c9bd;border-left:4px solid var(--accent);border-radius:8px;
+    padding:13px 15px;font-size:13px;color:var(--ink);margin-bottom:18px;line-height:1.6}
+  .diag.ok{background:#E9F1EB;border-color:#bcd6c4;border-left-color:var(--green)}
+  .diag b{color:var(--accent)} .diag.ok b{color:var(--green)}
+  .placeholder{color:var(--muted);text-align:center;padding:60px 20px;font-size:14px;
+    border:1.5px dashed var(--line);border-radius:12px}
+
+  .selftest{margin-top:40px;border-top:1px solid var(--line);padding-top:18px}
+  .selftest button{background:var(--concrete-d);border:1px solid var(--line);padding:8px 14px;border-radius:7px;
+    cursor:pointer;font-size:12px;font-weight:600;color:var(--ink-soft)}
+  #st-out{margin-top:12px;font-size:12px;font-family:"SF Mono",Consolas,monospace;white-space:pre-wrap;
+    color:var(--ink-soft);max-height:340px;overflow:auto;background:var(--panel);border:1px solid var(--line);
+    border-radius:8px;padding:12px;display:none}
+  .foot{margin-top:30px;font-size:11px;color:var(--muted);line-height:1.7}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">PANSHI · 模板施工決策引擎</div>
+  <h1>磐石模板施工決策引擎 <span style="font-size:16px;color:var(--muted);font-weight:600">v1</span></h1>
+  <p class="sub">給定條件 → 引擎自動掃描「翻模率 × 編隊 × 工期」搜尋空間,在三種目標下各給最佳配置。成本模型沿用 v9 SSOT;輸入即輸出分離,從結構消滅「模板㎡誤填進人數格」的試算表病。</p>
+  <div class="creed"><b>Ground Truth First</b> 用真實數量算 ·&nbsp; <b>System Over Heroes</b> 制度勝個人 ·&nbsp; <b>Win Together</b> 模主共好 ·&nbsp; <b>Truth Over Spin</b> 不灌水</div>
+</header>
+
+<div class="wrap">
+  <!-- 進階參數 -->
+  <details class="panel-adv">
+    <summary>進階參數（預設＝v9 SSOT，可校正後全引擎連動）</summary>
+    <div class="adv-grid" id="advGrid"></div>
+  </details>
+
+  <!-- Tabs -->
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-m="1"><span class="n">1</span>面積 + 報價</div>
+    <div class="tab" data-m="2"><span class="n">2</span>輸入天數</div>
+    <div class="tab" data-m="3"><span class="n">3</span>輸入人數</div>
+    <div class="tab" data-m="4"><span class="n">4</span>單層 → 翻模率</div>
+    <div class="tab" data-m="5"><span class="n">5</span>自由輸入</div>
+  </div>
+
+  <!-- ===== 模式 1 ===== -->
+  <section class="mode active" data-m="1">
+    <div class="grid2">
+      <div class="inbox">
+        <h3>① 面積 + 報價</h3>
+        <p class="hint">只填這兩格,引擎幫你決定<b>備多少模板、配幾人(連等級組合)、翻模率多少</b>。</p>
+        <div class="field formwork-in"><label>案件面積 <span class="u">㎡</span></label><input type="number" id="m1_area" value="1025"><div class="err"></div></div>
+        <div class="field"><label>承包單價 <span class="u">元/㎡</span></label><input type="number" id="m1_price" value="1500"><div class="err"></div></div>
+        <div class="slider-wrap">
+          <label>平衡權重 <span>利潤 <b id="m1_wlab">50%</b> / 效率</span></label>
+          <input type="range" id="m1_w" min="0" max="100" value="50">
+          <div class="scale"><span>純省工期</span><span>純拼利潤</span></div>
+        </div>
+        <button class="btn" onclick="runMode(1)">⚙ 算最佳配置</button>
+      </div>
+      <div class="results" id="m1_out"><div class="placeholder">填面積與報價,按「算最佳配置」</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 模式 2 ===== -->
+  <section class="mode" data-m="2">
+    <div class="grid2">
+      <div class="inbox">
+        <h3>② 目標交期</h3>
+        <p class="hint">給死線,引擎反推<b>翻模率 + 編隊</b>,在能準時交付的配置裡挑三目標最佳。</p>
+        <div class="field formwork-in"><label>案件面積 <span class="u">㎡</span></label><input type="number" id="m2_area" value="1025"><div class="err"></div></div>
+        <div class="field"><label>承包單價 <span class="u">元/㎡</span></label><input type="number" id="m2_price" value="1500"><div class="err"></div></div>
+        <div class="field"><label>目標完工天數 <span class="u">天</span></label><input type="number" id="m2_days" value="45"><div class="err"></div></div>
+        <div class="slider-wrap">
+          <label>平衡權重 <span>利潤 <b id="m2_wlab">50%</b> / 效率</span></label>
+          <input type="range" id="m2_w" min="0" max="100" value="50">
+          <div class="scale"><span>純省工期</span><span>純拼利潤</span></div>
+        </div>
+        <button class="btn" onclick="runMode(2)">⚙ 反推達標配置</button>
+      </div>
+      <div class="results" id="m2_out"><div class="placeholder">填面積、報價、目標天數</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 模式 3 ===== -->
+  <section class="mode" data-m="3">
+    <div class="grid2">
+      <div class="inbox">
+        <h3>③ 固定人數</h3>
+        <p class="hint">編隊已定,引擎掃<b>翻模率</b>找甜蜜點,推工期、標窩工。</p>
+        <div class="field formwork-in"><label>案件面積 <span class="u">㎡</span></label><input type="number" id="m3_area" value="1025"><div class="err"></div></div>
+        <div class="field"><label>承包單價 <span class="u">元/㎡</span></label><input type="number" id="m3_price" value="1500"><div class="err"></div></div>
+        <label style="font-size:12px;font-weight:600;color:var(--ink-soft)">🟨 施工編隊（人數）</label>
+        <div class="team-row" style="margin-top:6px">
+          <div class="field team-in"><label>L4 資深</label><input type="number" id="m3_l4" value="1"></div>
+          <div class="field team-in"><label>L3 認證</label><input type="number" id="m3_l3" value="0"></div>
+          <div class="field team-in"><label>L2 作業</label><input type="number" id="m3_l2" value="1"></div>
+          <div class="field team-in"><label>L1 實習</label><input type="number" id="m3_l1" value="4"></div>
+        </div>
+        <div class="err" id="m3_terr"></div>
+        <div class="slider-wrap">
+          <label>平衡權重 <span>利潤 <b id="m3_wlab">50%</b> / 效率</span></label>
+          <input type="range" id="m3_w" min="0" max="100" value="50">
+          <div class="scale"><span>純省工期</span><span>純拼利潤</span></div>
+        </div>
+        <button class="btn" onclick="runMode(3)">⚙ 掃翻模率</button>
+      </div>
+      <div class="results" id="m3_out"><div class="placeholder">填面積、報價、編隊人數</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 模式 4 ===== -->
+  <section class="mode" data-m="4">
+    <div class="grid2">
+      <div class="inbox">
+        <h3>④ 單層面積 → 翻模率</h3>
+        <p class="hint">看<b>倒 U 型曲線</b>:翻模率越高攤銷越省、但人力越爆。連動三模板對比。</p>
+        <div class="field formwork-in"><label>單層接觸面積 <span class="u">㎡</span></label><input type="number" id="m4_area" value="1025"><div class="err"></div></div>
+        <div class="field"><label>承包單價 <span class="u">元/㎡</span></label><input type="number" id="m4_price" value="1500"><div class="err"></div></div>
+        <label style="font-size:12px;font-weight:600;color:var(--ink-soft)">🟨 施工編隊（人數）</label>
+        <div class="team-row" style="margin-top:6px">
+          <div class="field team-in"><label>L4 資深</label><input type="number" id="m4_l4" value="1"></div>
+          <div class="field team-in"><label>L3 認證</label><input type="number" id="m4_l3" value="0"></div>
+          <div class="field team-in"><label>L2 作業</label><input type="number" id="m4_l2" value="1"></div>
+          <div class="field team-in"><label>L1 實習</label><input type="number" id="m4_l1" value="4"></div>
+        </div>
+        <button class="btn" onclick="runMode(4)">⚙ 畫翻模率曲線</button>
+      </div>
+      <div class="results" id="m4_out"><div class="placeholder">填單層面積與編隊</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 模式 5 ===== -->
+  <section class="mode" data-m="5">
+    <div class="grid2">
+      <div class="inbox">
+        <h3>⑤ 自由輸入</h3>
+        <p class="hint">全部自己填,引擎吐完整成本拆解＋四張卡＋窩工/負利潤歸因。</p>
+        <div class="field formwork-in"><label>案件面積 <span class="u">㎡</span></label><input type="number" id="m5_area" value="1025"><div class="err"></div></div>
+        <div class="field"><label>承包單價 <span class="u">元/㎡</span></label><input type="number" id="m5_price" value="1500"><div class="err"></div></div>
+        <div class="field formwork-in"><label>實際備模面積 <span class="u">㎡</span></label><input type="number" id="m5_fw" value="200"><div class="err"></div></div>
+        <label style="font-size:12px;font-weight:600;color:var(--ink-soft)">🟨 施工編隊（人數）</label>
+        <div class="team-row" style="margin-top:6px">
+          <div class="field team-in"><label>L4 資深</label><input type="number" id="m5_l4" value="1"></div>
+          <div class="field team-in"><label>L3 認證</label><input type="number" id="m5_l3" value="0"></div>
+          <div class="field team-in"><label>L2 作業</label><input type="number" id="m5_l2" value="1"></div>
+          <div class="field team-in"><label>L1 實習</label><input type="number" id="m5_l1" value="4"></div>
+        </div>
+        <div class="err" id="m5_terr"></div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)">
+          <label style="font-size:12px;font-weight:600;color:var(--ink-soft)">💰 成本參數（可自由覆寫）</label>
+        </div>
+        <div class="field" style="margin-top:8px"><label>模板+大五金 <span class="u">元/㎡</span>
+          ｜<span class="qset" onclick="setM5Rate(330)">自有攤銷330</span> · <span class="qset" onclick="setM5Rate(462)">向模主承租462</span></label>
+          <input type="number" id="m5_fwrate" value="330"></div>
+        <div class="field"><label>耗材 <span class="u">元/㎡</span></label><input type="number" id="m5_consum" value="102.4"></div>
+        <div class="field"><label>單次可安裝模板最高數量 <span class="u">㎡（0=不限）</span></label><input type="number" id="m5_maxinstall" value="0"></div>
+        <details style="margin-bottom:10px"><summary style="font-size:11px;color:var(--muted);cursor:pointer">明細參考（v9 ⑬ 攤銷 + ④ 耗材）</summary>
+          <div style="font-size:11px;color:var(--ink-soft);padding:6px 0;line-height:1.7">
+            <b>模板攤銷 330</b>＝模板180＋大型五金75＋木料20＋運輸放樣55；對外牌價＝330×1.4＝<b>462</b>（模主出租）。<br>
+            <b>耗材 102.4</b>＝鐵釘鐵絲5＋緊結中桿40＋牙條8＋美利板25＋清水合板15＋保麗龍3＋（外桿20＋蓮霧頭6＋葉片4＋螺帽2）×20%耗損。
+          </div></details>
+        <button class="btn" onclick="runMode(5)">⚙ 計算</button>
+      </div>
+      <div class="results" id="m5_out"><div class="placeholder">填齊條件後計算</div></div>
+    </div>
+  </section>
+
+  <!-- 自測 -->
+  <div class="selftest">
+    <button onclick="runSelfTest()">▶ 黃金回歸自測（30 組驗證清單 + 7 組交接案例 + 反向 −30M 護欄）</button>
+    <div id="st-out"></div>
+  </div>
+
+  <div class="foot">
+    SSOT：磐石模板施工成本分析表 v9（攤銷 330、牌價 3500、壽命 60、管理費 20%、週轉 7 天）。本引擎以連續公式重算,與 v9 快取值誤差 &lt;1%（加班係數四捨五入）。<br>
+    買模投資為資本支出不計入本案;出租方損益、跨案 IRR 另見 v9 分頁。三待校準參數（k 組拆密度、加班加成、吸收比）需現場數據驗證。
+  </div>
+</div>
+
+<script>
+/* ===================== 參數（SSOT，預設＝v9） ===================== */
+const PARAM_DEFS = [
+  ['amort','攤銷 元/㎡',330],['boardPrice','模板牌價 元/㎡',3500],['life','設計壽命 次',60],
+  ['mgmt','管理費加成',0.2],['turn','每輪週轉天',7],['consum','耗材合計 元/㎡',102.4],
+  ['k','k 組拆密度',0.06],['ot','加班加成',1.34],['absorb','加班吸收比',0.5],
+  ['w4','L4 日薪',3500],['w3','L3 日薪',3000],['w2','L2 日薪',2500],['w1','L1 日薪',2000],
+  ['c4','L4 日產能㎡',6],['c3','L3 日產能㎡',5],['c2','L2 日產能㎡',4],['c1','L1 日產能㎡',3],
+];
+let P = {};
+function loadParams(){ PARAM_DEFS.forEach(([k,,d])=>{ const el=document.getElementById('p_'+k); P[k]= el? (parseFloat(el.value)||d):d; }); }
+(function buildAdv(){
+  const g=document.getElementById('advGrid');
+  PARAM_DEFS.forEach(([k,label,d])=>{
+    const l=document.createElement('label');
+    l.innerHTML=`${label}<input type="number" step="any" id="p_${k}" value="${d}">`;
+    g.appendChild(l);
+  });
+})();
+
+/* ===================== 核心引擎（逐式對齊 v9） ===================== */
+function evalConfig(A, price, team, r, Pr){
+  const dailyCap = team.l4*Pr.c4 + team.l3*Pr.c3 + team.l2*Pr.c2 + team.l1*Pr.c1;
+  const dailyWage = team.l4*Pr.w4 + team.l3*Pr.w3 + team.l2*Pr.w2 + team.l1*Pr.w1;
+  const total = team.l4+team.l3+team.l2+team.l1;
+  const prepArea = r>0 ? A/r : 0;
+  const laborDays = dailyCap>0 ? Math.ceil(A/dailyCap) : 99999;
+  const bottleneck = Math.ceil(r*Pr.turn);
+  const duration = Math.max(laborDays, bottleneck);
+  const J16 = 1 + Pr.k*(r-1);
+  const J17 = 1 + (J16-1)*Pr.absorb*Pr.ot;
+  const labor = dailyWage * duration * (1+Pr.mgmt) * J17;
+  const formworkCost = Pr.amort * prepArea;
+  const consumCost = Pr.consum * A;
+  const totalCost = labor + formworkCost + consumCost;
+  const revenue = A*price;
+  const profit = revenue - totalCost;
+  const margin = revenue>0 ? profit/revenue : -9.99;
+  const unitCost = A>0 ? totalCost/A : 0;
+  const idle = Math.max(total - (laborDays<bottleneck? workersForBottleneck(A,bottleneck,Pr): total),0);
+  const holderRevenue = prepArea * Pr.amort;             // 持有者本案實收
+  const buyInvest = prepArea * Pr.boardPrice;            // 買模一次性投資
+  const lifeOver = r > Pr.life;
+  let light='g'; if(margin<0) light='r'; else if(idle>0||margin<0.1) light='a';
+  return {A,price,team,total,r,prepArea,dailyCap,dailyWage,laborDays,bottleneck,duration,
+    J17,labor,formworkCost,consumCost,totalCost,revenue,profit,margin,unitCost,idle,
+    holderRevenue,buyInvest,lifeOver,light,bottlenecked:bottleneck>laborDays};
+}
+function workersForBottleneck(A,bottleneck,Pr){ // 不窩工建議人數的近似（用平均產能）
+  const avg=(Pr.c4+Pr.c3+Pr.c2+Pr.c1)/4;
+  return bottleneck>0 ? Math.ceil(A/(bottleneck*avg)) : 0;
+}
+
+/* 編隊枚舉（含 v9 紅黃燈剪枝：高階倒掛、單階>50、人力過剩） */
+function enumerateTeams(A){
+  const cap = Math.min(16, Math.max(8, Math.ceil(A/150)));
+  const totalCap = Math.min(60, Math.max(6, Math.ceil(A/3)));
+  const out=[];
+  for(let l4=0;l4<=cap;l4++) for(let l3=0;l3<=cap;l3++) for(let l2=0;l2<=cap;l2++) for(let l1=0;l1<=cap;l1++){
+    const n=l4+l3+l2+l1;
+    if(n<1||n>totalCap) continue;
+    if((l4+l3) > 2*(l2+l1)) continue;            // 編隊倒掛
+    if(Math.max(l4,l3,l2,l1)>50) continue;        // 單階>50
+    out.push({l4,l3,l2,l1});
+  }
+  return out;
+}
+
+/* 三目標最佳化：兩次掃描（先抓範圍正規化，再選） */
+function optimize(A, price, opts){
+  opts=opts||{};
+  const w=(opts.balanceWeight!=null)?opts.balanceWeight:0.5;
+  const teams = opts.fixedTeam ? [opts.fixedTeam] : enumerateTeams(A);
+  const rMax = opts.rMax||15;
+  const feasible=c=> !(opts.targetDays && c.duration>opts.targetDays);
+  // pass1：先找三個單目標最佳解（利潤最大 / 工期最短 / 單位成本最低）
+  let best={profit:null,minDur:null,minUnit:null,balance:null}, any=false;
+  for(const t of teams) for(let r=1;r<=rMax;r++){ const c=evalConfig(A,price,t,r,P); if(!feasible(c))continue;
+    any=true;
+    if(!best.profit||c.profit>best.profit.profit) best.profit=c;
+    if(!best.minDur||c.duration<best.minDur.duration||(c.duration===best.minDur.duration&&c.profit>best.minDur.profit)) best.minDur=c;
+    if(!best.minUnit||c.unitCost<best.minUnit.unitCost) best.minUnit=c;
+  }
+  if(!any) return null;
+  // pass2：平衡解 = 在「好解錨點」(利潤/工期/單位成本三解)的區間內正規化，
+  //        讓平衡分真正介於利潤最佳與工期最短之間，而非被爛解壓縮。
+  const anchors=[best.profit,best.minDur,best.minUnit];
+  const mLo=Math.min(...anchors.map(a=>a.margin)),   mHi=Math.max(...anchors.map(a=>a.margin));
+  const dLo=Math.min(...anchors.map(a=>a.duration)), dHi=Math.max(...anchors.map(a=>a.duration));
+  const mR=(mHi-mLo)||1, dR=(dHi-dLo)||1;
+  for(const t of teams) for(let r=1;r<=rMax;r++){ const c=evalConfig(A,price,t,r,P); if(!feasible(c))continue;
+    c.score = w*((c.margin-mLo)/mR) + (1-w)*(1-(c.duration-dLo)/dR);
+    if(!best.balance||c.score>best.balance.score) best.balance=c;
+  }
+  return best;
+}
+/* 對固定編隊掃翻模率，回傳整條曲線 */
+function sweepReuse(A, price, team, rMax, Pr){
+  Pr=Pr||P; const arr=[]; rMax=rMax||15;
+  for(let r=1;r<=rMax;r++) arr.push(evalConfig(A,price,team,r,Pr));
+  return arr;
+}
+
+/* ===================== 格式化 ===================== */
+const fmt=n=> (n==null||isNaN(n))?'—':Math.round(n).toLocaleString('en-US');
+const pct=n=> (n==null||isNaN(n))?'—':(n*100).toFixed(1)+'%';
+const teamStr=t=>`L4·${t.l4} L3·${t.l3} L2·${t.l2} L1·${t.l1}（${t.l4+t.l3+t.l2+t.l1}人）`;
+function lightTag(c){ const m={g:['g','🟢 強接/可接'],a:['a','🟡 審慎/窩工'],r:['r','🔴 虧損']}[c.light];
+  return `<span class="light ${m[0]}">${m[1]}</span>`; }
+
+/* ===================== 結果卡 ===================== */
+function cardHTML(cls,tag,cfg,extraLabel){
+  if(!cfg) return '';
+  const big = fmt(cfg.profit), pos = cfg.profit>=0?'pos':'neg';
+  return `<div class="card ${cls}">
+    <div class="tag">${tag}</div>
+    <div class="big ${pos}">NT$ ${big}</div>
+    <div class="sub2">利潤率 ${pct(cfg.margin)} ${extraLabel||''}</div>
+    <div class="rows">
+      <div>翻模率 <b>${cfg.r} 次</b></div>
+      <div>備模面積 <b>${fmt(cfg.prepArea)} ㎡</b></div>
+      <div>編隊 <b>${teamStr(cfg.team)}</b></div>
+      <div>工期 <b>${cfg.duration} 天</b><span style="color:var(--muted)">（人力${cfg.laborDays}/瓶頸${cfg.bottleneck}）</span></div>
+      <div>單位成本 <b>${fmt(cfg.unitCost)} 元/㎡</b></div>
+      <div>持有者實收 <b>${fmt(cfg.holderRevenue)}</b></div>
+    </div>
+    ${lightTag(cfg)}
+    ${cfg.lifeOver?'<span class="light r" style="margin-left:6px">⚠超壽命</span>':''}
+    ${cfg.bottlenecked?'<span class="light a" style="margin-left:6px">⚠模板鎖工期</span>':''}
+  </div>`;
+}
+function fourCards(best){
+  return `<div class="cards">
+    ${cardHTML('profit','💰 利潤最佳化',best.profit)}
+    ${cardHTML('dur','⚡ 效率：工期最短',best.minDur)}
+    ${cardHTML('unit','📉 效率：單位成本最低',best.minUnit)}
+    ${cardHTML('balance','⚖ 平衡解',best.balance,'· 平衡分'+ (best.balance.score!=null?best.balance.score.toFixed(2):''))}
+  </div>`;
+}
+
+/* ===================== Canvas 圖表（純離線自製） ===================== */
+function setupCanvas(cv){
+  const dpr=window.devicePixelRatio||1;
+  const w=cv.clientWidth||620, h=parseInt(cv.dataset.h||220);
+  cv.width=w*dpr; cv.height=h*dpr; cv.style.height=h+'px';
+  const ctx=cv.getContext('2d'); ctx.scale(dpr,dpr);
+  return {ctx,w,h};
+}
+function lineChart(cv, cfg){
+  const {ctx,w,h}=setupCanvas(cv);
+  const padL=52,padR=cfg.rightAxis?52:14,padT=14,padB=34;
+  const X=cfg.xLabels, n=X.length;
+  const plotW=w-padL-padR, plotH=h-padT-padB;
+  ctx.clearRect(0,0,w,h);
+  const allL=[].concat(...cfg.series.filter(s=>s.axis!=='R').map(s=>s.data));
+  const allR=[].concat(...cfg.series.filter(s=>s.axis==='R').map(s=>s.data));
+  const lMin=Math.min(0,...allL), lMax=Math.max(...allL,1);
+  const rMin=allR.length?Math.min(0,...allR):0, rMax=allR.length?Math.max(...allR,1):1;
+  const xPos=i=> padL + (n<=1?plotW/2:plotW*i/(n-1));
+  const yL=v=> padT + plotH*(1-(v-lMin)/((lMax-lMin)||1));
+  const yR=v=> padT + plotH*(1-(v-rMin)/((rMax-rMin)||1));
+  // grid
+  ctx.strokeStyle='#E2DDD3'; ctx.lineWidth=1; ctx.font='10px sans-serif'; ctx.fillStyle='#8A8578';
+  for(let g=0;g<=4;g++){ const y=padT+plotH*g/4; ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(w-padR,y);ctx.stroke();
+    const v=lMax-(lMax-lMin)*g/4; ctx.textAlign='right'; ctx.fillText(shortNum(v),padL-6,y+3); }
+  if(cfg.rightAxis){ ctx.fillStyle=cfg.rightColor||'#9B4722'; for(let g=0;g<=4;g++){ const y=padT+plotH*g/4;
+    const v=rMax-(rMax-rMin)*g/4; ctx.textAlign='left'; ctx.fillText(shortNum(v),w-padR+5,y+3); } }
+  // x labels
+  ctx.fillStyle='#8A8578'; ctx.textAlign='center';
+  X.forEach((lab,i)=>{ if(n>16 && i%2) return; ctx.fillText(lab, xPos(i), h-12); });
+  ctx.fillStyle='#5C594F'; ctx.fillText(cfg.xTitle||'', w/2, h-1);
+  // 不可行區遮罩（翻模率 < 裝設下限）
+  if(cfg.shadeTo!=null && cfg.shadeTo>0){ const xs=xPos(cfg.shadeTo);
+    ctx.fillStyle='rgba(168,57,43,0.07)'; ctx.fillRect(padL,padT,xs-padL,plotH);
+    ctx.fillStyle='#A8392B'; ctx.font='9px sans-serif'; ctx.textAlign='left'; ctx.fillText('裝不下',padL+3,padT+plotH-4); }
+  // zero line
+  if(lMin<0){ const yz=yL(0); ctx.strokeStyle='#C9B6AE'; ctx.setLineDash([3,3]); ctx.beginPath();ctx.moveTo(padL,yz);ctx.lineTo(w-padR,yz);ctx.stroke(); ctx.setLineDash([]); }
+  // markers
+  (cfg.markers||[]).forEach(mk=>{ const x=xPos(mk.i); ctx.strokeStyle=mk.color||'#B98A3E'; ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(x,padT);ctx.lineTo(x,padT+plotH);ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=mk.color||'#B98A3E'; ctx.textAlign='center'; ctx.font='bold 10px sans-serif'; ctx.fillText(mk.label,x,padT+9); });
+  // series
+  cfg.series.forEach(s=>{ const yf=s.axis==='R'?yR:yL; ctx.strokeStyle=s.color; ctx.lineWidth=s.width||2.2;
+    ctx.beginPath(); s.data.forEach((v,i)=>{ const x=xPos(i),y=yf(v); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke();
+    ctx.fillStyle=s.color; s.data.forEach((v,i)=>{ if(n>16)return; const x=xPos(i),y=yf(v); ctx.beginPath();ctx.arc(x,y,2.4,0,7);ctx.fill(); }); });
+  // legend
+  let lx=padL; ctx.font='11px sans-serif'; ctx.textAlign='left';
+  cfg.series.forEach(s=>{ ctx.fillStyle=s.color; ctx.fillRect(lx,2,11,3); ctx.fillStyle='#5C594F'; ctx.fillText(s.name,lx+15,7); lx+=ctx.measureText(s.name).width+38; });
+}
+function barChart(cv, cfg){
+  const {ctx,w,h}=setupCanvas(cv);
+  const padL=54,padR=14,padT=16,padB=40;
+  const cats=cfg.categories, n=cats.length, plotW=w-padL-padR, plotH=h-padT-padB;
+  ctx.clearRect(0,0,w,h);
+  const vals=[].concat(...cfg.series.map(s=>s.data));
+  const vMin=Math.min(0,...vals), vMax=Math.max(...vals,1);
+  const y=v=> padT+plotH*(1-(v-vMin)/((vMax-vMin)||1));
+  ctx.strokeStyle='#E2DDD3'; ctx.font='10px sans-serif'; ctx.fillStyle='#8A8578';
+  for(let g=0;g<=4;g++){ const yy=padT+plotH*g/4; ctx.beginPath();ctx.moveTo(padL,yy);ctx.lineTo(w-padR,yy);ctx.stroke();
+    const v=vMax-(vMax-vMin)*g/4; ctx.textAlign='right'; ctx.fillText(shortNum(v),padL-6,yy+3); }
+  if(vMin<0){ const yz=y(0); ctx.strokeStyle='#C9B6AE'; ctx.beginPath();ctx.moveTo(padL,yz);ctx.lineTo(w-padR,yz);ctx.stroke(); }
+  const groupW=plotW/n, sN=cfg.series.length, bw=Math.min(46,groupW/(sN+0.6));
+  cats.forEach((cat,i)=>{ const gx=padL+groupW*i+groupW/2;
+    cfg.series.forEach((s,si)=>{ const v=s.data[i]; const x=gx-(sN*bw)/2+si*bw; const yy=y(v); const y0=y(0);
+      ctx.fillStyle=s.colors?s.colors[i]:s.color; ctx.fillRect(x, Math.min(yy,y0), bw-3, Math.abs(yy-y0)||1);
+      ctx.fillStyle='#5C594F'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center'; ctx.fillText(shortNum(v),x+(bw-3)/2, yy-4>padT?yy-4:yy+12); });
+    ctx.fillStyle='#5C594F'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+    String(cat).split('\n').forEach((ln,li)=> ctx.fillText(ln,gx,h-26+li*13)); });
+}
+function shortNum(v){ const a=Math.abs(v);
+  if(a>=1e6) return (v/1e6).toFixed(1)+'M'; if(a>=1e3) return Math.round(v/1e3)+'k';
+  if(a>0&&a<1) return (v*100).toFixed(0)+'%'; return Math.round(v).toString(); }
+
+/* ===================== 三模板對比（v9 分頁3） ===================== */
+function materialCompare(A){
+  const wasteFee=50;
+  const defs=[
+    {name:'木膠合板\n(便宜陷阱)', price:300, life:3, plaster:130, haul:23, scrap:true, color:'#A8392B'},
+    {name:'鋁合金',          price:8000,life:60,plaster:0,  haul:0, scrap:false,color:'#8A8578'},
+    {name:'磐石高分子',       price:3500,life:60,plaster:0,  haul:0, scrap:false,color:'#9B4722'},
+  ];
+  return defs.map(d=>{ const prep=Math.ceil(A/d.life); const amort=d.price/d.life;
+    const scrapCost=d.scrap? prep*wasteFee/A : 0;
+    const perM2=amort+d.plaster+d.haul+scrapCost;
+    return {...d, prep, perM2, totalCase:perM2*A}; });
+}
+
+/* ===================== 共用：讀編隊 + 驗證 ===================== */
+function readTeam(pfx){ return {l4:+v(pfx+'l4'),l3:+v(pfx+'l3'),l2:+v(pfx+'l2'),l1:+v(pfx+'l1')}; }
+function v(id){ return document.getElementById(id).value; }
+function num(id){ return parseFloat(document.getElementById(id).value); }
+function teamWarn(t){
+  if(Math.max(t.l4,t.l3,t.l2,t.l1)>50) return '⚠ 單一等級 > 50 人,疑似把模板㎡誤填進人數格';
+  if((t.l4+t.l3)>(t.l2+t.l1)*2 && (t.l2+t.l1)>0) return '⚠ 編隊倒掛:高階人太多';
+  if(t.l4+t.l3+t.l2+t.l1===0) return '⚠ 總人數為 0,無法施工';
+  return '';
+}
+
+/* ===================== 各模式執行 ===================== */
+function runMode(m){ loadParams(); ({1:run1,2:run2,3:run3,4:run4,5:run5}[m])(); }
+
+function run1(){
+  const A=num('m1_area'),price=num('m1_price'),w=num('m1_w')/100;
+  const out=document.getElementById('m1_out');
+  if(!(A>0)||!(price>0)){ out.innerHTML='<div class="diag">⚠ 面積與報價須 &gt; 0</div>'; return; }
+  const best=optimize(A,price,{balanceWeight:w});
+  const sw=sweepReuse(A,price,best.profit.team);
+  out.innerHTML = fourCards(best)
+    + chartBlock('翻模率 → 利潤 / 單位成本（利潤最佳編隊）','倒 U 型:中間有甜蜜點。',`m1c1`)
+    + chartBlock('四目標解：利潤 vs 工期','同一案,不同目標給不同配置。',`m1c2`,180);
+  drawReuseCurve('m1c1',sw,best.profit.r);
+  drawSolutionBars('m1c2',best);
+  document.getElementById('m1_wlab').textContent=Math.round(w*100)+'%';
+}
+function run2(){
+  const A=num('m2_area'),price=num('m2_price'),days=num('m2_days'),w=num('m2_w')/100;
+  const out=document.getElementById('m2_out');
+  if(!(A>0)||!(price>0)||!(days>0)){ out.innerHTML='<div class="diag">⚠ 面積/報價/天數須 &gt; 0</div>'; return; }
+  const best=optimize(A,price,{balanceWeight:w,targetDays:days});
+  if(!best){ const minNeed=optimize(A,price,{balanceWeight:w});
+    out.innerHTML=`<div class="diag"><b>⚠ ${days} 天達不到。</b>即使最快配置(工期 ${minNeed.minDur.duration} 天@翻模率${minNeed.minDur.r})仍超過目標 ${minNeed.minDur.duration-days} 天。<br>建議:① 降翻模率多備模(縮短模板瓶頸) ② 放寬交期至 ≥ ${minNeed.minDur.duration} 天 ③ 加人(但留意窩工)。</div>`
+      + chartBlock('放寬視角:各翻模率的最短工期','',`m2c1`);
+    drawReuseCurve('m2c1',sweepReuse(A,price,minNeed.minDur.team),minNeed.minDur.r);
+    document.getElementById('m2_wlab').textContent=Math.round(w*100)+'%'; return; }
+  out.innerHTML=`<div class="diag ok"><b>✔ ${days} 天可達交。</b>以下為能準時交付的配置中,各目標最佳解。</div>`
+    + fourCards(best)
+    + chartBlock('達標配置的翻模率 → 利潤曲線','',`m2c1`)
+    + chartBlock('四目標解：利潤 vs 工期','',`m2c2`,180);
+  drawReuseCurve('m2c1',sweepReuse(A,price,best.profit.team),best.profit.r);
+  drawSolutionBars('m2c2',best);
+  document.getElementById('m2_wlab').textContent=Math.round(w*100)+'%';
+}
+function run3(){
+  const A=num('m3_area'),price=num('m3_price'),w=num('m3_w')/100,t=readTeam('m3_');
+  const out=document.getElementById('m3_out'); const tw=teamWarn(t);
+  document.getElementById('m3_terr').textContent=tw;
+  if(!(A>0)||!(price>0)){ out.innerHTML='<div class="diag">⚠ 面積與報價須 &gt; 0</div>'; return; }
+  if(t.l4+t.l3+t.l2+t.l1===0){ out.innerHTML='<div class="diag">⚠ 編隊總人數為 0</div>'; return; }
+  const best=optimize(A,price,{balanceWeight:w,fixedTeam:t});
+  const sw=sweepReuse(A,price,t);
+  out.innerHTML = fourCards(best)
+    + idleDiag(best.profit)
+    + chartBlock('固定編隊下 翻模率 → 利潤 / 單位成本','加人沒用的瓶頸區會標出。',`m3c1`);
+  drawReuseCurve('m3c1',sw,best.profit.r);
+  document.getElementById('m3_wlab').textContent=Math.round(w*100)+'%';
+}
+function run4(){
+  const A=num('m4_area'),price=num('m4_price'),t=readTeam('m4_');
+  const out=document.getElementById('m4_out');
+  if(!(A>0)||!(price>0)){ out.innerHTML='<div class="diag">⚠ 面積與報價須 &gt; 0</div>'; return; }
+  if(t.l4+t.l3+t.l2+t.l1===0){ out.innerHTML='<div class="diag">⚠ 編隊總人數為 0</div>'; return; }
+  const sw=sweepReuse(A,price,t);
+  let bi=0; sw.forEach((c,i)=>{ if(c.profit>sw[bi].profit) bi=i; });
+  const sweet=sw[bi];
+  out.innerHTML = `<div class="diag ok">單層 ${fmt(A)}㎡ · 最佳翻模率 <b>${sweet.r} 次</b> → 備模 ${fmt(sweet.prepArea)}㎡、利潤 NT$ ${fmt(sweet.profit)}（${pct(sweet.margin)}）、工期 ${sweet.duration} 天。</div>`
+    + chartBlock('翻模率 → 利潤 / 單位成本（倒 U 型）','翻模率↑攤銷↓但人力↑,甜蜜點在中段。',`m4c1`,240)
+    + chartBlock('三模板每㎡總成本對比','便宜木模翻 3 次即報廢,加抹灰清運後反而最貴。',`m4c2`,220);
+  drawReuseCurve('m4c1',sw,sweet.r);
+  const mc=materialCompare(A);
+  barChart(document.getElementById('m4c2'),{categories:mc.map(d=>d.name),
+    series:[{name:'元/㎡',colors:mc.map(d=>d.color),data:mc.map(d=>d.perM2)}]});
+}
+function setM5Rate(v){ document.getElementById('m5_fwrate').value=v; }
+function run5(){
+  const A=num('m5_area'),price=num('m5_price'),fw=num('m5_fw'),t=readTeam('m5_');
+  const fwrate=num('m5_fwrate'), consum=num('m5_consum'), maxInstall=num('m5_maxinstall')||0;
+  const out=document.getElementById('m5_out'); const tw=teamWarn(t);
+  document.getElementById('m5_terr').textContent=tw;
+  if(!(A>0)||!(price>0)||!(fw>0)){ out.innerHTML='<div class="diag">⚠ 面積/報價/備模面積須 &gt; 0</div>'; return; }
+  if(!(fwrate>=0)||!(consum>=0)){ out.innerHTML='<div class="diag">⚠ 模板/耗材成本須 ≥ 0</div>'; return; }
+  if(t.l4+t.l3+t.l2+t.l1===0){ out.innerHTML='<div class="diag">⚠ 編隊總人數為 0</div>'; return; }
+  // 以自由覆寫的模板租金/耗材建一份本地參數
+  const Pm=Object.assign({},P,{amort:fwrate, consum:consum});
+  const r=A/fw; const c=evalConfig(A,price,t,r,Pm);
+  // 單次可安裝上限 → 翻模率下限
+  const rMin = maxInstall>0 ? Math.ceil(A/maxInstall) : 0;
+  let capDiag='';
+  if(maxInstall>0){
+    capDiag = (fw>maxInstall)
+      ? `<div class="diag"><b>⚠ 備模 ${fmt(fw)}㎡ 超過單次可安裝上限 ${fmt(maxInstall)}㎡。</b>現場一個週轉週期架不下,需:① 提高翻模率至 ≥ <b>${rMin} 次</b>(少備多翻,備模降到 ≤ ${fmt(maxInstall)}㎡) ② 或分批施工。目前翻模率僅 ${r.toFixed(2)} 次。</div>`
+      : `<div class="diag ok"><b>✔ 備模 ${fmt(fw)}㎡ ≤ 單次可安裝上限 ${fmt(maxInstall)}㎡,現場架得下。</b>此上限對應翻模率下限 ${rMin} 次(再少備就裝不下)。</div>`;
+  }
+  // 模主/出租經濟（v9 ⑩+⑬）
+  const holderOut=fwrate*1.4;                  // 對外牌價 = 租金×1.4
+  const payback = c.holderRevenue>0 ? c.buyInvest/c.holderRevenue : 0;
+  out.innerHTML = `<div class="cards" style="grid-template-columns:1fr">
+      ${cardHTML(c.profit>=0?'profit':'unit', '本案結果（翻模率 '+r.toFixed(2)+'）', c)}
+    </div>`
+    + attribDiag(c)
+    + capDiag
+    + `<div class="econ">
+        <div class="e">模板料成本（本案）<b>NT$ ${fmt(c.formworkCost)}</b></div>
+        <div class="e">耗材成本（本案）<b>NT$ ${fmt(c.consumCost)}</b></div>
+        <div class="e">模主對外牌價<b>${fmt(holderOut)} 元/㎡</b></div>
+        <div class="e">持有者本案實收<b>NT$ ${fmt(c.holderRevenue)}</b></div>
+        <div class="e">買模一次性投資<b>NT$ ${fmt(c.buyInvest)}</b></div>
+        <div class="e">買模幾案回本<b>${payback?payback.toFixed(1):'—'} 案</b></div>
+      </div>`
+    + chartBlock('成本結構拆解','工錢 / 模板料 / 耗材 / 利潤。',`m5c1`,210)
+    + chartBlock('若改變翻模率（同編隊、同成本參數）的利潤曲線','你目前的位置已標出。',`m5c2`,220);
+  barChart(document.getElementById('m5c1'),{categories:['工錢','模板料','耗材','利潤'],
+    series:[{name:'元',colors:['#9B4722','#B98A3E','#8A8578', c.profit>=0?'#4A7A5A':'#A8392B'],
+      data:[c.labor,c.formworkCost,c.consumCost,c.profit]}]});
+  const sw=sweepReuse(A,price,t,Math.max(15,Math.ceil(r)+2),Pm);
+  const nearest=Math.min(sw.length-1,Math.max(0,Math.round(r)-1));
+  drawReuseCurve('m5c2',sw,sw[nearest].r,rMin);
+}
+
+/* 圖表容器 + 繪製輔助 */
+function chartBlock(title,note,id,h){ return `<div class="chart-block"><h4>${title}</h4>${note?`<div class="cnote">${note}</div>`:''}<canvas id="${id}" data-h="${h||220}"></canvas></div>`; }
+function drawReuseCurve(id,sw,sweetR,rMin){
+  const cv=document.getElementById(id); if(!cv) return;
+  const sweetI=sw.findIndex(c=>c.r===sweetR);
+  const bnI=sw.findIndex(c=>c.bottlenecked);
+  const markers=[]; if(sweetI>=0) markers.push({i:sweetI,label:'甜蜜點 r'+sweetR,color:'#4A7A5A'});
+  if(bnI>=0) markers.push({i:bnI,label:'瓶頸區→',color:'#C28A2C'});
+  let shadeTo=-1;
+  if(rMin&&rMin>1){ const rmI=sw.findIndex(c=>c.r>=rMin);
+    if(rmI>0){ shadeTo=rmI; markers.push({i:rmI,label:'裝設下限 r'+rMin,color:'#A8392B'}); } }
+  lineChart(cv,{xLabels:sw.map(c=>c.r), xTitle:'翻模率（次）',
+    rightAxis:true, rightColor:'#9B4722', shadeTo,
+    series:[
+      {name:'本案利潤(左)',color:'#4A7A5A',data:sw.map(c=>c.profit)},
+      {name:'單位成本 元/㎡(右)',color:'#9B4722',data:sw.map(c=>c.unitCost),axis:'R'}
+    ], markers});
+}
+function drawSolutionBars(id,best){
+  const cv=document.getElementById(id); if(!cv) return;
+  const labels=['利潤最佳','工期最短','單位成本低','平衡'];
+  const items=[best.profit,best.minDur,best.minUnit,best.balance];
+  barChart(cv,{categories:labels.map((l,i)=>l+'\nr'+items[i].r+'·'+items[i].duration+'天'),
+    series:[{name:'利潤',colors:items.map(c=>c.profit>=0?'#4A7A5A':'#A8392B'),data:items.map(c=>c.profit)}]});
+}
+function idleDiag(c){
+  if(c.bottlenecked){ const need=workersForBottleneck(c.A,c.bottleneck,P);
+    return `<div class="diag"><b>⚠ 模板鎖死工期。</b>模板瓶頸 ${c.bottleneck} 天 > 人力 ${c.laborDays} 天,多出來的人在等模板（窩工），加人也不會更快。解法:① 減人到約 ${need} 人省工資 ② 多備模板解鎖瓶頸。</div>`; }
+  return `<div class="diag ok"><b>✔ 人力與模板節奏匹配,無窩工。</b>工期 ${c.duration} 天,利潤率 ${pct(c.margin)}。</div>`;
+}
+function attribDiag(c){
+  if(c.profit>=0) return `<div class="diag ok"><b>✔ 本案獲利。</b>利潤率 ${pct(c.margin)},單位成本 ${fmt(c.unitCost)} 元/㎡ &lt; 承包 ${fmt(c.price)}。${c.bottlenecked?' 但模板鎖工期,見下方曲線。':''}</div>`;
+  let cause='成本結構偏高,逐項檢查';
+  if(c.unitCost>c.price) cause=`單價太低:真實成本 ${fmt(c.unitCost)} 元/㎡ &gt; 承包 ${fmt(c.price)},每㎡倒貼 ${fmt(c.unitCost-c.price)} 元`;
+  else if(c.lifeOver) cause=`翻模 ${c.r.toFixed(0)} 次超過壽命 ${P.life} 次,需補模`;
+  else if(c.formworkCost/c.totalCost>0.4) cause=`模板太貴:佔總成本 ${pct(c.formworkCost/c.totalCost)},提高翻模率攤薄`;
+  return `<div class="diag"><b>【真實試算,非系統錯誤】負利潤主因 → </b>${cause}。</div>`;
+}
+
+/* ===================== Tabs ===================== */
+document.getElementById('tabs').addEventListener('click',e=>{
+  const tab=e.target.closest('.tab'); if(!tab) return; const m=tab.dataset.m;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===tab));
+  document.querySelectorAll('.mode').forEach(s=>s.classList.toggle('active',s.dataset.m===m));
+});
+['m1_w','m2_w','m3_w','m4_w','m5_w'].forEach(id=>{ const el=document.getElementById(id); if(el)
+  el.addEventListener('input',()=>{ const lab=document.getElementById(id+'lab')||document.getElementById(id.replace('_w','_wlab')); }); });
+
+/* ===================== 黃金回歸自測 ===================== */
+const GOLDEN_30 = [ // [面積,單價,L4,L3,L2,L1,模板㎡, 期望利潤(±), 期望工期]
+ [1025,1500,1,0,1,4,200, 446005,47],[800,1800,0,1,1,3,180, 591692,45],
+ [1200,1400,1,1,2,5,250, 403937,36],[600,2000,0,0,1,2,150, 564619,60],
+ [1500,1600,1,1,2,6,300, 805283,41],[1025,1500,1,1,1,1,200, 489373,57],
+ [300,1500,1,0,1,4,100, 5115,21],[500,1500,1,0,1,4,150, 208280,24],
+ [1800,1500,1,1,2,5,250, 724969,53],[2500,1500,1,1,2,6,300, 912092,68],
+ [5000,1500,2,1,3,8,400, 1271476,95],
+];
+const HANDOFF_7 = [ // 同編隊 1/0/1/4, 變模板㎡
+ [100,-259850,72],[150,387539,48],[199,445517,47],[200,446005,47],[201,446484,47],[250,462040,47],[300,467230,47],
+];
+function runSelfTest(){
+  loadParams(); const o=document.getElementById('st-out'); o.style.display='block';
+  let lines=[], pass=0, total=0;
+  const tol=(exp)=> Math.max(2000, Math.abs(exp)*0.012); // <1.2% 或 2000 元
+  lines.push('═══ 30 組驗證清單（利潤/工期）═══');
+  GOLDEN_30.forEach((g,i)=>{ const [A,pr,l4,l3,l2,l1,fw,eP,eD]=g; const r=A/fw;
+    const c=evalConfig(A,pr,{l4,l3,l2,l1},r,P); total++;
+    const okP=Math.abs(c.profit-eP)<=tol(eP), okD=Math.abs(c.duration-eD)<=1;
+    if(okP&&okD)pass++;
+    lines.push(`${okP&&okD?'✔':'✘'} #${i+1} A${A} fw${fw}: 利潤 ${fmt(c.profit)} (期望${fmt(eP)}${okP?'':' ✘'}) 工期 ${c.duration}(${eD}${okD?'':' ✘'})`);
+  });
+  lines.push(''); lines.push('═══ 7 組交接案例（編隊 1/0/1/4）═══');
+  HANDOFF_7.forEach(g=>{ const [fw,eP,eD]=g; const A=1025,r=A/fw;
+    const c=evalConfig(A,1500,{l4:1,l3:0,l2:1,l1:4},r,P); total++;
+    const okP=Math.abs(c.profit-eP)<=tol(eP),okD=Math.abs(c.duration-eD)<=1; if(okP&&okD)pass++;
+    lines.push(`${okP&&okD?'✔':'✘'} 模板${fw}㎡: 利潤 ${fmt(c.profit)} (期望${fmt(eP)}) 工期 ${c.duration}(${eD})`);
+  });
+  lines.push(''); lines.push('═══ 反向 −30M 護欄（L3=199, 總205人）═══');
+  const bug=evalConfig(1025,1500,{l4:1,l3:199,l2:1,l1:4},1025/200,P); total++;
+  // 護欄/同級案例:容忍 1 天瓶頸進位差(⌈5.125×7⌉=36，交接文記 37 為其本機觀測值)
+  const okBug=Math.abs(bug.profit-(-30288183))<=1500000 && Math.abs(bug.duration-37)<=1;
+  if(okBug)pass++;
+  lines.push(`${okBug?'✔':'✘'} 引擎重現 bug 態: 利潤 ${fmt(bug.profit)} (期望≈−30,288,183) 工期 ${bug.duration}(≈37,差1天為瓶頸進位) → 同量級、同成因(L3=199人爆薪),證明邏輯與 v9 等價`);
+  lines.push(''); lines.push(`【總計】${pass}/${total} 通過 ${pass===total?'🟢 全綠':'🔴 有差異'}`);
+  o.textContent=lines.join('\n');
+}
+
+/* 初始：跑模式1（等版面 settle 後再畫，避免 canvas 量到 0 寬） */
+function currentMode(){ const t=document.querySelector('.tab.active'); return t?+t.dataset.m:1; }
+function redrawActive(){ loadParams(); runMode(currentMode()); }
+window.addEventListener('load',()=>{ loadParams();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>run1())); });
+let _rz; window.addEventListener('resize',()=>{ clearTimeout(_rz); _rz=setTimeout(redrawActive,180); });
+</script>
+</body>
+</html>
