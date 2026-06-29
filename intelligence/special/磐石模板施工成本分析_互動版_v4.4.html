@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>磐石模板施工成本分析 · 互動版 v4.4</title>
+<style>
+:root{
+  --paper:#EAE8E2;--concrete:#D7D3CB;--card:#F4F2ED;--line:#BEB9AE;
+  --ink:#26261F;--ink2:#55514B;--soft:#8A867C;
+  --ochre:#9E4A33;--ochre-l:#C06B4E;--gold:#B8893A;--green:#4A6B4D;--red:#A8341F;--blue:#3E6680;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Noto Sans TC","PingFang TC",sans-serif;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;font-size:15px;}
+.serif{font-family:"Noto Serif TC","Songti TC",serif;}
+.wrap{max-width:1200px;margin:0 auto;padding:32px 30px 60px;}
+header{border-bottom:3px solid var(--ink);padding-bottom:16px;margin-bottom:22px;}
+.kicker{font-size:11.5px;letter-spacing:5px;color:var(--ochre);font-weight:700;margin-bottom:9px;}
+h1{font-size:27px;letter-spacing:1px;font-weight:600;}
+h1 small{font-size:14px;color:var(--soft);font-weight:400;margin-left:10px;}
+.sub{margin-top:9px;font-size:13px;color:var(--ink2);}
+
+/* 分頁標籤 */
+.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid var(--line);}
+.tab{padding:12px 22px;font-size:14.5px;font-weight:700;color:var(--soft);cursor:pointer;border:2px solid transparent;border-bottom:none;border-radius:7px 7px 0 0;transition:.15s;margin-bottom:-2px;}
+.tab:hover{color:var(--ink2);}
+.tab.on{color:var(--ochre);background:var(--card);border-color:var(--line);border-bottom:2px solid var(--card);}
+.page{display:none;}
+.page.on{display:block;animation:fade .25s;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* 控制盤 */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px 26px;margin-bottom:22px;}
+.panel h3{font-size:13px;letter-spacing:2px;color:var(--ochre);font-weight:700;margin-bottom:18px;}
+.ctrl{margin-bottom:20px;}
+.ctrl:last-child{margin-bottom:0;}
+.ctrl .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;}
+.ctrl .lab{font-size:13.5px;font-weight:700;color:var(--ink2);}
+.ctrl .lab small{font-weight:400;color:var(--soft);font-size:11.5px;margin-left:5px;}
+.ctrl .num{font-size:21px;font-weight:300;color:var(--ochre);}
+.ctrl .num small{font-size:12px;color:var(--soft);font-weight:400;}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--concrete);outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--ochre);cursor:pointer;border:3px solid var(--card);box-shadow:0 2px 5px rgba(0,0,0,.18);}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--ochre);cursor:pointer;border:3px solid var(--card);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 30px;}
+@media(max-width:720px){.grid2{grid-template-columns:1fr;}}
+
+/* 編隊輸入 */
+.team{display:grid;grid-template-columns:1.4fr .8fr .7fr .7fr;gap:8px;align-items:center;font-size:13px;margin-bottom:7px;}
+.team .h{font-size:11.5px;color:var(--soft);font-weight:700;}
+.team .lv{font-weight:700;}
+.team input[type=number]{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:5px;font-size:14px;text-align:center;background:#fff;}
+.stepper{display:flex;align-items:center;gap:0;}
+.stepper button{width:28px;height:30px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:16px;color:var(--ink2);}
+.stepper button:hover{background:var(--concrete);}
+.stepper input{border-radius:0 !important;border-left:none !important;border-right:none !important;}
+
+/* 模式切換 */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;}
+.seg button{padding:8px 16px;font-size:13px;border:none;background:var(--paper);cursor:pointer;color:var(--ink2);font-weight:700;}
+.seg button.on{background:var(--ochre);color:#fff;}
+
+/* 結果區 */
+.results{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;}
+@media(max-width:840px){.results{grid-template-columns:1fr;}}
+.bigstat{background:var(--ink);color:var(--card);border-radius:12px;padding:26px 28px;}
+.bigstat .row{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid #3a3a32;}
+.bigstat .row:last-child{border:none;}
+.bigstat .k{font-size:13.5px;color:#c9c5bb;}
+.bigstat .v{font-size:23px;font-weight:300;}
+.bigstat .v.hl{color:#E8B98A;font-weight:400;}
+.lamp{margin-top:18px;text-align:center;padding:14px;border-radius:8px;font-size:19px;font-weight:700;letter-spacing:1px;}
+
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.scard{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:15px 16px;border-left:5px solid var(--line);}
+.scard .k{font-size:12px;color:var(--ink2);font-weight:700;line-height:1.4;}
+.scard .v{font-size:24px;font-weight:300;margin-top:6px;}
+.scard .v small{font-size:12px;color:var(--soft);}
+.scard.ochre{border-left-color:var(--ochre);}.scard.ochre .v{color:var(--ochre);}
+.scard.green{border-left-color:var(--green);}.scard.green .v{color:var(--green);}
+.scard.blue{border-left-color:var(--blue);}.scard.blue .v{color:var(--blue);}
+
+/* 成本長條 */
+.barbox{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px 24px;margin-top:22px;}
+.barbox h3{font-size:13px;letter-spacing:2px;color:var(--ochre);font-weight:700;margin-bottom:18px;}
+.bar{display:flex;height:46px;border-radius:7px;overflow:hidden;margin-bottom:14px;background:var(--concrete);}
+.bar .seg2{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12.5px;font-weight:700;transition:width .3s;white-space:nowrap;overflow:hidden;}
+.barleg{display:flex;gap:22px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);}
+.barleg i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:middle;margin-right:6px;}
+
+.note{font-size:12px;color:var(--soft);line-height:1.7;margin-top:14px;padding:12px 15px;background:var(--paper);border-radius:7px;border-left:3px solid var(--line);}
+.note b{color:var(--ochre);}
+.advice{margin-top:16px;padding:15px 18px;border-radius:8px;font-size:13.5px;line-height:1.7;}
+.advice.ok{background:#DCE6DC;color:#2c4a2e;}
+.advice.warn{background:#F5E6D8;color:#7a4a1a;}
+
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--soft);letter-spacing:1px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.seal{color:var(--ochre);font-weight:700;letter-spacing:3px;}
+table.cmp{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px;}
+table.cmp th,table.cmp td{padding:11px 12px;text-align:center;border-bottom:1px solid var(--line);}
+table.cmp th{background:var(--ink);color:var(--card);font-weight:700;font-size:12.5px;}
+table.cmp td.lab{text-align:left;font-weight:700;color:var(--ink2);background:var(--card);}
+table.cmp .hero{background:#F0DDD2;font-weight:700;color:var(--ochre);}
+table.cmp tr.total td{font-size:16px;font-weight:700;border-top:2px solid var(--ink);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">磐 石 模 板 施 工 成 本 分 析 · 互 動 版</div>
+    <h1>三合一成本推算<small>v4.4 · 拖滑桿即時算 · 範例：高福 1025㎡</small></h1>
+    <p class="sub">把 Excel 的雙向推算搬上網頁：改面積、人數、翻模、報價，工期／成本／利潤率／燈號即時跳動。</p>
+  </header>
+
+  <div class="tabs">
+    <div class="tab on" data-p="cost">① 三合一成本分析</div>
+    <div class="tab" data-p="rent">② 模板出租損益</div>
+    <div class="tab" data-p="cmp">③ 三模板對比</div>
+  </div>
+
+  <!-- ============ 分頁1 成本分析 ============ -->
+  <div class="page on" id="p-cost">
+    <div class="panel">
+      <h3>① 案件條件</h3>
+      <div class="grid2">
+        <div class="ctrl">
+          <div class="top"><span class="lab">案件面積 <small>清水模接觸面積</small></span><span class="num"><span id="o-area">1025</span><small> ㎡</small></span></div>
+          <input type="range" id="i-area" min="200" max="3000" value="1025" step="25">
+        </div>
+        <div class="ctrl">
+          <div class="top"><span class="lab">承包單價 <small>對業主報價</small></span><span class="num">$<span id="o-price">1500</span><small> /㎡</small></span></div>
+          <input type="range" id="i-price" min="800" max="2500" value="1500" step="50">
+        </div>
+        <div class="ctrl">
+          <div class="top"><span class="lab">管理費加成</span><span class="num"><span id="o-mgmt">20</span><small> %</small></span></div>
+          <input type="range" id="i-mgmt" min="0" max="40" value="20" step="1">
+        </div>
+        <div class="ctrl">
+          <div class="top"><span class="lab">備模面積 <small>實際備多少模板</small></span><span class="num"><span id="o-prep">200</span><small> ㎡</small></span></div>
+          <input type="range" id="i-prep" min="15" max="1025" value="200" step="5">
+        </div>
+        <div class="ctrl">
+          <div class="top"><span class="lab">每輪週轉天 <small>組立→澆置→養護→拆</small></span><span class="num"><span id="o-cyc">7</span><small> 天</small></span></div>
+          <input type="range" id="i-cyc" min="5" max="14" value="7" step="1">
+        </div>
+        <div class="ctrl">
+          <div class="top"><span class="lab">模板成本口徑</span><span class="num" style="font-size:14px;" id="o-mode">租賃攤銷58</span></div>
+          <div class="seg" id="seg-amort" style="margin-top:6px;">
+            <button class="on" data-v="1">租賃攤銷 (58/㎡)</button>
+            <button data-v="2">全額 (330/㎡)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>② 施工編隊（填人數）</h3>
+      <div class="team h"><span>等級 / 日產能</span><span>人數</span><span>日薪</span><span>工資佔比</span></div>
+      <div class="team" data-lv="3"><span class="lv">L4 資深模主 <small style="color:var(--soft)">6㎡/日</small></span>
+        <div class="stepper"><button data-d="-1">−</button><input type="number" class="cnt" value="1" min="0" max="30"><button data-d="1">+</button></div>
+        <span>$3500</span><span class="wpct">—</span></div>
+      <div class="team" data-lv="2"><span class="lv">L3 認證模主 <small style="color:var(--soft)">5㎡/日</small></span>
+        <div class="stepper"><button data-d="-1">−</button><input type="number" class="cnt" value="0" min="0" max="30"><button data-d="1">+</button></div>
+        <span>$3000</span><span class="wpct">—</span></div>
+      <div class="team" data-lv="1"><span class="lv">L2 作業員 <small style="color:var(--soft)">4㎡/日</small></span>
+        <div class="stepper"><button data-d="-1">−</button><input type="number" class="cnt" value="1" min="0" max="30"><button data-d="1">+</button></div>
+        <span>$2500</span><span class="wpct">—</span></div>
+      <div class="team" data-lv="0"><span class="lv">L1 實習作業員 <small style="color:var(--soft)">3㎡/日</small></span>
+        <div class="stepper"><button data-d="-1">−</button><input type="number" class="cnt" value="4" min="0" max="30"><button data-d="1">+</button></div>
+        <span>$2000</span><span class="wpct">—</span></div>
+      <div class="note" id="team-sum"></div>
+    </div>
+
+    <div class="results">
+      <div class="bigstat">
+        <div class="row"><span class="k">總人數</span><span class="v" id="r-ppl">6 人</span></div>
+        <div class="row"><span class="k">每日加權產能</span><span class="v" id="r-cap">22 ㎡/日</span></div>
+        <div class="row"><span class="k">★ 推算工期（取慢者）</span><span class="v hl" id="r-days">47 天</span></div>
+        <div class="row"><span class="k">總成本</span><span class="v" id="r-cost">906,227</span></div>
+        <div class="row"><span class="k">總承包額</span><span class="v" id="r-rev">1,537,500</span></div>
+        <div class="row"><span class="k">★ 利潤</span><span class="v hl" id="r-profit">631,273</span></div>
+        <div class="lamp" id="r-lamp">◎ 強接</div>
+      </div>
+      <div class="statgrid">
+        <div class="scard ochre"><div class="k">利潤率</div><div class="v" id="r-margin">41.1<small> %</small></div></div>
+        <div class="scard blue"><div class="k">真實單位成本</div><div class="v" id="r-unit">884<small> /㎡</small></div></div>
+        <div class="scard"><div class="k">採用模板成本</div><div class="v" id="r-amort">58<small> /㎡</small></div></div>
+        <div class="scard"><div class="k">翻模次數 / 壽命檢查</div><div class="v" id="r-turn" style="font-size:18px;">5.1次 ✔</div></div>
+        <div class="scard green"><div class="k">建議備模(甜蜜點)</div><div class="v" id="r-sweet">153<small> ㎡</small></div></div>
+        <div class="scard"><div class="k">買模一次投資</div><div class="v" id="r-invest" style="font-size:19px;">70萬</div></div>
+      </div>
+    </div>
+
+    <div class="barbox">
+      <h3>成本結構（料工費 vs 利潤）</h3>
+      <div class="bar" id="bar-cost"></div>
+      <div class="barleg">
+        <span><i style="background:#9E4A33"></i>工錢 <b id="lg-wage"></b></span>
+        <span><i style="background:#B8893A"></i>模板料 <b id="lg-tpl"></b></span>
+        <span><i style="background:#8A867C"></i>耗材 <b id="lg-mat"></b></span>
+        <span><i style="background:#4A6B4D"></i>利潤 <b id="lg-prof"></b></span>
+      </div>
+      <div class="advice ok" id="advice"></div>
+    </div>
+  </div>
+
+  <!-- 分頁2/3 內容由JS或下方填 -->
+  <div class="page" id="p-rent"></div>
+  <div class="page" id="p-cmp"></div>
+
+  <footer>
+    <span>磐石模板施工成本分析 · 互動版 v4.4 · 公式同步自 Excel 重算驗證</span>
+    <span class="seal">CHEN YI-FU</span>
+  </footer>
+</div>
+<script>
+// ===== 磐石成本分析互動引擎 · 公式對照Excel v4.4 =====
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+const COL={ochre:'#9E4A33',gold:'#B8893A',soft:'#8A867C',green:'#4A6B4D'};
+
+// L4/L3/L2/L1 對應 data-lv 3/2/1/0；日薪與產能(Excel D14-D17,E14-E17)
+const WAGE={3:3500,2:3000,1:2500,0:2000};
+const CAP ={3:6,   2:5,   1:4,   0:3};
+
+// ---- 分頁1 成本分析 ----
+function calcCost(){
+  const area=+$('i-area').value;        // D5 案件面積
+  const price=+$('i-price').value;      // D6 承包單價
+  const mgmt=+$('i-mgmt').value/100;    // D7 管理費加成
+  const prep=+$('i-prep').value;        // C11 實際備模面積(法1)
+  const cyc=+$('i-cyc').value;          // G8 每輪週轉天
+  const amortMode=+document.querySelector('#seg-amort button.on').dataset.v; // D8 口徑
+
+  // 編隊
+  const cnts={};
+  document.querySelectorAll('#p-cost .team[data-lv]').forEach(t=>{
+    cnts[t.dataset.lv]=+t.querySelector('.cnt').value;
+  });
+  const ppl=Object.values(cnts).reduce((a,b)=>a+b,0);                // C18 總人數
+  const cap=Object.entries(cnts).reduce((s,[lv,n])=>s+n*CAP[lv],0); // C19 加權產能=Σ(人×等級產能)
+  // 加權日薪 H22 = Σ(人×日薪)/人數
+  const wageSum=Object.entries(cnts).reduce((s,[lv,n])=>s+n*WAGE[lv],0);
+  const wAvg= ppl>0 ? wageSum/ppl : 2333;
+
+  // 翻模次數 H11 = 面積/備模
+  const turn= prep>0 ? area/prep : 0;
+  // 設計壽命60(D27)
+  const LIFE=60;
+  // 工期 C21 = max(人力工期, 備模週轉天) 取慢者
+  const dayLabor = cap>0 ? Math.ceil(area/cap) : 999;  // ROUNDUP(D5/C19)
+  const dayPrep  = Math.ceil(turn*cyc);                // ROUNDUP(H11*G8)
+  const days = Math.max(dayLabor, dayPrep);            // C21
+
+  // 工錢 F23 = Σ(人×日薪)×工期 ×(1+管理費)  [模式1: SUM(F14:F17)=Σ(人×日薪×工期)]
+  const wage = wageSum*days*(1+mgmt);                  // F23
+
+  // 模板成本 D29採用 = 模式1:牌價3500/壽命60=58.33; 模式2:330
+  const TPL_PRICE=3500;
+  const amortUnit = amortMode===1 ? TPL_PRICE/LIFE : 330; // D29
+  const tplCost = amortUnit*prep;                      // D30 = 採用×備模面積
+  // 耗材 D44 = SUM(5金:5+40+8+25+15+3)+SUM(可重複:20+6+4+2)*0.2 = 96+32*0.2=96+6.4=102.4
+  const MAT_UNIT=102.4;                                // D44
+  const mat = MAT_UNIT*area;                           // D45
+
+  const totalCost = wage+tplCost+mat;                  // D51
+  const unitCost = totalCost/area;                     // D52
+  const rev = area*price;                              // D53
+  const profit = rev-totalCost;                        // D54
+  const margin = profit/rev;                           // D55
+
+  // 甜蜜點 G9 = ROUNDUP(面積/(ROUNDUP(面積/加權產能)/週轉天))
+  const sweet = cap>0 ? Math.ceil(area/(Math.ceil(area/cap)/cyc)) : 0;
+  // 買模投資 D31
+  const invest = TPL_PRICE*prep;
+
+  // 燈號 D56
+  let lamp,lampBg,lampCol;
+  if(margin<0){lamp='✘ 虧損';lampBg='#F3D6D2';lampCol='#A8341F';}
+  else if(margin<0.1){lamp='△ 審慎';lampBg='#F5E6D8';lampCol='#B8893A';}
+  else if(margin<0.2){lamp='○ 可接';lampBg='#E5EBE5';lampCol='#4A6B4D';}
+  else{lamp='◎ 強接';lampBg='#DCE6DC';lampCol='#2c4a2e';}
+
+  // 翻模壽命檢查 J11
+  const turnOk = turn<=LIFE;
+
+  return {area,price,mgmt,prep,cyc,amortMode,ppl,cap,wAvg,turn,days,dayLabor,dayPrep,
+          wage,amortUnit,tplCost,mat,totalCost,unitCost,rev,profit,margin,sweet,invest,
+          lamp,lampBg,lampCol,turnOk,LIFE,cnts,wageSum};
+}
+
+function renderCost(){
+  const r=calcCost();
+  // 條件輸出
+  $('o-area').textContent=r.area; $('o-price').textContent=r.price;
+  $('o-mgmt').textContent=Math.round(r.mgmt*100); $('o-prep').textContent=r.prep;
+  $('o-cyc').textContent=r.cyc;
+  $('o-mode').textContent= r.amortMode===1?'租賃攤銷58':'全額330';
+  // 編隊工資佔比
+  document.querySelectorAll('#p-cost .team[data-lv]').forEach(t=>{
+    const lv=t.dataset.lv, n=r.cnts[lv];
+    const w=n*WAGE[lv]*r.days;
+    const pct=r.wageSum*r.days>0? w/(r.wageSum*r.days)*100:0;
+    t.querySelector('.wpct').textContent= n>0? pct.toFixed(0)+'%':'—';
+  });
+  $('team-sum').innerHTML=`總人數 <b>${r.ppl}</b> 人，每日加權產能 <b>${r.cap}</b> ㎡，加權日薪 <b>$${fmt(r.wAvg)}</b>。人力工期 ${r.dayLabor} 天、備模週轉 ${r.dayPrep} 天，<b>取慢者 ${r.days} 天</b>。`;
+
+  // 結果
+  $('r-ppl').textContent=r.ppl+' 人';
+  $('r-cap').textContent=r.cap+' ㎡/日';
+  $('r-days').textContent=r.days+' 天';
+  $('r-cost').textContent=fmt(r.totalCost);
+  $('r-rev').textContent=fmt(r.rev);
+  $('r-profit').textContent=fmt(r.profit);
+  $('r-margin').innerHTML=(r.margin*100).toFixed(1)+'<small> %</small>';
+  $('r-unit').innerHTML=fmt(r.unitCost)+'<small> /㎡</small>';
+  $('r-amort').innerHTML=r.amortUnit.toFixed(0)+'<small> /㎡</small>';
+  $('r-turn').textContent=r.turn.toFixed(1)+'次 '+(r.turnOk?'✔':'✘超壽命');
+  $('r-sweet').innerHTML=r.sweet+'<small> ㎡</small>';
+  $('r-invest').textContent=(r.invest/10000).toFixed(0)+'萬';
+  const lamp=$('r-lamp'); lamp.textContent=r.lamp; lamp.style.background=r.lampBg; lamp.style.color=r.lampCol;
+
+  // 利潤率卡顏色
+  const mc=$('r-margin').closest('.scard');
+  mc.className='scard '+(r.margin>=0.2?'green':(r.margin<0.1?'':'ochre'));
+
+  // 成本長條
+  const segs=[['wage',r.wage,'#9E4A33'],['tpl',r.tplCost,'#B8893A'],['mat',r.mat,'#8A867C'],['prof',Math.max(r.profit,0),'#4A6B4D']];
+  const tot=r.rev>0?Math.max(r.rev,r.totalCost):r.totalCost;
+  $('bar-cost').innerHTML=segs.map(([k,v,c])=>{
+    const w=v/tot*100;
+    return `<div class="seg2" style="width:${w}%;background:${c}">${w>8?fmt(v):''}</div>`;
+  }).join('');
+  $('lg-wage').textContent=fmt(r.wage);
+  $('lg-tpl').textContent=fmt(r.tplCost);
+  $('lg-mat').textContent=fmt(r.mat);
+  $('lg-prof').textContent=fmt(r.profit);
+
+  // 建議 B93/B95
+  const adv=$('advice');
+  let txt;
+  if(r.margin<0){txt='✘ 此配置虧損，建議減人／縮工期／提高報價。';adv.className='advice warn';}
+  else if(r.margin<0.1){txt=`△ 利潤率偏低（${(r.margin*100).toFixed(1)}%），建議減 L1 低效人力或拉高承包單價。`;adv.className='advice warn';}
+  else{txt=`◎ 配置良好：工期 ${r.days} 天，利潤率 ${(r.margin*100).toFixed(1)}%。`;adv.className='advice ok';}
+  let sweetTxt;
+  if(!r.turnOk) sweetTxt=` ⚠ 備模太少翻模 ${r.turn.toFixed(0)} 次超過壽命 ${r.LIFE} 次，請增加備模面積！`;
+  else sweetTxt=` 備模建議：目前 ${r.prep}㎡（翻 ${r.turn.toFixed(1)} 次），甜蜜點約 ${r.sweet}㎡。低於甜蜜點會拖工期，高於則多花投資。`;
+  adv.innerHTML=txt+sweetTxt;
+}
+
+// ---- 分頁2 出租損益 (Excel 模板出租收入頁 ①租賃方損益表) ----
+function buildRent(){
+  $('p-rent').innerHTML=`
+  <div class="panel">
+    <h3>① 租賃方損益表（內部模板出租 · RFID可對帳）</h3>
+    <div class="grid2">
+      <div class="ctrl">
+        <div class="top"><span class="lab">租用備模面積 <small>這專案租多少㎡</small></span><span class="num"><span id="o-rarea">200</span><small> ㎡</small></span></div>
+        <input type="range" id="i-rarea" min="50" max="1025" value="200" step="10">
+      </div>
+      <div class="ctrl">
+        <div class="top"><span class="lab">出租率 <small>空置率折扣</small></span><span class="num"><span id="o-occ">75</span><small> %</small></span></div>
+        <input type="range" id="i-occ" min="40" max="100" value="75" step="5">
+      </div>
+      <div class="ctrl">
+        <div class="top"><span class="lab">租用天數 <small>本案租多久</small></span><span class="num"><span id="o-rday">60</span><small> 天</small></span></div>
+        <input type="range" id="i-rday" min="20" max="180" value="60" step="10">
+      </div>
+      <div class="ctrl">
+        <div class="top"><span class="lab">本案翻模次數 <small>這案翻幾次(壽命60)</small></span><span class="num"><span id="o-rturn">11</span><small> 次</small></span></div>
+        <input type="range" id="i-rturn" min="1" max="60" value="11" step="1">
+      </div>
+    </div>
+    <div class="note">攤銷單價鎖定 <b>330 元/㎡</b>（全額口徑）· 模板牌價 3500 · 年維修率 5% · 運倉率 3% · 利息率 4%。這些是 Excel 鎖定參數。</div>
+  </div>
+
+  <div class="results">
+    <div class="bigstat">
+      <div class="row"><span class="k">A. 出租收入（面積×攤銷330）</span><span class="v hl" id="rr-rev">66,000</span></div>
+      <div class="row"><span class="k">(減) 維修分攤</span><span class="v" id="rr-fix">5,753</span></div>
+      <div class="row"><span class="k">(減) 運輸倉儲</span><span class="v" id="rr-log">1,980</span></div>
+      <div class="row"><span class="k">(減) 閒置持有成本</span><span class="v" id="rr-idle">2,589</span></div>
+      <div class="row"><span class="k">★ 租賃方本案淨賺（含閒置）</span><span class="v hl" id="rr-net">55,678</span></div>
+    </div>
+    <div class="statgrid">
+      <div class="scard blue"><div class="k">本案備模投資</div><div class="v" id="rr-inv" style="font-size:20px;">70萬</div></div>
+      <div class="scard ochre"><div class="k">本案回收率</div><div class="v" id="rr-rec">9.4<small> %</small></div></div>
+      <div class="scard"><div class="k">★ 模板攤提回本<small style="display:block;color:var(--soft)">投資÷面積×58</small></div><div class="v green" id="rr-pay">60<small> 案</small></div></div>
+      <div class="scard"><div class="k">模板壽命可服務<small style="display:block;color:var(--soft)">60÷本案翻模</small></div><div class="v" id="rr-life">5.5<small> 案</small></div></div>
+    </div>
+  </div>
+
+  <div class="barbox">
+    <h3>滿壽命總實收倍數（三層 · 標清假設）</h3>
+    <table class="cmp">
+      <tr><th>口徑</th><th>倍數</th><th>假設</th></tr>
+      <tr><td class="lab">L1 理論毛倍數</td><td id="rr-m1">5.7×</td><td style="font-size:12px;color:var(--soft)">每次330全價×100%出租×滿壽命60，無維修無利息</td></tr>
+      <tr class="hero"><td class="lab">L2 折扣後（對外用）</td><td id="rr-m2">4.2×</td><td style="font-size:12px;color:var(--soft)">×出租率75%。財務最可信的「折扣後」數字</td></tr>
+      <tr><td class="lab">L3 純模板攤提淨</td><td id="rr-m3">1.5×</td><td style="font-size:12px;color:var(--soft)">純模板58×回填×出租75%×滿壽命。裸攤提僅約1.0倍剛好回本</td></tr>
+    </table>
+    <div class="note">⚠ 真相：全口徑實收 66,000 含模板58+耗材+運輸放樣。<b>只有「模板本體攤提」11,667 才是回收純模板700,000投資的部分</b>→模板攤提回本 60 案（=設計壽命，自洽）。本案翻模 11 次，單批模板壽命僅服務 5.5 案，壽命內僅回收約 9% 模板本金。對外一律用 <b>4.2 倍</b>保守口徑。</div>
+  </div>`;
+  bindRent();
+}
+function calcRent(){
+  const area=+$('i-rarea').value, occ=+$('i-occ').value/100, rday=+$('i-rday').value, rturn=+$('i-rturn').value;
+  const AMORT=330, PRICE=3500, FIX=0.05, LOG=0.03, INT=0.04, LIFE=60, TPL=3500/60;
+  const rev=area*AMORT;                          // D54
+  const fix=area*PRICE*FIX*(rday/365);           // D56 維修
+  const log=rev*LOG;                             // D57 運倉
+  const idle=area*PRICE*(FIX+INT)*(1-occ)*(rday/365); // D80 閒置
+  const net=rev-(fix+log+idle);                  // D82 淨賺(含閒置)
+  const inv=area*PRICE;                          // D61 備模投資
+  const rec=rev/inv;                             // D62 回收率
+  const tplRev=area*TPL;                         // D68 模板攤提實收/案
+  const pay= tplRev>0?inv/tplRev:0;              // D70 模板攤提回本(=60)
+  const life= rturn>0?LIFE/rturn:0;              // D71 壽命可服務案數
+  const m1=(rev*LIFE)/inv;                       // D74 理論毛
+  const m2=(rev*occ*LIFE)/inv;                   // D75 折扣後
+  const m3=(tplRev*2*occ*LIFE)/inv;              // D76 純模板(回填2.0,用攤提實收/案)
+  return {area,occ,rday,rturn,rev,fix,log,idle,net,inv,rec,pay,life,m1,m2,m3};
+}
+function renderRent(){
+  const r=calcRent();
+  $('o-rarea').textContent=r.area;$('o-occ').textContent=Math.round(r.occ*100);
+  $('o-rday').textContent=r.rday;$('o-rturn').textContent=r.rturn;
+  $('rr-rev').textContent=fmt(r.rev);$('rr-fix').textContent=fmt(r.fix);
+  $('rr-log').textContent=fmt(r.log);$('rr-idle').textContent=fmt(r.idle);
+  $('rr-net').textContent=fmt(r.net);
+  $('rr-inv').textContent=(r.inv/10000).toFixed(0)+'萬';
+  $('rr-rec').innerHTML=(r.rec*100).toFixed(1)+'<small> %</small>';
+  $('rr-pay').innerHTML=r.pay.toFixed(0)+'<small> 案</small>';
+  $('rr-life').innerHTML=r.life.toFixed(1)+'<small> 案</small>';
+  $('rr-m1').textContent=r.m1.toFixed(1)+'×';
+  $('rr-m2').textContent=r.m2.toFixed(1)+'×';
+  $('rr-m3').textContent=r.m3.toFixed(1)+'×';
+}
+function bindRent(){['i-rarea','i-occ','i-rday','i-rturn'].forEach(id=>$(id).addEventListener('input',renderRent));renderRent();}
+
+// ---- 分頁3 三模板對比 (Excel 三模板備模成本對比頁) ----
+function buildCmp(){
+  $('p-cmp').innerHTML=`
+  <div class="panel">
+    <h3>三模板備模量 × 報廢 成本對比（翻模率的真相）</h3>
+    <div class="grid2">
+      <div class="ctrl">
+        <div class="top"><span class="lab">案件面積</span><span class="num"><span id="o-carea">1025</span><small> ㎡</small></span></div>
+        <input type="range" id="i-carea" min="200" max="3000" value="1025" step="25">
+      </div>
+      <div class="ctrl">
+        <div class="top"><span class="lab">木模抹灰找平 <small>查證80-180</small></span><span class="num">$<span id="o-plaster">130</span><small> /㎡</small></span></div>
+        <input type="range" id="i-plaster" min="80" max="180" value="130" step="10">
+      </div>
+    </div>
+    <div class="note">木模便宜是陷阱：翻模少 → 備更多模板 → 用完報廢＋抹灰＋清運。三模板牌價：木膠合板300（翻3次）、鋁合金8000（翻60次）、磐石高分子3500（翻60次）。</div>
+  </div>
+  <div class="barbox">
+    <table class="cmp" id="cmp-table"></table>
+    <div class="note" id="cmp-concl"></div>
+  </div>`;
+  bindCmp();
+}
+function calcCmp(){
+  const area=+$('i-carea').value, plaster=+$('i-plaster').value, WASTE=50;
+  // [牌價,壽命,抹灰,清運,可跨案]
+  const M={
+    wood:{price:300,life:3,plaster:plaster,clear:23,reuse:false,name:'木膠合板'},
+    alu:{price:8000,life:60,plaster:0,clear:0,reuse:true,name:'鋁合金'},
+    pan:{price:3500,life:60,plaster:0,clear:0,reuse:true,name:'磐石高分子'}
+  };
+  const out={};
+  for(const[k,m] of Object.entries(M)){
+    const prep=Math.ceil(area/m.life);              // C13 備模量
+    const amort=m.price/m.life;                      // 攤銷/㎡
+    const waste= m.reuse?0: prep*WASTE/area;         // 廢模/㎡
+    const total=amort+m.plaster+m.clear+waste;       // 每㎡總成本
+    out[k]={...m,prep,amort,waste,total,allcase:total*area};
+  }
+  for(const k in out) out[k].ratio=out[k].total/out.pan.total;
+  return out;
+}
+function renderCmp(){
+  const o=calcCmp();
+  $('o-carea').textContent=+$('i-carea').value;$('o-plaster').textContent=+$('i-plaster').value;
+  const rows=[
+    ['模板牌價 元/㎡',k=>'$'+o[k].price],
+    ['翻模次數(壽命)',k=>o[k].life+'次'],
+    ['這案需備模 ㎡',k=>o[k].prep+'㎡'],
+    ['可跨案?',k=>o[k].reuse?'✔ 跨案':'✘ 報廢'],
+    ['① 模板攤銷/㎡',k=>'$'+o[k].amort.toFixed(0)],
+    ['② 抹灰找平/㎡',k=>'$'+o[k].plaster],
+    ['③ 施作清運/㎡',k=>'$'+o[k].clear],
+    ['④ 廢模處理/㎡',k=>'$'+o[k].waste.toFixed(0)],
+  ];
+  let html='<tr><th>成本項目</th><th>木膠合板</th><th>鋁合金</th><th class="hero" style="background:#7a3826">磐石高分子</th></tr>';
+  rows.forEach(([lab,fn])=>{
+    html+=`<tr><td class="lab">${lab}</td><td>${fn('wood')}</td><td>${fn('alu')}</td><td class="hero">${fn('pan')}</td></tr>`;
+  });
+  html+=`<tr class="total"><td class="lab">★ 每㎡總成本</td><td>$${o.wood.total.toFixed(0)}</td><td>$${o.alu.total.toFixed(0)}</td><td class="hero">$${o.pan.total.toFixed(0)}</td></tr>`;
+  html+=`<tr><td class="lab">相對磐石倍數</td><td>${o.wood.ratio.toFixed(1)}×</td><td>${o.alu.ratio.toFixed(1)}×</td><td class="hero">1.0× 基準</td></tr>`;
+  $('cmp-table').innerHTML=html;
+  $('cmp-concl').innerHTML=`結論：木模牌價 300 看似最便宜，但翻模僅 3 次 → 備模 ${o.wood.prep}㎡（磐石 ${o.pan.prep}㎡ 的 ${(o.wood.prep/o.pan.prep).toFixed(0)} 倍）→ 用完整批報廢＋抹灰＋清運。每㎡總成本約 <b>${o.wood.total.toFixed(0)}</b>，是磐石 <b>${o.pan.total.toFixed(0)}</b> 的約 <b>${o.wood.ratio.toFixed(1)} 倍</b>。便宜牌價是陷阱。`;
+}
+function bindCmp(){['i-carea','i-plaster'].forEach(id=>$(id).addEventListener('input',renderCmp));renderCmp();}
+
+// ---- 分頁切換 ----
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+    tab.classList.add('on');
+    $('p-'+tab.dataset.p).classList.add('on');
+  });
+});
+
+// ---- 綁定分頁1 ----
+['i-area','i-price','i-mgmt','i-prep','i-cyc'].forEach(id=>$(id).addEventListener('input',renderCost));
+document.querySelectorAll('#seg-amort button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#seg-amort button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');renderCost();
+}));
+document.querySelectorAll('#p-cost .stepper button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const inp=btn.parentElement.querySelector('.cnt');
+    inp.value=Math.max(0,(+inp.value)+ (+btn.dataset.d));
+    renderCost();
+  });
+});
+document.querySelectorAll('#p-cost .cnt').forEach(c=>c.addEventListener('input',renderCost));
+
+// 初始化
+renderCost();
+buildRent();
+buildCmp();
+
+</script>
+</body>
+</html>
