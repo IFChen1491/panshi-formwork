@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="report-id" content="MR-2026-07-16-001">
+<meta name="feedback-email" content="if@panshi.tw">
+<title>中國營建模板市場調研｜磐石智慧系統 × 莆田市政府招商引資</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --concrete:#E9E7E1; --cement:#D2CFC7; --struct:#9A968D;
+  --ink:#26261F; --ink-deep:#1A1A16; --vermilion:#9E4A33;
+  --white-soft:#F5F3EE; --text-body:#3A3A33;
+  --pos:#4A6B4F; --neg:#9E4A33; --warn:#B08B4F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--concrete);color:var(--text-body);
+  font-family:"Noto Sans TC",system-ui,sans-serif;line-height:1.75;}
+.wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:50;background:rgba(233,231,225,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--cement)}
+nav .wrap{display:flex;gap:4px;align-items:center;height:56px;overflow-x:auto}
+nav .mark{width:10px;height:10px;background:var(--vermilion);flex:none;margin-right:16px}
+nav a{color:var(--struct);text-decoration:none;font-size:.78rem;letter-spacing:.05em;
+  padding:6px 12px;white-space:nowrap;transition:.2s;border-radius:2px}
+nav a:hover{color:var(--ink);background:var(--cement)}
+
+/* HERO */
+.hero{background:var(--ink-deep);color:var(--white-soft);padding:120px 0 100px}
+.kicker{font-size:.72rem;letter-spacing:.28em;color:var(--struct);text-transform:uppercase;margin-bottom:28px}
+.hero h1{font-family:"Noto Serif TC",serif;font-weight:500;
+  font-size:clamp(2.1rem,5vw,3.6rem);line-height:1.35;letter-spacing:.02em;max-width:20ch}
+.hero .lede{font-family:"Noto Serif TC",serif;font-size:1.05rem;line-height:1.9;
+  color:#B8B5AE;margin-top:36px;max-width:56ch}
+.hero .meta{margin-top:56px;padding-top:28px;border-top:1px solid #3A3A33;
+  display:flex;gap:48px;flex-wrap:wrap;font-size:.76rem;color:var(--struct);letter-spacing:.06em}
+
+/* SECTION */
+section{padding:96px 0;border-bottom:1px solid var(--cement)}
+.sec-no{font-size:.7rem;letter-spacing:.24em;color:var(--vermilion);margin-bottom:14px}
+h2{font-family:"Noto Serif TC",serif;font-weight:500;
+  font-size:clamp(1.5rem,3.2vw,2.3rem);color:var(--ink);line-height:1.45;
+  max-width:26ch;margin-bottom:14px}
+.sub{color:var(--struct);font-size:.9rem;max-width:60ch;margin-bottom:44px}
+h3{font-family:"Noto Sans TC";font-weight:500;font-size:1.02rem;color:var(--ink);
+  margin:40px 0 16px;letter-spacing:.02em}
+p{margin-bottom:14px;font-size:.94rem}
+
+/* VERDICT */
+.verdict{background:var(--ink);color:var(--white-soft);padding:44px;margin-bottom:52px}
+.verdict .tag{display:inline-block;background:var(--vermilion);color:#fff;
+  font-size:.72rem;letter-spacing:.16em;padding:6px 16px;margin-bottom:22px}
+.verdict h3{color:var(--white-soft);font-family:"Noto Serif TC",serif;
+  font-size:1.5rem;margin:0 0 18px;font-weight:500;line-height:1.5}
+.verdict p{color:#B8B5AE;font-size:.92rem;max-width:66ch}
+
+/* FINDINGS */
+.finds{display:grid;gap:1px;background:var(--cement);border:1px solid var(--cement)}
+.find{background:var(--concrete);padding:26px 30px;display:grid;
+  grid-template-columns:36px 1fr;gap:22px;align-items:start;transition:.2s}
+.find:hover{background:var(--cement)}
+.find .n{font-size:1.5rem;font-weight:300;color:var(--struct);line-height:1.2}
+.find h4{font-size:.98rem;font-weight:500;color:var(--ink);margin-bottom:6px}
+.find p{font-size:.86rem;color:var(--text-body);margin:0}
+
+/* SCORE */
+.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;
+  background:var(--cement);border:1px solid var(--cement);margin-top:44px}
+.score{background:var(--concrete);padding:30px}
+.score .lbl{font-size:.74rem;letter-spacing:.1em;color:var(--struct);margin-bottom:12px}
+.score .val{font-size:2.6rem;font-weight:300;color:var(--ink);line-height:1}
+.score .val em{font-size:1rem;color:var(--struct);font-style:normal}
+.score .val.hot{color:var(--vermilion)}
+.bar{height:3px;background:var(--cement);margin-top:16px;position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--struct);
+  width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.bar i.hot{background:var(--vermilion)}
+.score .note{font-size:.76rem;color:var(--struct);margin-top:12px}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:.86rem}
+.tbl th{text-align:left;padding:12px 14px;background:var(--ink);color:var(--white-soft);
+  font-weight:400;font-size:.76rem;letter-spacing:.08em}
+.tbl td{padding:12px 14px;border-bottom:1px solid var(--cement);vertical-align:top}
+.tbl tr:hover td{background:var(--cement)}
+.tbl .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.dn{color:var(--neg)} .up{color:var(--pos)} .hot{color:var(--vermilion);font-weight:500}
+
+/* CHART */
+.chart{margin:32px 0;background:var(--concrete);border:1px solid var(--cement);padding:28px}
+.chart .ct{font-size:.8rem;color:var(--struct);letter-spacing:.08em;margin-bottom:24px}
+.row{display:grid;grid-template-columns:100px 1fr 76px;gap:14px;align-items:center;margin-bottom:12px}
+.row .rl{font-size:.8rem;color:var(--text-body);text-align:right}
+.row .rt{height:20px;background:var(--cement);position:relative;overflow:hidden}
+.row .rt i{position:absolute;left:0;top:0;bottom:0;background:var(--struct);
+  width:0;transition:width 1s ease-out}
+.row .rt i.hot{background:var(--vermilion)}
+.row .rv{font-size:.8rem;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+/* MATRIX */
+.mx{position:relative;height:440px;background:var(--concrete);
+  border:1px solid var(--cement);margin:32px 0}
+.mx .ax{position:absolute;background:var(--cement)}
+.mx .axh{left:0;right:0;top:50%;height:1px}
+.mx .axv{top:0;bottom:0;left:50%;width:1px}
+.mx .lb{position:absolute;font-size:.7rem;color:var(--struct);letter-spacing:.06em}
+.dot{position:absolute;transform:translate(-50%,-50%);cursor:default}
+.dot .c{width:12px;height:12px;border-radius:50%;background:var(--struct);
+  margin:0 auto;transition:.2s}
+.dot.ps .c{background:var(--vermilion);width:16px;height:16px;
+  box-shadow:0 0 0 6px rgba(158,74,51,.16)}
+.dot .t{font-size:.72rem;color:var(--text-body);white-space:nowrap;
+  margin-top:6px;text-align:center}
+.dot.ps .t{color:var(--vermilion);font-weight:500}
+.dot:hover .c{transform:scale(1.5)}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;
+  background:var(--cement);border:1px solid var(--cement);margin:28px 0}
+.card{background:var(--concrete);padding:28px}
+.card .ch{font-size:.72rem;letter-spacing:.12em;color:var(--vermilion);margin-bottom:12px}
+.card h4{font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:10px}
+.card p{font-size:.85rem;margin:0;color:var(--text-body)}
+.card ul{margin:10px 0 0 16px;font-size:.83rem}
+.card li{margin-bottom:5px}
+
+/* RISK */
+.risk{border-left:2px solid var(--vermilion);padding:18px 24px;margin:14px 0;
+  background:var(--cement)}
+.risk .rh{font-size:.9rem;font-weight:500;color:var(--ink);margin-bottom:6px}
+.risk p{font-size:.85rem;margin:0}
+.risk .lv{display:inline-block;font-size:.68rem;letter-spacing:.1em;
+  padding:2px 8px;background:var(--vermilion);color:#fff;margin-left:8px;vertical-align:middle}
+.risk .lv.m{background:var(--warn)}
+
+/* TOGGLE */
+.tog{display:flex;gap:1px;background:var(--cement);border:1px solid var(--cement);
+  margin:28px 0 0;width:fit-content}
+.tog button{background:var(--concrete);border:0;padding:11px 24px;cursor:pointer;
+  font-family:inherit;font-size:.82rem;color:var(--struct);transition:.2s}
+.tog button:hover{color:var(--ink)}
+.tog button.on{background:var(--ink);color:var(--white-soft)}
+.pane{display:none;animation:fi .4s ease}
+.pane.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* SLIDER */
+.sld{background:var(--cement);padding:28px;margin:28px 0}
+.sld label{font-size:.8rem;color:var(--struct);letter-spacing:.06em;
+  display:block;margin-bottom:14px}
+.sld input{width:100%;accent-color:var(--vermilion);margin-bottom:20px}
+.sld .out{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px}
+.sld .o .ol{font-size:.72rem;color:var(--struct);margin-bottom:4px}
+.sld .o .ov{font-size:1.5rem;font-weight:300;color:var(--ink);font-variant-numeric:tabular-nums}
+.sld .o .ov.hot{color:var(--vermilion)}
+
+/* ACTIONS */
+.act{display:grid;grid-template-columns:80px 1fr 140px 110px;gap:16px;
+  padding:16px 0;border-bottom:1px solid var(--cement);align-items:center;font-size:.85rem}
+.act .w{font-size:.72rem;letter-spacing:.1em;color:var(--vermilion)}
+.act .who{color:var(--struct);font-size:.8rem}
+.act .when{color:var(--struct);font-size:.8rem;text-align:right}
+
+/* SRC */
+.src{font-size:.78rem;color:var(--struct);line-height:1.9}
+.src a{color:var(--struct)}
+.cred{display:inline-block;font-size:.66rem;padding:1px 6px;border:1px solid var(--struct);
+  margin-left:6px;letter-spacing:.06em}
+.cred.h{border-color:var(--pos);color:var(--pos)}
+.cred.m{border-color:var(--warn);color:var(--warn)}
+.cred.l{border-color:var(--neg);color:var(--neg)}
+
+footer{background:var(--ink-deep);color:var(--struct);padding:64px 0;font-size:.78rem}
+footer .sig{font-family:"Noto Serif TC",serif;color:var(--white-soft);
+  font-size:1.1rem;margin-bottom:10px;letter-spacing:.1em}
+@media(max-width:768px){
+  .act{grid-template-columns:1fr;gap:4px}
+  .act .when{text-align:left}
+  .mx{height:520px}
+}
+@media print{nav{display:none}section{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <span class="mark"></span>
+  <a href="#s0">結論</a><a href="#s1">市場規模</a><a href="#s2">競爭格局</a>
+  <a href="#s3">莆田在地</a><a href="#s4">切入點</a><a href="#s5">商業模式</a>
+  <a href="#s6">風險</a><a href="#s7">行動</a><a href="#s8">來源</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="kicker">Market Research · 2026.07 · 決策聚焦</div>
+  <h1>模板市場正在崩，<br>但管理層還沒有人做</h1>
+  <p class="lede">中國建築鋁模板市場已連續四年下行，2025 年全國房屋新開工面積年減 20.4%，行業產能出清過半。這對「賣模板」的人是壞消息，對「賣模板管理系統」的人是入場券——因為只有在利潤被壓到極限時，客戶才會為「每平方米省下多少」付錢。</p>
+  <div class="meta">
+    <span>標的：中國營建模板市場</span>
+    <span>目的：莆田市政府招商引資簡報</span>
+    <span>主體：模板 ＋ SaaS 整體解決方案</span>
+    <span>檢索方案：B 標準</span>
+  </div>
+</div></header>
+
+<!-- ═══ 結論 ═══ -->
+<section id="s0"><div class="wrap">
+  <div class="sec-no">01 — EXECUTIVE VERDICT</div>
+  <h2>條件式 Go：去莆田，但不要用「模板廠」的身分去</h2>
+  <p class="sub">以「模板製造商」身分招商 = 進入一個年減 20%、產能過剩、300 家殺到剩 150 家的紅海；以「兩岸融合 × 智慧建造數據平台」身分招商 = 進入一個政策明碼標價、沒有本土對手、莆田市正缺的空白格。同樣的公司，兩種身分，招商成功率差三倍。</p>
+
+  <div class="verdict">
+    <span class="tag">條件式 GO</span>
+    <h3>身分定位是本案唯一的勝負手，不是技術，不是價格。</h3>
+    <p>莆田不缺模板廠，福建的模板產能早已過剩。莆田缺的是「台資 × 智慧建造 × 可寫進政績報告的示範項目」。磐石應該賣的不是鋁模板，是「一套讓莆田成為福建智慧建造標準輸出地的作業系統」——模板只是這套系統的載體與資料入口。三個前提條件必須先成立，否則 No-Go（見 §7）。</p>
+  </div>
+
+  <div class="finds">
+    <div class="find"><div class="n">01</div><div>
+      <h4>模板本體是紅海，且還在惡化</h4>
+      <p>2025 年全國房屋新開工面積 58,770 萬㎡，年減 20.4%；房地產開發投資年減 17.2%；建築業總產值首次下降至 30.38 兆元，年減 5.43%。鋁模板行業 2023 年企業數已從約 600 家腰斬至近 300 家，租賃承包收入 298.5 億元、年減 13.8%。用「模板產能」招商，等於向政府宣告要加入一場正在死人的價格戰。</p>
+    </div></div>
+    <div class="find"><div class="n">02</div><div>
+      <h4>但滲透率邏輯還在：35% → 90% 的長坡</h4>
+      <p>中國鋁模板滲透率約 35%，發達國家達 90% 以上。德邦證券測算 2025 年滲透率若達 45%，市場規模約 493 億元、21–25 年 CAGR 6.52%。這是「總量縮、結構升」的市場——蛋糕變小，但鋁模板那一塊在變大。招商敘事要押結構升級，不押總量成長。</p>
+    </div></div>
+    <div class="find"><div class="n">03</div><div>
+      <h4>管理層是唯一沒被填滿的格子</h4>
+      <p>頭部玩家全部在「產能／材料」維度競爭：中國忠旺＋昌宜合計市佔約 45%（2020 收入口徑），志特新材為租賃龍頭並自建全流程資訊化平台。但這些系統都是「自己管自己的板」——沒有人做「跨承包商、跨案場、模主層級的第三方治理平台」。中建三局智瓴這類央企平台管的是總包視角，管不到分包／模班的手。這格是空的。</p>
+    </div></div>
+    <div class="find"><div class="n">04</div><div>
+      <h4>兩岸融合政策 = 明碼標價的入場補貼</h4>
+      <p>《關於支持福建探索海峽兩岸融合發展新路建設兩岸融合發展示範區的意見》發布以來，福建已推出五批 74 條政策；2025 年 12 月第五批明列「單列 1,200 畝用地基礎指標保障 6 個台商投資區項目」、「加大台資企業用地用海保障」，並有針對莆田的專項條款（工藝美術產業）。2025 年 1–10 月福建新設台企數、實際利用台資規模均居大陸前列。磐石作為台資身分，取得的是制度性議價權，不是人情。</p>
+    </div></div>
+    <div class="find"><div class="n">05</div><div>
+      <h4>莆田本身體量偏小，但這反而是優勢</h4>
+      <p>2025 年莆田 GDP 3,579.52 億元、年增 5.3%；固定資產投資年減 0.9%，但基礎設施投資年增 45.5%（市政 +40.8%、交通運輸 +48.5%）；全年新增入庫「四上」企業 644 家、其中建築業 49 家。莆田不是能吃下大體量的市場，但正因為小，磐石有機會成為「莆田唯一的智慧建造標竿」——在泉州或福州，磐石只是第 20 名；在莆田，可以是第 1 名。政績需要第 1 名。</p>
+    </div></div>
+  </div>
+
+  <div class="scores">
+    <div class="score">
+      <div class="lbl">市場吸引力</div>
+      <div class="val">4<em>/10</em></div>
+      <div class="bar"><i data-w="40"></i></div>
+      <div class="note">模板本體紅海；結構升級是唯一亮點</div>
+    </div>
+    <div class="score">
+      <div class="lbl">競爭難度</div>
+      <div class="val">7<em>/10</em></div>
+      <div class="bar"><i data-w="70"></i></div>
+      <div class="note">產能維度打不贏；管理層維度目前無人</div>
+    </div>
+    <div class="score">
+      <div class="lbl">執行可行性</div>
+      <div class="val hot">7<em>/10</em></div>
+      <div class="bar"><i class="hot" data-w="70"></i></div>
+      <div class="note">台資身分 ＋ 廈門磐曜已落地，政策路徑清晰</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ═══ 市場規模 ═══ -->
+<section id="s1"><div class="wrap">
+  <div class="sec-no">02 — MARKET SIZING</div>
+  <h2>總量在崩，結構在升：不要在簡報裡講總量</h2>
+  <p class="sub">如果你在莆田的簡報裡放「中國模板市場 XXX 億」，對面的招商幹部第一個反應是「這行不是在倒嗎」。正確的敘事順序是：總量下行 → 所以低效產能出清 → 所以管理效率成為唯一利潤來源 → 所以我們賣的東西現在才有價值。</p>
+
+  <h3>宏觀底盤：2025 年全國數據（國家統計局）</h3>
+  <table class="tbl">
+    <thead><tr><th>指標</th><th class="num">2025 絕對量</th><th class="num">年增率</th><th>對模板需求的意義</th></tr></thead>
+    <tbody>
+      <tr><td>房地產開發投資</td><td class="num">82,788 億元</td><td class="num dn">−17.2%</td><td>資金端持續失血</td></tr>
+      <tr><td>房屋新開工面積</td><td class="num">58,770 萬㎡</td><td class="num dn">−20.4%</td><td class="hot">模板需求的直接驅動，重挫</td></tr>
+      <tr><td>房屋施工面積</td><td class="num">659,890 萬㎡</td><td class="num dn">−10.0%</td><td>存量在建仍有基本盤</td></tr>
+      <tr><td>房屋竣工面積</td><td class="num">60,348 萬㎡</td><td class="num dn">−18.1%</td><td>滯後指標，續跌確定</td></tr>
+      <tr><td>建築業總產值</td><td class="num">303,818 億元</td><td class="num dn">−5.43%</td><td>史上首次下降，連 4 年放緩</td></tr>
+      <tr><td>建築業從業平均人數</td><td class="num">5,114.89 萬人</td><td class="num dn">−12.97%</td><td class="hot">缺工 → 自動化／數位化剛需</td></tr>
+      <tr><td>建築業勞動生產率</td><td class="num">593,989 元/人</td><td class="num up">+8.67%</td><td class="hot">人少了，人均產出卻升 → 效率是活路</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.82rem;color:var(--struct)">※ 最後兩列是磐石整份簡報的敘事核心：<strong style="color:var(--vermilion)">一年少了 762 萬工人，產值只掉 5%</strong>。缺的那 762 萬人的產能，是被「管理效率」補上的。這就是 SaaS 的市場。</p>
+
+  <h3>鋁模板細分市場：唯一還在成長的格子</h3>
+  <div class="chart">
+    <div class="ct">中國鋁模板滲透率演進（%，模板腳手架協會／德邦證券測算）</div>
+    <div class="row"><div class="rl">2020</div><div class="rt"><i data-w="22"></i></div><div class="rv">20%</div></div>
+    <div class="row"><div class="rl">2021</div><div class="rt"><i data-w="28"></i></div><div class="rv">25%</div></div>
+    <div class="row"><div class="rl">2022</div><div class="rt"><i data-w="33"></i></div><div class="rv">30%</div></div>
+    <div class="row"><div class="rl">2023</div><div class="rt"><i data-w="39"></i></div><div class="rv">35%</div></div>
+    <div class="row"><div class="rl">2025E</div><div class="rt"><i class="hot" data-w="50"></i></div><div class="rv">45%</div></div>
+    <div class="row"><div class="rl">發達國家</div><div class="rt"><i data-w="100"></i></div><div class="rv">90%+</div></div>
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>指標</th><th class="num">數值</th><th>來源與年份</th></tr></thead>
+    <tbody>
+      <tr><td>鋁模板市場規模（房地產應用）</td><td class="num">493 億元（2025E）</td><td>德邦證券測算<span class="cred m">中</span></td></tr>
+      <tr><td>21–25 年 CAGR</td><td class="num">6.52%</td><td>德邦證券<span class="cred m">中</span></td></tr>
+      <tr><td>鋁模板保有量</td><td class="num">10,214 萬㎡（2025E）</td><td>德邦證券測算<span class="cred m">中</span></td></tr>
+      <tr><td>鋁模板保有量（實績）</td><td class="num">16,410 萬㎡（2023），年減 8.2%</td><td>中國基建物資租賃承包協會<span class="cred h">高</span></td></tr>
+      <tr><td>鋁模板生產銷售／租賃承包收入</td><td class="num dn">298.5 億元（2023），年減 13.8%</td><td>中國基建物資租賃承包協會<span class="cred h">高</span></td></tr>
+      <tr><td>行業企業數</td><td class="num dn">近 300 家（2023），年減 50.0%</td><td>中國基建物資租賃承包協會<span class="cred h">高</span></td></tr>
+      <tr><td>整體建築模板市場規模</td><td class="num">約 490 億元（2023）／預估 750 億元（2025）</td><td>中經百匯<span class="cred l">低</span></td></tr>
+      <tr><td>鋁模板單次租賃價格</td><td class="num">約 19 元/㎡</td><td>德邦證券<span class="cred m">中</span></td></tr>
+      <tr><td>鋁模板平均周轉次數</td><td class="num">行業約 20 次／志特約 25–26.5 次</td><td>志特招股書、東吳證券<span class="cred h">高</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="risk"><div class="rh">資料缺口與矛盾（必須誠實揭露）<span class="lv m">中</span></div>
+    <p>各機構對「模板市場規模」定義不一：德邦的 493 億僅計鋁模板在房地產的應用；協會的 298.5 億是實際收入口徑；部分產業報告宣稱「中國鋁模板市場破 1,800 億元」——此數與協會實績相差 6 倍，判定為報告銷售方誇大，<strong>不得引用於對政府簡報</strong>。簡報一律採協會與券商口徑，且標明來源年份。政府幹部會查證。</p>
+  </div>
+
+  <h3>TAM / SAM / SOM：以「模板＋SaaS 綁定方案」定義</h3>
+  <div class="cards">
+    <div class="card"><div class="ch">TAM</div><h4>約 493 億元／年</h4>
+      <p>中國鋁模板市場（2025E，房地產應用口徑）。含銷售與租賃。註：此為模板本體，非 SaaS。</p></div>
+    <div class="card"><div class="ch">SAM</div><h4>約 25–35 億元／年</h4>
+      <p>華東（福建為核心）鋁模板市場。以福建建築業在外省完成產值 7,953.98 億元、外向度超 30% 推估，福建營建體系具備輸出能力，是 SaaS 隨模板外溢的天然通道。</p></div>
+    <div class="card"><div class="ch">SOM（3 年）</div><h4>模板 1.5–3 億元<br>SaaS 0.3–0.8 億元</h4>
+      <p>莆田＋福建落地。SaaS 佔比雖小，但毛利率結構完全不同（模板約 25–30%，SaaS 可達 70%+），且是估值倍數的來源。<strong style="color:var(--vermilion)">向政府講模板，向資本講 SaaS。</strong></p></div>
+  </div>
+
+  <div class="sld">
+    <label>情境模擬：拉動滑桿看莆田 3 年 SOM 敏感度（基準 = 模板 2.0 億／SaaS 0.5 億）</label>
+    <input type="range" id="sl" min="-30" max="30" value="0" step="5">
+    <div class="out">
+      <div class="o"><div class="ol">情境調整</div><div class="ov" id="o0">基準 ±0%</div></div>
+      <div class="o"><div class="ol">模板營收（3 年累計）</div><div class="ov" id="o1">2.00 億元</div></div>
+      <div class="o"><div class="ol">SaaS 營收（3 年累計）</div><div class="ov hot" id="o2">0.50 億元</div></div>
+      <div class="o"><div class="ol">綜合毛利（估）</div><div class="ov" id="o3">0.95 億元</div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ═══ 競爭格局 ═══ -->
+<section id="s2"><div class="wrap">
+  <div class="sec-no">03 — COMPETITIVE LANDSCAPE</div>
+  <h2>所有人都在打產能，沒有人在打治理</h2>
+  <p class="sub">四類玩家、四個入場方向，全部收斂到同一個維度：更便宜的板、更多的產能、更快的周轉。這不是巧合——這是製造業的思維慣性。磐石的機會正在這個慣性的死角。</p>
+
+  <h3>四類玩家與市佔（東吳證券分類）</h3>
+  <table class="tbl">
+    <thead><tr><th>類型</th><th>代表企業</th><th>入場優勢</th><th>市佔／體量</th><th>對磐石的威脅</th></tr></thead>
+    <tbody>
+      <tr><td>上游鋁加工向下延伸</td><td class="hot">中國忠旺、閩發鋁業</td><td>原材料成本</td><td class="num">忠旺＋昌宜合計約 45%（2020 收入口徑）</td><td>低（不做管理層）</td></tr>
+      <tr><td>下游建築企業向上發展</td><td>浙江誼科、中建鋁</td><td>渠道</td><td class="num">分散</td><td>低</td></tr>
+      <tr><td>設備租賃橫向入局</td><td>華鐵應急</td><td>租賃產業協同</td><td class="num">分散</td><td class="hot">中（租賃管理有交集）</td></tr>
+      <tr><td>專營鋁模板</td><td class="hot">志特新材（300986.SZ）、昌宜鋁模</td><td>技術＋服務體系</td><td class="num">志特 2022 營收 19.3 億元</td><td class="hot">高（已自建資訊化平台）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tog">
+    <button class="on" data-p="p1">志特新材</button>
+    <button data-p="p2">中建三局・智瓴</button>
+    <button data-p="p3">廣田／其他</button>
+  </div>
+
+  <div class="pane on" id="p1">
+    <h3>志特新材：最像磐石的對手，但基因不同</h3>
+    <p>鋁模板租賃龍頭，2016–2021 營收 CAGR 達 56.4%，2021 年營收 14.8 億元。關鍵是——<strong>志特已經自建全流程資訊管理平台</strong>，覆蓋設計配板、智能製造、質量驗收、工程服務、項目收款、客戶管理，模板平均周轉次數達 26.5 次（2020），高於行業約 20 次。志特參與編制組合鋁模板協會標準，海外已取得新加坡 BCA BAND2 認證，2024 上半年境外收入 2.41 億元、年增 25.71%。</p>
+    <p><strong style="color:var(--vermilion)">但這是致命的差異：志特的平台是「管自己的板」的內部系統，不是賣給別人的 SaaS。</strong>它的商業模式是租賃收入，資訊化是成本中心不是利潤中心。志特永遠不會把平台開放給競爭對手的模板——這正是磐石的空間：磐石可以做「中立的、跨品牌的模板治理層」。志特是垂直整合者，磐石是水平平台。這是兩種物種。</p>
+    <p><strong>但要誠實：</strong>如果志特哪天決定把平台獨立出來對外賣，它有資料、有客戶、有標準話語權，磐石的窗口就關了。這是本案最大的長期風險（見 §7）。</p>
+  </div>
+
+  <div class="pane" id="p2">
+    <h3>中建三局・智瓴：不是對手，是天花板</h3>
+    <p>中建三局的智瓴平台是總包視角的專案管理系統——管的是「專案有沒有按進度走」，資料顆粒度到分部分項工程。它<strong>管不到、也不想管</strong>模班層級：哪一片板由誰組的、組了幾次、拆模品質如何、模主的工序熟練度。</p>
+    <p><strong>戰略判斷：不要試圖跟智瓴競爭，要試圖成為智瓴的資料供應層。</strong>央企平台最痛的是「最後一公里資料失真」——分包報什麼它就記什麼。磐石如果能提供「模班層的可驗證真實資料」，對智瓴不是威脅，是補完。這也是先前濟南／中建三局接觸的正確定位。</p>
+    <p style="font-size:.82rem;color:var(--struct)">※ 智瓴的具體技術規格與市佔未能於公開檢索取得可靠數據，此段為基於央企平台通則與既有 BD 接觸的定性判斷，<strong>不得在政府簡報中宣稱具體數字</strong>。</p>
+  </div>
+
+  <div class="pane" id="p3">
+    <h3>廣田集團等：已非有效競爭者</h3>
+    <p>廣田集團主業為建築裝飾，2021 年起受恆大應收帳款拖累陷入嚴重財務困境，已非模板市場的有效競爭者。列入競品清單意義不大，<strong>建議從簡報中移除</strong>——提到已爆雷的企業，會讓政府聯想到行業風險，而非磐石的優勢。</p>
+    <p>其餘中小廠商在 2023 年的產能出清中已腰斬（約 600 家 → 近 300 家），剩餘者多為區域性、無技術壁壘、以價格競爭為主。它們不是磐石的對手，是磐石的<strong>潛在客戶／模主加盟對象</strong>——這些活下來的中小廠，正需要一套能證明自己效率的系統來爭取總包訂單。</p>
+  </div>
+
+  <h3>競爭定位矩陣</h3>
+  <div class="mx" id="mx">
+    <div class="ax axh"></div><div class="ax axv"></div>
+    <div class="lb" style="left:16px;top:12px">← 產能／材料導向</div>
+    <div class="lb" style="right:16px;top:12px">數據／治理導向 →</div>
+    <div class="lb" style="left:50%;top:12px;transform:translateX(-50%);color:var(--cement)">|</div>
+    <div class="lb" style="left:16px;bottom:12px">封閉／垂直整合</div>
+    <div class="lb" style="right:16px;bottom:12px">開放／水平平台</div>
+    <div class="dot" style="left:18%;top:32%"><div class="c"></div><div class="t">中國忠旺</div></div>
+    <div class="dot" style="left:26%;top:44%"><div class="c"></div><div class="t">昌宜鋁模</div></div>
+    <div class="dot" style="left:38%;top:26%"><div class="c"></div><div class="t">志特新材</div></div>
+    <div class="dot" style="left:30%;top:62%"><div class="c"></div><div class="t">華鐵應急</div></div>
+    <div class="dot" style="left:22%;top:76%"><div class="c"></div><div class="t">區域中小廠</div></div>
+    <div class="dot" style="left:66%;top:22%"><div class="c"></div><div class="t">中建三局・智瓴</div></div>
+    <div class="dot ps" style="left:80%;top:70%"><div class="c"></div><div class="t">磐石智慧系統</div></div>
+  </div>
+  <p style="font-size:.82rem;color:var(--struct)">右下象限（開放平台 × 數據治理）目前是空的。這不是因為沒人想到，是因為做這件事需要「同時懂模板工法」和「同時懂軟體」——製造商不懂軟體，軟體商不懂工法。磐石的模主制度正好卡在這個交叉點。<strong style="color:var(--vermilion)">這是護城河的本質，但也是最難向政府解釋的一點。</strong></p>
+
+  <h3>進入障礙評估</h3>
+  <table class="tbl">
+    <thead><tr><th>障礙</th><th>模板本體</th><th>SaaS 治理層</th></tr></thead>
+    <tbody>
+      <tr><td>資本</td><td class="dn">高（產能＋租賃資產沉澱）</td><td class="up">低</td></tr>
+      <tr><td>技術</td><td class="dn">低（產品門檻低，這是紅海主因）</td><td class="up">中高（工法知識 × 軟體）</td></tr>
+      <tr><td>法規／標準</td><td>中（新版《鋁合金建築模板》國標 2025 年初實施）</td><td class="up">低但可搶（標準未定 = 可參與制定）</td></tr>
+      <tr><td>品牌／渠道</td><td class="dn">高（總包關係壁壘）</td><td>中</td></tr>
+      <tr><td>網絡效應</td><td class="dn">無</td><td class="up hot">強（模主愈多，資料愈準，愈難被取代）</td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<!-- ═══ 莆田 ═══ -->
+<section id="s3"><div class="wrap">
+  <div class="sec-no">04 — PUTIAN CONTEXT</div>
+  <h2>莆田要的不是產值，是「福建第一個」</h2>
+  <p class="sub">招商引資的本質不是經濟計算，是政治計算。理解莆田幹部的 KPI，比理解莆田的市場更重要。</p>
+
+  <h3>莆田經濟底盤（2025）</h3>
+  <table class="tbl">
+    <thead><tr><th>指標</th><th class="num">2025</th><th class="num">年增</th><th>對招商的訊號</th></tr></thead>
+    <tbody>
+      <tr><td>地區生產總值</td><td class="num">3,579.52 億元</td><td class="num up">+5.3%</td><td>中型城市，非一線競爭場</td></tr>
+      <tr><td>第二產業增加值</td><td class="num">1,611.43 億元</td><td class="num up">+4.7%</td><td>佔 GDP 45.0%，工業底子在</td></tr>
+      <tr><td>固定資產投資</td><td class="num">—</td><td class="num dn">−0.9%</td><td class="hot">整體在縮，招商壓力大 = 對磐石有利</td></tr>
+      <tr><td>基礎設施投資</td><td class="num">—</td><td class="num up">+45.5%</td><td class="hot">市政 +40.8%、交通 +48.5%，工程量體在此</td></tr>
+      <tr><td>建安投資</td><td class="num">佔固投 86.1%</td><td class="num up">+4.7%</td><td class="hot">模板需求的直接對應</td></tr>
+      <tr><td>民間項目投資（扣房地產）</td><td class="num">—</td><td class="num up">+11.7%</td><td>民間資本仍願投非房地產</td></tr>
+      <tr><td>新增入庫「四上」企業</td><td class="num">644 家</td><td class="num up">+31.4%</td><td>其中建築業 49 家</td></tr>
+      <tr><td>高技術製造業增加值</td><td class="num">—</td><td class="num up">+17.8%</td><td class="hot">莆田正在押「新興動能」敘事</td></tr>
+      <tr><td>新型功能材料產業增加值</td><td class="num">—</td><td class="num up">+21.8%</td><td class="hot">拉動規上工業 4.1 個百分點 = 政績亮點產業</td></tr>
+    </tbody>
+  </table>
+
+  <div class="risk"><div class="rh">關鍵洞察：莆田的固投在縮，但基建在爆<span class="lv m">中</span></div>
+    <p>固定資產投資 −0.9%、房地產拖累，但基礎設施投資 +45.5%。這代表莆田的工程需求正從「住宅」轉向「市政／交通」。<strong>磐石若只講住宅高層鋁模板，講錯了場。</strong>應該強調模板系統在市政工程（橋樑、管廊、綜合管溝）的適用性，並把 SaaS 的「跨案場資產調度」對準政府投資項目的多點分散特性——政府基建案場零散，正是最需要調度系統的場景。</p>
+  </div>
+
+  <h3>兩岸融合政策：磐石可主張的具體條款</h3>
+  <table class="tbl">
+    <thead><tr><th>政策</th><th>發布</th><th>磐石可用點</th></tr></thead>
+    <tbody>
+      <tr><td>《中共中央 國務院關於支持福建探索海峽兩岸融合發展新路 建設兩岸融合發展示範區的意見》</td><td>2023.09</td><td>總綱，五批 74 條政策的母法</td></tr>
+      <tr><td class="hot">第五批政策措施（12 條）</td><td>2025.12</td><td class="hot">單列 1,200 畝用地基礎指標保障 6 個台商投資區項目；加大台資企業用地用海保障</td></tr>
+      <tr><td>第四批政策措施（17 條）</td><td>2025.02</td><td>含「支持台胞台企參與莆田生技醫療產業合作」——證明莆田已有<strong>對台專項條款先例</strong></td></tr>
+      <tr><td>第五批・莆田專項</td><td>2025.12</td><td>「支持台企台商共同發展莆田工藝美術產業」（租金減免、展位補助）——同樣證明先例</td></tr>
+      <tr><td>金融支持措施（人行、外匯局）</td><td>2025.06</td><td>資本項下跨境投融資便利化，12 條措施</td></tr>
+      <tr><td>銀行業保險業支持措施（金融監管總局）</td><td>2025.08</td><td>4 方面 16 條</td></tr>
+      <tr><td>《莆田市深入推進開發區改革創新強化新形勢下招商引資若干措施》</td><td>—</td><td class="hot">莆田市本級招商政策，需索取全文</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.86rem"><strong style="color:var(--vermilion)">戰術要點：</strong>莆田已經為台企做過生技醫療與工藝美術的專項條款。這代表莆田市台辦有「為單一台企量身訂做政策」的操作習慣與權限。磐石的目標不是套用現有條款，是<strong>爭取成為第六批政策裡的一條</strong>——「支持台胞台企參與莆田智慧建造產業合作」。這才是招商簡報的真正 ask。</p>
+
+  <h3>福建營建的外溢通道</h3>
+  <div class="cards">
+    <div class="card"><div class="ch">數據</div><h4>7,953.98 億元</h4>
+      <p>福建建築業在外省完成產值（2025），全國第 4 位，僅次江蘇、北京、湖北。外向度超過 30%。</p></div>
+    <div class="card"><div class="ch">意義</div><h4>福建營建會出去</h4>
+      <p>閩系建商是全國性的。落地莆田的系統，會隨閩系施工隊輸出到全國——這是對莆田幹部最有說服力的一句：<strong>你們投的不是一家公司，是一個標準的輸出港。</strong></p></div>
+    <div class="card"><div class="ch">政策對接</div><h4>福州先例</h4>
+      <p>福州 2021、2022 已印發《關於推廣使用鋁合金建築模板系統及附著式升降腳手架的通知》等。省內已有市級推廣鋁模板的政策先例，莆田可循。</p></div>
+  </div>
+</div></section>
+
+<!-- ═══ 切入點 ═══ -->
+<section id="s4"><div class="wrap">
+  <div class="sec-no">05 — ENTRY STRATEGY</div>
+  <h2>兩條路，只能選一條，選錯就沒有第二次</h2>
+  <p class="sub">招商引資的身分一旦定調，後面所有政策待遇、對口單位、考核指標都跟著鎖死。這是不可逆的決策。</p>
+
+  <div class="tog">
+    <button class="on" data-p="e1">路線 A：模板製造基地</button>
+    <button data-p="e2">路線 B：智慧建造數據總部</button>
+  </div>
+
+  <div class="pane on" id="e1">
+    <h3>路線 A：以模板製造基地身分落地</h3>
+    <table class="tbl">
+      <thead><tr><th>面向</th><th>評估</th></tr></thead>
+      <tbody>
+        <tr><td>對口單位</td><td>工信局、開發區管委會</td></tr>
+        <tr><td>政府聽得懂嗎</td><td class="up">完全聽得懂——固投、產值、稅收、就業，全部可量化</td></tr>
+        <tr><td>拿得到什麼</td><td>土地、廠房補貼、設備投資補助（參照南靖精密機械園：固投 500 萬–2,000 萬給 10 萬獎勵；2,000 萬以上給 20 萬）</td></tr>
+        <tr><td>要付出什麼</td><td class="dn">重資產。產線投資、固投承諾、產值對賭、稅收考核</td></tr>
+        <tr><td class="hot">致命問題</td><td class="dn"><strong>你在一個年減 20%、產能已過剩、企業數腰斬的市場裡新增產能。</strong>政府會問：福建已經有這麼多模板廠，為什麼還需要你？你答不出來。而且一旦對賭產值，你會被綁死在紅海裡。</td></tr>
+      </tbody>
+    </table>
+    <div class="risk"><div class="rh">判定：不建議<span class="lv">高風險</span></div>
+      <p>補助金額（10–20 萬人民幣級距）與承擔的固投對賭風險完全不成比例。用重資產換小補貼，同時把公司身分鎖死在最壞的維度。</p></div>
+  </div>
+
+  <div class="pane" id="e2">
+    <h3>路線 B：以智慧建造數據總部／兩岸融合示範項目身分落地</h3>
+    <table class="tbl">
+      <thead><tr><th>面向</th><th>評估</th></tr></thead>
+      <tbody>
+        <tr><td>對口單位</td><td class="hot">台辦（主）＋ 住建局（技術背書）＋ 工信局（產業歸口）</td></tr>
+        <tr><td>政府聽得懂嗎</td><td>需要教育——但「兩岸融合示範」「智慧建造」「新質生產力」都是現成的政策語言，可以掛靠</td></tr>
+        <tr><td>拿得到什麼</td><td class="hot">政策專項條款（爭取進入第六批惠台措施）、示範項目掛牌、政府工程試點導入、辦公空間、人才政策、跨境投融資便利化</td></tr>
+        <tr><td>要付出什麼</td><td class="up">輕資產。人員落地、系統落地、示範案場</td></tr>
+        <tr><td class="hot">核心論述</td><td class="hot"><strong>「莆田不需要再多一家模板廠。莆田需要的是：讓現有的模板廠、施工隊，用上一套能讓他們接到全國訂單的系統。我們不搶莆田企業的飯，我們讓莆田企業去外省搶飯——福建建築業在外省已經做了 7,953 億，我們讓這 7,953 億帶著莆田的標準出去。」</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="risk"><div class="rh">判定：建議路線<span class="lv m">條件式</span></div>
+      <p>風險在於「輕資產 = 政府感受不到誠意」。必須用「示範案場＋在地就業＋標準輸出」三個可視化承諾補足固投的缺席。見 §6 商業模式設計。</p></div>
+  </div>
+
+  <h3>身分的雙軌處理（實務建議）</h3>
+  <p>不要在政府面前完全否認模板業務——那會失去「產業歸屬」的合法性。正確做法是<strong>主從關係倒轉</strong>：</p>
+  <div class="cards">
+    <div class="card"><div class="ch">錯誤敘事</div><h4>「我們做鋁模板，也有一套管理系統」</h4>
+      <p>→ 政府聽到的是：又一家模板廠。歸口工信局，跟 300 家對手排隊。</p></div>
+    <div class="card"><div class="ch">正確敘事</div><h4>「我們做營建作業系統，模板是我們的第一個資料入口」</h4>
+      <p>→ 政府聽到的是：智慧建造 × 台資 × 新質生產力。歸口台辦＋住建局，沒有對手。</p></div>
+    <div class="card"><div class="ch">關鍵句</div><h4>「模板是硬體，我們賣的是讓硬體變聰明的那一層」</h4>
+      <p>→ 這句話讓政府理解為什麼你跟志特不一樣，也為什麼你不會跟本地廠搶生意。</p></div>
+  </div>
+</div></section>
+
+<!-- ═══ 商業模式 ═══ -->
+<section id="s5"><div class="wrap">
+  <div class="sec-no">06 — BUSINESS MODEL</div>
+  <h2>模板收現金，SaaS 收估值，政府收政績</h2>
+  <p class="sub">三方各取所需的結構，才是能簽下去的結構。任何一方拿不到東西，這個案子就簽不成。</p>
+
+  <h3>三層收入結構</h3>
+  <table class="tbl">
+    <thead><tr><th>層</th><th>收入模式</th><th>毛利率</th><th>角色</th><th>對政府的意義</th></tr></thead>
+    <tbody>
+      <tr><td>L1 模板本體</td><td>銷售／租賃（約 19 元/㎡·次）</td><td class="num">25–30%</td><td>現金流＋資料入口</td><td>看得見的產值與稅收</td></tr>
+      <tr><td>L2 模主服務</td><td>工班派工、技術服務抽成</td><td class="num">40–50%</td><td>知識變現、在地就業</td><td class="hot">在地就業＋技能培訓（政策高度對齊）</td></tr>
+      <tr><td class="hot">L3 SaaS 治理層</td><td>訂閱制／按案場計價</td><td class="num hot">70%+</td><td>護城河、估值倍數</td><td class="hot">數位經濟產值、標準輸出</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.82rem;color:var(--struct)">※ 毛利率為基於行業慣例與磐石既有結構的推估，非公開查證數據。<strong>對政府簡報時不必揭露毛利結構</strong>，僅需說明「三層」的產業帶動效果。</p>
+
+  <h3>對政府的三個可視化承諾（取代固投對賭）</h3>
+  <div class="cards">
+    <div class="card"><div class="ch">承諾一・看得見</div><h4>莆田示範案場</h4>
+      <p>選定 1–2 個莆田市政基建案場（呼應基建投資 +45.5%），無償或低價導入磐石系統，做出「莆田智慧建造第一案」。可掛牌、可參訪、可上新聞、可寫進工作報告。</p>
+      <ul><li>建議標的：市政管廊／交通工程</li><li>時程：落地後 6 個月內出成果</li></ul></div>
+    <div class="card"><div class="ch">承諾二・數得出</div><h4>在地模主培訓</h4>
+      <p>承諾 3 年培訓 N 名莆田在地模主（L1–L4 分級）。這對接三個政策熱點：職業技能資格採認、台青就業、建築業缺工（全國從業人數年減 12.97%）。</p>
+      <ul><li>可對接：福建直接採認台灣職業技能資格目錄</li><li>建議：與莆田學院產學合作（已有涵江區先例）</li></ul></div>
+    <div class="card"><div class="ch">承諾三・寫得進報告</div><h4>標準參與制定</h4>
+      <p>承諾以莆田為基地，參與地方標準／團體標準制訂。南靖精密機械園先例：園區台企參與國標／行標／地標制訂，分別給 20／10／5 萬一次性獎勵——<strong>證明「標準參與」是福建認可的政策籌碼</strong>。</p>
+      <ul><li>目標：《模板工程數位化管理規範》地方／團體標準</li></ul></div>
+  </div>
+
+  <h3>建議的合作結構</h3>
+  <table class="tbl">
+    <thead><tr><th>要素</th><th>建議</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td>落地主體</td><td class="hot">廈門磐曜智慧建築科技（既有陸方實體）設莆田子公司／分公司</td><td>台資身分需清晰。<strong>切勿讓磐石智慧系統與廈門磐曜的法人關係含糊</strong>——這在先前中建三局案已被標記為風險</td></tr>
+      <tr><td>台資比例</td><td>確保台資成分明確可認定</td><td>惠台政策的適用前提。需先與台辦確認認定標準</td></tr>
+      <tr><td>IP 歸屬</td><td class="hot">核心 IP 留在巨禾控股（台灣），陸方公司取得授權使用</td><td class="hot">「你出錢、我出知識」模式的 IP 保護紅線——這是五大主權的延伸</td></tr>
+      <tr><td>資料主權</td><td>陸方資料存陸方，架構與演算法留台方</td><td>兼顧陸方資料合規與磐石技術主權</td></tr>
+      <tr><td>第一步</td><td>不簽落地協議，先簽「合作意向＋示範案場備忘錄」</td><td class="hot">先用一個案場驗證政府執行力，再談投資。政府承諾與政府執行是兩回事</td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<!-- ═══ 風險 ═══ -->
+<section id="s6"><div class="wrap">
+  <div class="sec-no">07 — RISK & BLIND SPOTS</div>
+  <h2>五個會讓這個案子死掉的地方</h2>
+  <p class="sub">以下按殺傷力排序。前三個是 No-Go 條件——只要成立一個，這個案子不該簽。</p>
+
+  <div class="risk"><div class="rh">R1・法人身分含糊 → 政策待遇歸零<span class="lv">致命</span></div>
+    <p>磐石智慧系統（台）、廈門磐曜（陸）、巨禾控股（IP 持有）三個實體的關係，如果在招商文件裡講不清楚，會發生兩件事：一是台辦無法認定台資身分，惠台政策一條都拿不到；二是政府會懷疑你在做「假台資真陸企」，信任崩塌。<strong>這個問題在中建三局案已經被標記過一次，不能再犯第二次。</strong></p>
+    <p><strong>No-Go 條件：</strong>若無法在赴莆田前備妥清晰的股權架構圖與台資認定文件 → 延後簡報。</p>
+  </div>
+
+  <div class="risk"><div class="rh">R2・「你出錢、我出知識」的 IP 裸奔<span class="lv">致命</span></div>
+    <p>政府投資／補貼換取的是什麼？如果協議裡出現「共同開發」「成果共享」「技術入股後成果歸合資公司」，磐石的核心 IP 就進了陸方實體，且受陸方法律管轄。一旦模主制度、配板演算法、七步治理閉環被吸收，磐石就變成一家在福建的普通模板廠。</p>
+    <p><strong>No-Go 條件：</strong>任何要求核心演算法／SOP 源碼落地或共有的條款 → 不簽。</p>
+  </div>
+
+  <div class="risk"><div class="rh">R3・資料可信度崩塌 → 產品失去存在理由<span class="lv">致命</span></div>
+    <p>磐石 SaaS 的價值命題是「真實資料」。但在陸方案場，模班有極強的動機造假（多報工時、隱瞞返工）。既有設計已做評分分離（工人自報 0%、監督 60%、自動化指標 40%）——這是對的方向，但在莆田的示範案場必須<strong>一次做對</strong>。示範案場的資料如果被質疑造假，磐石在福建的信譽一次性歸零，且政府背書會變成負債。</p>
+    <p><strong>No-Go 條件：</strong>示範案場若無法部署自動化採集（RFID／影像）→ 不做示範案場，改做小規模 POC。</p>
+  </div>
+
+  <div class="risk"><div class="rh">R4・志特新材把內部平台獨立對外<span class="lv m">中期</span></div>
+    <p>志特已有全流程資訊化平台、有標準制定話語權、有 BCA 認證、有海外通路、2024 上半年研發投入 5,123.66 萬元。它缺的只是「把平台當產品賣」的商業決策。一旦它做了，磐石的窗口期就結束。<strong>磐石的時間窗大約 24–36 個月。</strong></p>
+    <p><strong>對策：</strong>搶標準。若磐石能先參與地方／團體標準制定，志特的後進就必須遵循磐石定義的規則。這是為什麼「標準參與」不只是政績承諾，是戰略必要。</p>
+  </div>
+
+  <div class="risk"><div class="rh">R5・押錯場：莆田的工程量體可能撐不住<span class="lv m">中</span></div>
+    <p>莆田 GDP 3,579 億、固投 −0.9%、房地產仍在拖累。基建 +45.5% 看起來亮眼，但這是低基期效應，且政府基建案場的付款週期長、應收帳款風險高（志特的風險提示明列「應收帳款回收不及預期」）。<strong>莆田是好的政治起點，不是好的商業起點。</strong></p>
+    <p><strong>對策：</strong>把莆田定位為「政策取得地＋標準示範地」，把商業變現押在福州／泉州／廈門，以及閩系建商外溢的外省市場。不要指望莆田本地訂單養活團隊。</p>
+  </div>
+
+  <h3>Black Swan 清單</h3>
+  <table class="tbl">
+    <thead><tr><th>事件</th><th>機率</th><th>衝擊</th><th>預警訊號</th></tr></thead>
+    <tbody>
+      <tr><td>兩岸關係惡化導致惠台政策凍結</td><td>低–中</td><td class="dn">高</td><td>政策發布節奏中斷、台辦窗口降級</td></tr>
+      <tr><td>房地產再下一階，基建投資跟著縮</td><td>中</td><td class="dn">高</td><td>國房景氣指數（2025.12 為 91.45）續跌</td></tr>
+      <tr><td>鋁價劇烈波動壓垮模板毛利</td><td>中</td><td>中</td><td>LME／滬鋁走勢</td></tr>
+      <tr><td>陸方資料法規收緊，跨境架構違規</td><td>中</td><td class="dn">高</td><td>資料出境安全評估要求變動</td></tr>
+      <tr><td>台灣端對赴陸投資審查趨嚴</td><td>中</td><td>中</td><td>經濟部投審司政策動向</td></tr>
+    </tbody>
+  </table>
+
+  <div class="risk"><div class="rh">聲量模組說明<span class="lv m">已省略</span></div>
+    <p>本報告未執行 L3 網路聲量模組。理由：標的為 B2G 招商決策，中國營建模板為純 B2B 產業，Dcard／PTT／Mobile01 等台灣主場平台無有效聲量；陸方平台（知乎、微博）抓取覆蓋率不可靠，且對政府決策無參考價值。<strong>本報告結論不依賴聲量證據。</strong>此為主動省略，非資料缺失。</p>
+  </div>
+</div></section>
+
+<!-- ═══ 行動 ═══ -->
+<section id="s7"><div class="wrap">
+  <div class="sec-no">08 — NEXT ACTIONS</div>
+  <h2>簡報前必須完成的事</h2>
+  <p class="sub">按時序排列。前三項未完成，不建議赴莆田。</p>
+
+  <h3>P0・赴莆田前（No-Go 檢核）</h3>
+  <div class="act"><span class="w">P0-1</span><span>備妥股權架構圖：磐石智慧系統 ／ 廈門磐曜 ／ 巨禾控股三方關係，含台資認定依據</span><span class="who">張合儀 CFO</span><span class="when">簡報前 T−14 日</span></div>
+  <div class="act"><span class="w">P0-2</span><span>索取《莆田市深入推進開發區改革創新強化新形勢下招商引資若干措施》全文，逐條比對磐石可主張條款</span><span class="who">林子涵</span><span class="when">T−14 日</span></div>
+  <div class="act"><span class="w">P0-3</span><span>確認對口單位：主攻台辦，非工信局。透過既有管道確認莆田台辦窗口層級</span><span class="who">陳毅夫</span><span class="when">T−10 日</span></div>
+  <div class="act"><span class="w">P0-4</span><span>IP 保護紅線內部定案：哪些能落地、哪些絕不落地，形成一頁書面底線</span><span class="who">陳毅夫 ＋ 李亞喬 CTO</span><span class="when">T−10 日</span></div>
+
+  <h3>P1・簡報內容製作</h3>
+  <div class="act"><span class="w">P1-1</span><span>簡報主軸定調為「智慧建造 × 兩岸融合」，模板降為第二章。全簡報禁用「模板廠」「產能」字眼</span><span class="who">陳毅夫</span><span class="when">T−7 日</span></div>
+  <div class="act"><span class="w">P1-2</span><span>製作「三個可視化承諾」一頁：示範案場、模主培訓、標準參與（含具體數字）</span><span class="who">陳毅夫 ＋ 林子涵</span><span class="when">T−7 日</span></div>
+  <div class="act"><span class="w">P1-3</span><span>準備「762 萬工人消失」的核心敘事頁——這是整場簡報最有說服力的一張</span><span class="who">陳毅夫</span><span class="when">T−5 日</span></div>
+  <div class="act"><span class="w">P1-4</span><span>用 if-ppt 產出對外靜態版；本互動 HTML 作為會後留存與線上分享用</span><span class="who">—</span><span class="when">T−3 日</span></div>
+
+  <h3>P2・會中與會後</h3>
+  <div class="act"><span class="w">P2-1</span><span>會中唯一 ask：爭取「支持台胞台企參與莆田智慧建造產業合作」進入第六批惠台措施</span><span class="who">陳毅夫</span><span class="when">會中</span></div>
+  <div class="act"><span class="w">P2-2</span><span>會中不簽落地協議。目標僅為「合作意向書＋示範案場備忘錄」</span><span class="who">陳毅夫</span><span class="when">會中</span></div>
+  <div class="act"><span class="w">P2-3</span><span>索取莆田 2026 年市政／交通重點項目清單，篩選示範案場候選</span><span class="who">林子涵</span><span class="when">T+7 日</span></div>
+  <div class="act"><span class="w">P2-4</span><span>示範案場技術可行性評估：自動化採集能否部署（R3 前提）</span><span class="who">李亞喬 CTO ＋ 楊金雄</span><span class="when">T+14 日</span></div>
+
+  <div class="verdict" style="margin-top:52px">
+    <span class="tag">一句話</span>
+    <h3>不要把莆田當市場，要把莆田當「政策取得地」。</h3>
+    <p>市場在福州、泉州、廈門，以及閩系建商外溢的那 7,953 億外省產值裡。莆田給的是身分、政策、標準、與一塊掛牌的招牌。用最輕的資產拿最重的身分——這才是這趟該做的交易。反過來做，就是拿重資產換小補貼，然後被綁死在一個年減 20% 的市場裡。</p>
+  </div>
+</div></section>
+
+<!-- ═══ 來源 ═══ -->
+<section id="s8"><div class="wrap">
+  <div class="sec-no">09 — SOURCES</div>
+  <h2>資料來源與可信度</h2>
+  <p class="sub">檢索方案：B 標準（Tavily L1 結構研究 5 次檢索）。L2 深度抓取部分執行，L3 聲量模組主動省略（理由見 §7）。</p>
+
+  <div class="src">
+    <p><strong style="color:var(--ink)">高可信度<span class="cred h">高</span></strong></p>
+    <p>· 國家統計局《2025 年全國房地產市場基本情況》（2026.01.19）——房地產投資、新開工、施工、竣工、銷售全套數據<br>
+    · 中國建築業協會《2025 年建築業發展統計分析》——建築業總產值、從業人數、勞動生產率、各省外向度<br>
+    · 福建省工信廳《2025 年莆田市經濟運行總體平穩、穩中有進》（2026.02.02）——莆田 GDP、固投、基建投資、四上企業<br>
+    · 中國基建物資租賃承包協會（經財聯社引述）——鋁模板保有量、租賃收入、企業數<br>
+    · 新華社／福建省人民政府（2025.12.02–03）——兩岸融合示範區第五批 12 條政策措施<br>
+    · 國台辦（2025.03.12）——第四批 17 條政策措施，含莆田生技醫療專項</p>
+
+    <p style="margin-top:20px"><strong style="color:var(--ink)">中可信度<span class="cred m">中</span></strong></p>
+    <p>· 德邦證券《志特新材（300986.SZ）：鋁模板滲透加速驅動市場擴容》（2024.01）——滲透率、市場規模測算、CAGR。<em>券商測算，非實績</em><br>
+    · 東吳證券《志特新材（300986）鋁模板租賃龍頭》——四類玩家分類、市佔（2020 收入口徑）、周轉次數<br>
+    · 中國社會科學院台灣研究所徐曉全《2025 年福建建設兩岸融合發展示範區的進展與啟示》（2026.01）</p>
+
+    <p style="margin-top:20px"><strong style="color:var(--ink)">低可信度／不予採用<span class="cred l">低</span></strong></p>
+    <p>· GEP Research《2025 年全球及中國鋁模板行業技術及市場發展展望報告》——宣稱中國鋁模板市場破 1,800 億元。<strong style="color:var(--vermilion)">與協會實績（298.5 億元收入口徑）差距達 6 倍，判定為報告銷售方誇大，本報告不採用，並建議簡報中絕不引用。</strong><br>
+    · 產業調研網、中經百匯等付費報告站——關鍵數字多以「_ 億元」留白待購，無法驗證</p>
+
+    <p style="margin-top:20px"><strong style="color:var(--ink)">資料缺口（誠實揭露）</strong></p>
+    <p>· 中建三局「智瓴」平台的具體規格、市佔、定價：公開檢索未取得可靠資料。§3 相關段落為定性判斷<br>
+    · 莆田市本級建築業總產值、鋁模板在地保有量：未取得。莆田統計公報僅見仙游縣分項（2025 建築業增加值 34.33 億元、建築業總產值 122.83 億元，+1.5%）<br>
+    · 《莆田市深入推進開發區改革創新強化新形勢下招商引資若干措施》全文未取得，僅見標題。<strong>此為 P0-2 待辦</strong><br>
+    · 磐石三層毛利率為推估，非查證數據</p>
+
+    <p style="margin-top:24px;padding-top:20px;border-top:1px solid var(--cement);font-size:.74rem">
+    本報告數字均標註來源與年份。所有測算（TAM/SAM/SOM、情境模擬）均為基於公開數據的推估，明確標示假設前提，非承諾值。對政府簡報時，建議僅引用「高可信度」層級數據。
+    </p>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="sig">CHEN YI-FU</div>
+  <p>磐石智慧系統 ／ 巨禾建設<br>
+  Market Research · MR-2026-07-16-001 · 決策聚焦語氣<br>
+  產出日期 2026.07.16 ｜ 檢索方案 B 標準 ｜ 聲量模組主動省略</p>
+</div></footer>
+
+<script>
+// bars on scroll
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){
+  e.target.querySelectorAll('i[data-w]').forEach(i=>i.style.width=i.dataset.w+'%');
+  io.unobserve(e.target);}})},{threshold:.25});
+document.querySelectorAll('.scores,.chart').forEach(el=>io.observe(el));
+
+// toggles
+document.querySelectorAll('.tog').forEach(g=>{
+  g.addEventListener('click',ev=>{
+    const b=ev.target.closest('button'); if(!b)return;
+    const panes=[...g.querySelectorAll('button')].map(x=>x.dataset.p);
+    g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    panes.forEach(p=>document.getElementById(p).classList.remove('on'));
+    document.getElementById(b.dataset.p).classList.add('on');
+  });
+});
+
+// slider
+const sl=document.getElementById('sl');
+const fmt=n=>n.toFixed(2)+' 億元';
+sl.addEventListener('input',()=>{
+  const d=+sl.value, k=1+d/100;
+  document.getElementById('o0').textContent='基準 '+(d>=0?'+':'')+d+'%';
+  const m=2.0*k, s=0.5*k;
+  document.getElementById('o1').textContent=fmt(m);
+  document.getElementById('o2').textContent=fmt(s);
+  document.getElementById('o3').textContent=fmt(m*0.275+s*0.70);
+});
+</script>
+</body>
+</html>
