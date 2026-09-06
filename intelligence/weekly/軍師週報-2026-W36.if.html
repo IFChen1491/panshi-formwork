@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>軍師週報 2026-W36｜巨禾 × 磐石</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --concrete:#cfccc4; --cement:#e7e4dd; --struct:#a8a49a;
+  --ink:#3a3a36; --ink-deep:#23231f; --vermilion:#9c3a26;
+  --white-soft:#f4f2ec; --text-body:#4a4843;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:"Noto Sans TC",sans-serif;color:var(--text-body);background:var(--white-soft);line-height:1.85;overflow-x:hidden}
+h1,h2,h3,.serif{font-family:"Noto Serif TC",serif}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--vermilion);width:0;z-index:999;transition:width .1s}
+.dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:800;display:flex;flex-direction:column;gap:12px}
+.dots a{width:8px;height:8px;border-radius:50%;background:var(--struct);opacity:.5;transition:.3s}
+.dots a.active{opacity:1;background:var(--vermilion);transform:scale(1.4)}
+@media(max-width:820px){.dots{display:none}}
+section{min-height:100vh;padding:9vh 8vw;position:relative;display:flex;flex-direction:column;justify-content:center}
+.scene--dark{background:var(--ink-deep);color:var(--white-soft)}
+.scene--dark .text-body,.scene--dark p{color:#d9d6cd}
+.scene--light{background:var(--white-soft)}
+.idx{position:absolute;top:5vh;left:8vw;font-family:"Noto Serif TC",serif;font-size:.8rem;letter-spacing:.25em;color:var(--vermilion);font-weight:700}
+.pg{position:absolute;bottom:4vh;right:8vw;font-size:.72rem;letter-spacing:.2em;color:var(--struct)}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease}
+.reveal.in{opacity:1;transform:none}
+.kicker{font-size:.8rem;letter-spacing:.35em;color:var(--vermilion);font-weight:700;margin-bottom:1.4rem}
+.scene--dark .kicker{color:#c96a52}
+h1.cover{font-size:clamp(2.4rem,5.6vw,4.6rem);font-weight:900;line-height:1.18;letter-spacing:.02em}
+h2.big{font-size:clamp(1.7rem,3.4vw,2.7rem);font-weight:700;line-height:1.32;margin-bottom:1.5rem}
+.lead{font-size:clamp(1.02rem,1.45vw,1.2rem);max-width:56ch}
+.sub{color:var(--struct);font-size:.88rem;letter-spacing:.08em;margin-top:2rem}
+.sign{font-family:"Noto Serif TC",serif;letter-spacing:.4em;font-size:.8rem;color:var(--vermilion);margin-top:1.4rem}
+.maxw{max-width:1040px}
+.track{width:100%;border-collapse:collapse;margin-top:1.4rem;font-size:.9rem}
+.track th,.track td{text-align:left;padding:.8rem .9rem;border-bottom:1px solid var(--concrete);vertical-align:top}
+.track th{font-family:"Noto Serif TC",serif;color:var(--ink);border-bottom:2px solid var(--struct);font-size:.84rem;letter-spacing:.06em}
+.st{font-weight:700;white-space:nowrap}
+.st.go{color:var(--vermilion)} .st.pause{color:#8a7f52} .st.miss{color:#6b6b64} .st.win{color:#3a6b45}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:2rem}
+.tab{padding:.6rem 1.1rem;border:1px solid var(--struct);background:transparent;cursor:pointer;font-family:"Noto Serif TC",serif;letter-spacing:.1em;color:var(--text-body);transition:.25s;font-size:.9rem}
+.tab.active{background:var(--vermilion);color:#fff;border-color:var(--vermilion)}
+.lawbox{display:flex;gap:2.5rem;align-items:flex-start;flex-wrap:wrap}
+.lawnum{font-family:"Noto Serif TC",serif;font-size:clamp(4rem,10vw,8rem);font-weight:900;color:var(--concrete);line-height:1}
+.lawtxt{flex:1;min-width:280px}
+.lawtxt h3{font-size:1.6rem;color:var(--ink);margin-bottom:.3rem}
+.lawtxt .en{letter-spacing:.25em;color:var(--vermilion);font-size:.8rem;margin-bottom:1rem}
+.lawtxt .std{margin-top:1rem;padding:.9rem 1.1rem;background:var(--cement);border-left:3px solid var(--vermilion);font-size:.9rem}
+.card{background:#fff;border:1px solid var(--concrete);padding:2.1rem 2.3rem;margin-top:1.5rem;box-shadow:0 2px 30px rgba(0,0,0,.03)}
+.tagrow{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.tag{font-size:.71rem;letter-spacing:.12em;padding:.28rem .7rem;border-radius:2px;background:var(--cement);color:var(--ink);font-weight:500}
+.tag.v{background:var(--vermilion);color:#fff}
+.card h3{font-size:1.4rem;color:var(--ink-deep);line-height:1.42;margin-bottom:1rem}
+.card h4{font-family:"Noto Serif TC",serif;font-size:1.03rem;color:var(--vermilion);margin:1.5rem 0 .5rem;letter-spacing:.04em}
+.card p{margin-bottom:.85rem;font-size:.97rem}
+.nums{display:flex;gap:1.4rem;flex-wrap:wrap;margin:1.25rem 0;padding:1.2rem;background:var(--ink-deep);color:#fff}
+.num{flex:1;min-width:126px}
+.num b{display:block;font-family:"Noto Serif TC",serif;font-size:1.85rem;color:#e8b4a4;line-height:1.12}
+.num span{font-size:.76rem;color:#c7c4bb;letter-spacing:.04em}
+.frame{margin:1.25rem 0;padding:1.1rem 1.3rem;background:var(--cement);border-left:3px solid var(--ink)}
+.frame .lbl{font-size:.72rem;letter-spacing:.2em;color:var(--vermilion);font-weight:700;margin-bottom:.4rem}
+.analog{margin:1.25rem 0;padding:1.1rem 1.3rem;background:#efe9df;border-left:3px solid var(--struct)}
+.migrate{margin-top:1.35rem;padding:1.2rem 1.4rem;background:#f3ede2;border:1px dashed var(--vermilion)}
+.migrate .lbl{color:var(--vermilion);font-weight:700;font-size:.8rem;letter-spacing:.15em;margin-bottom:.6rem}
+.migrate ol{margin-left:1.1rem} .migrate li{margin-bottom:.65rem;font-size:.94rem}
+.warn{font-size:.83rem;color:#7a5a3a;background:#f0e6d6;padding:.6rem .85rem;border-radius:2px;margin-top:.6rem;display:block}
+.src{margin-top:1.25rem;font-size:.76rem;color:var(--struct);word-break:break-all}
+.src a{color:var(--struct)}
+.mini{width:100%;border-collapse:collapse;font-size:.9rem;margin:1rem 0}
+.mini th,.mini td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--concrete);vertical-align:top}
+.mini th{color:var(--ink);font-family:"Noto Serif TC",serif;font-size:.83rem;border-bottom:2px solid var(--struct)}
+.fbwrap{max-width:660px;background:#fff;border:1px solid var(--concrete);padding:2rem;margin-top:1.5rem}
+.fbrow{display:flex;gap:.6rem;flex-wrap:wrap;margin:1rem 0}
+.fbrow button.rate{padding:.55rem 1rem;border:1px solid var(--struct);background:transparent;cursor:pointer;font-size:.85rem;transition:.2s}
+.fbrow button.rate.sel{background:var(--vermilion);color:#fff;border-color:var(--vermilion)}
+#fbComment{width:100%;min-height:82px;padding:.8rem;border:1px solid var(--concrete);font-family:inherit;font-size:.9rem;resize:vertical}
+#fbSend{margin-top:1rem;padding:.7rem 1.4rem;background:var(--ink-deep);color:#fff;border:none;cursor:pointer;letter-spacing:.1em;font-family:"Noto Serif TC",serif}
+#fbSend:disabled{opacity:.4;cursor:not-allowed}
+.fb-note{font-size:.78rem;color:var(--struct);margin-top:.8rem}
+.opt{background:#fff;border:1px solid var(--concrete);padding:1.3rem 1.5rem;margin-top:1rem;border-left:4px solid var(--vermilion)}
+.opt b{font-family:"Noto Serif TC",serif;color:var(--vermilion);letter-spacing:.1em}
+.scene--dark .opt{background:#2c2c27;border-color:#3d3d36}
+ul.clean{list-style:none;margin-top:1rem} ul.clean li{padding-left:1.4rem;position:relative;margin-bottom:.75rem}
+ul.clean li:before{content:"—";position:absolute;left:0;color:var(--vermilion)}
+.hl{color:var(--vermilion);font-weight:700}
+.scene--dark .hl{color:#e8b4a4}
+.insuf{background:#fff;border:1px solid var(--concrete);padding:1.5rem 1.7rem;margin-top:1.2rem;border-left:4px solid var(--struct)}
+.scene--dark .insuf{background:#2c2c27;border-color:#3d3d36}
+.pull{font-family:"Noto Serif TC",serif;font-size:clamp(1.15rem,2.1vw,1.6rem);line-height:1.6;color:var(--ink-deep);border-left:4px solid var(--vermilion);padding-left:1.4rem;margin:1.6rem 0}
+.scene--dark .pull{color:#f0ede6}
+.expired{opacity:.62}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+<nav class="dots" id="dots"></nav>
+
+<!-- 屏01 封面 -->
+<section class="scene--dark" id="s1">
+  <span class="idx">巨禾 × 磐石</span>
+  <div class="reveal">
+    <p class="kicker">軍師週報 · WEEKLY STRATEGIC REFLECTION</p>
+    <h1 class="cover">Katerra 燒掉 20 億美元學到的一課，<br>不是「模組化不可行」，<br>是<span class="hl">一口氣想吃下整條供應鏈，會先勒死自己</span></h1>
+    <p class="lead sub">2026 第 36 週 ｜ 窗口 8/31 – 9/6 ｜ v3.2 萃取深挖型 ｜ 連續第 7 週料荒觀察期，本週依約提出降頻建議<br>本週深挖：Katerra 20 億美元的 escalation of commitment × Zynga 一夕蒸發百億市值的平台依賴死法</p>
+    <p class="sign">CHEN YI-FU ｜ 系統規劃師</p>
+  </div>
+  <span class="pg">01 / 08</span>
+</section>
+
+<!-- 屏02 上週建議追蹤 -->
+<section class="scene--light" id="s2">
+  <span class="idx">02 · 閉環問責</span>
+  <div class="reveal maxw">
+    <p class="kicker">上週建議追蹤 · ACCOUNTABILITY LOOP</p>
+    <h2 class="big">W35 給您的 6 件事，現在走到哪？</h2>
+    <p class="lead">結論先講：<span class="hl">卡了 12 次記錄未修正的央行骨架，本週終於解決——但不是靠誰去修正，是靠把它從「待辦」重新定義成「按月固定查證項」。有些卡住的事，正確的處理不是催更強的執行力，是先問這件事本來該不該是個待辦。</span></p>
+    <table class="track">
+      <tr><th style="width:27%">W35 事項</th><th style="width:15%">狀態</th><th>證據</th></tr>
+      <tr><td>① 央行不動產貸款集中度骨架修正（已第 7 次記錄未修正，列為 W36 第一屏強制項）</td><td class="st win">✅ 已解決</td><td>9/6 日報 Step 0.6 查得央行官方 2026/6 最新公布值 <b>34.9%</b>（較 2024/6 高點 37.6% 下降），直接寫入骨架，<b>未執行原訂「刪除該欄位」的終止條件</b>。連續 12 次「記錄但未修正」後，第一次真正被解決。</td></tr>
+      <tr><td>② W34 三選項（A／B／C）豁免到期日 2026-09-06</td><td class="st win">✅ A 已內化為 SOP</td><td>A＝「判 INSUFFICIENT 前先確認上一份週報 HTML 存在」，已於 W35、W36 連續兩次實際套用，本週確認 <b>軍師週報-2026-W35.if.html</b> 存在。不再是「選項」，是既定流程的一部分。</td></tr>
+      <tr><td>③ W34/W35 三個深挖候選題（移工外展模式／保險公司當付款人／MCP 介面），到期日 2026-09-06</td><td class="st pause">⏸ 到期，不自動選</td><td>依 SOP 明訂「不要自動幫他選」，本週原樣列於文末（見屏 08），本週深挖改由軍師自選（見屏 05、06），避免混淆。</td></tr>
+      <tr><td>④ 正面欄位 schema 新增六欄建議</td><td class="st pause">待您回報</td><td>無日報／對話證據顯示已動工，不臆測，維持待回報。</td></tr>
+      <tr><td>⑤ C1／C2 雲端化表態（9/10 到期）</td><td class="st go">🔄 進行中，未到期</td><td>9 月斷線工作日累計仍為 1／3（僅 9/3），未觸發自動規則。剩 4 天，非本週報判定項，僅記錄狀態。</td></tr>
+      <tr><td>⑥ 模主制度反偏好否證日（certification 三／四要件，2026-09-30）</td><td class="st go">🔄 進行中，未到期</td><td>剩 24 天，本週未見新證據可供改判，維持懸空狀態，不強行下結論。</td></tr>
+    </table>
+    <p class="sub">6 條：✅2、⏸1、待回報1、🔄2。</p>
+    <div class="pull">當一件事被記錄了 12 次卻始終沒被執行，<br>正確的處置未必是換一個更嚴格的裁示機制，<br><span class="hl">是先問：這件事一開始就不該被設計成「需要有人記得去改」的靜態欄位——它本來就該是週期性自動重查的欄位。</span></div>
+  </div>
+  <span class="pg">02 / 08</span>
+</section>
+
+<!-- 屏03 本週導讀 -->
+<section class="scene--dark" id="s3">
+  <span class="idx">03 · 本週導讀</span>
+  <div class="reveal maxw">
+    <p class="kicker">狀態盤點 · THE JUDGMENT DAY ARRIVED</p>
+    <h2 class="big">今天是判定日。<br>軍師不再解釋，<span class="hl">改為直接提出降頻建議。</span></h2>
+
+    <div class="nums">
+      <div class="num"><b>43 天</b><span>陳董留言空窗（自 7/25）</span></div>
+      <div class="num"><b>7 週</b><span>連續料荒，本週為第 7 週</span></div>
+      <div class="num"><b>0</b><span>本週新進 feedback（門檻 ≥3）</span></div>
+      <div class="num"><b>0</b><span>本週新增對話訊號（門檻 ≥2）</span></div>
+    </div>
+
+    <p class="lead">W34、W35 皆自訂：若 9/6 回饋仍為 0，軍師應主動建議降頻／降版號，不再自我辯護。<span class="hl">今天，日報第④屏已依約定執行——軍師不再重複「空窗第 N 天」的敘事，直接提出具體降頻建議。</span>本週報把同一個約定套用到週報層級本身。</p>
+
+    <div class="insuf">
+      <p style="margin:0 0 .8rem"><b>誠實的補充判斷（不邀功）</b>：</p>
+      <p style="margin:0">空窗 43 天、連續 7 週料荒，橫跨 6 份週報週期，這已經不是「觀察期」可以合理解釋的長度。8/25 訂的判定日設在 9/6，本週如期執行是對的，但更誠實的說法是——<b>判定本身來得有點晚。</b>若第 3、4 週料荒時就先做「這是否代表週報這個形式本身沒有被使用」的假設測試，資源分配會更合理。<span class="hl">本週報把降頻建議升級到週報頻率與篇幅本身，列為 Step 6 選項之一（見屏 08），供陳董裁示，不自動生效。</span></p>
+    </div>
+  </div>
+  <span class="pg">03 / 08</span>
+</section>
+
+<!-- 屏04 四共法則 -->
+<section class="scene--light" id="s4">
+  <span class="idx">04 · 組織 DNA</span>
+  <div class="reveal maxw">
+    <p class="kicker">四共法則 · THE FOUR LAWS</p>
+    <h2 class="big">本週兩則深挖，是同一句話的正反兩面</h2>
+    <p class="lead" style="margin-bottom:1.8rem">Katerra 死於「不相信生態系，什麼都要自己做」；Zynga 死於「只信一個生態系節點，命脈全交給對方」。<span class="hl">兩者的正解都收斂到第 03 條：不是全都自己做，也不是依賴一個做，是綁定多個共生共好的夥伴。</span></p>
+    <div class="tabs" id="lawTabs"></div>
+    <div class="lawbox" id="lawBox"></div>
+  </div>
+  <span class="pg">04 / 08</span>
+</section>
+
+<!-- 屏05 深挖① Katerra -->
+<section class="scene--light" id="s5">
+  <span class="idx">05 · 深挖 ①</span>
+  <div class="reveal maxw">
+    <p class="kicker">日報精華萃取 × 深挖 · DEEP DIVE 01</p>
+    <h2 class="big">燒光 20 億美元的公司，<br>有一篇學術論文用它的名字<br>命名了「承諾升級」這個心理機制</h2>
+
+    <div class="card">
+      <div class="tagrow"><span class="tag v">軍師自選（W34/W35 三候選題到期未選，見屏 08）</span><span class="tag">Escalation of Commitment</span><span class="tag">失敗學／inversion</span><span class="tag">生態系鐵則</span></div>
+      <p><b>背景：</b>Katerra 由 Michael Marks（前 Flextronics 執行長）與 Fritz Wolff 於 <b>2015 年</b>創立，核心命題是把營建業當電子代工業做——集中設計、工廠預製、供應鏈統一採購。<b>2017 年</b>估值達 10 億美元，同年啟用斯波坎 25 萬平方英尺廠房與鳳凰城 20 萬平方英尺整合牆體工廠。</p>
+
+      <h4>致命決策｜軟銀入場後，從「做一件事」變成「什麼都要自己做」</h4>
+      <p><b>2018 年 1 月</b>，軟銀願景基金主導 <b>8.65 億美元</b>融資。同一年 Katerra 收購三家公司——建築設計、建築設計、總承包商——目標是<b>用併購一次組出完整供應鏈：自己當建築師、工程師、總承包商、分包商</b>。<b>2019 年上半年</b>估值衝上 <b>40 億美元</b>。</p>
+      <div class="nums">
+        <div class="num"><b>2015</b><span>創立年</span></div>
+        <div class="num"><b>$8.65億</b><span>2018 軟銀主導首輪</span></div>
+        <div class="num"><b>$40億</b><span>2019H1 峰值估值</span></div>
+        <div class="num"><b>7,500人</b><span>2018 員工數峰值</span></div>
+      </div>
+      <p><b>2019 年下半年，裂縫已很明顯</b>：裁員逾百人、退出約 6 個專案、關閉鳳凰城工廠、共同創辦人 Fritz Wolff 悄悄離開董事會。但公司選擇的不是收斂，是<b>加碼擴張</b>——同期已與沙烏地阿拉伯簽下 <b>6.5 億美元、8,000 戶住宅</b>合約（隸屬更大的 400 億美元框架協議），同時進軍印度。<b>2020 年 5 月</b> COVID-19 衝擊多個在建專案，軟銀再注資 <b>2 億美元</b>續命，代價是創辦人 Marks 下台。</p>
+
+      <h4>結局｜13 個月後宣告破產</h4>
+      <p>新任執行長 Paal Kibsgaard 接手 13 個月後，Katerra 於 <b>2021 年 6 月 7 日</b>申請破產保護。軟銀關係企業 Greensill Capital 於 2021 年 3 月倒閉，導致 Katerra 無法為在建工程取得履約保證保險。<b>軟銀願景基金總計投入超過 20 億美元</b>，孫正義公開列為「史上最大投資失敗之一」。破產後資產拆售：加州特雷西廠區 <b>2,125 萬美元</b>、斯波坎廠房 <b>5,000 萬美元</b>售出——<b>不到投入資金的 4%</b>。</p>
+
+      <div class="frame">
+        <div class="lbl">學理框架</div>
+        <p style="margin:0"><b>Escalation of Commitment（承諾升級，Staw, 1976）</b>——《Journal of Management Policy and Practice》有專文直接以 Katerra 命名：<b>「明知後果為負，仍拒絕把退出當成有效選項，持續投入一條已在虧損的行動路線。」</b>競爭對手 Volumetric Building Companies 執行長事後評論最鋒利：<span class="hl">「他們的模式是要控制一切。我們理解的垂直整合是：每個事業單位都要能獨立存活。」</span>Lowney Architecture 總裁補一句：<b>「自己買下整條供應鏈，現在我們知道了，是個壞主意。讓一群獨立小公司協同供應工廠，比蓋一座垂直整合的工廠更好。」</b></p>
+      </div>
+
+      <h4>跨域類比｜拿破崙 1812 年征俄，同一個心理機制換了一個世紀</h4>
+      <p>1812 年拿破崙率約 <b>60 萬人</b>大軍團入侵俄國，攻入莫斯科後遇焦土戰略與嚴冬，補給線拉到極限。<b>已有大量負面訊號時，退出等於承認巨大代價付諸東流</b>——與 Katerra 2019 年下半年的處境同構。拿破崙選擇繼續，結果<b>返回時能作戰兵力不足 10 萬人</b>，多數史家估計傷亡失蹤逾 40 萬人。</p>
+      <div class="analog"><span class="hl">兩案都不是「一開始判斷錯」，是「已有足夠負面訊號後，仍把退出排除在選項之外，因為退出等於承認沉沒成本歸零」——這正是 escalation of commitment 的教科書定義。</span>差別只在拿破崙賭的是帝國，Katerra 賭的是投資人的 20 億美元。</div>
+
+      <div class="migrate">
+        <div class="lbl">⭐ 對磐石具體改變哪個決策</div>
+        <ol>
+          <li><b>建議寫入磐石戰略願景文件的不可協商項</b>：第三層任何一項變現方式（碳權、保險、融資、材料議價）啟動時，先問 Katerra 反面測試的兩題——① 這個新事業單位能不能不靠磐石母體輸血獨立存活？② 若半年後證明不可行，退出成本是否可控、母體會不會被拖著一起賠？<b>任一題答不出來，項目就還沒資格啟動</b>，即使時機看起來正好（如碳權法規時間壓力）。</li>
+          <li><b>🌐 生態系鐵則應用</b>：Katerra 沒有選擇與既有建築師、營造商、材料供應商建立夥伴關係分散風險，而是用併購把每個角色收進自己的資產負債表——<b>任何一環出問題，沒有獨立夥伴可以緩衝，全部風險集中在同一張表上引爆。</b>磐石的正解是與 Katerra 反著做：往材料議價、保險、融資擴張時，<b>綁定既有專業者作為共好夥伴（如 W35 已提議「模主發證權外包不控股第三方」），不要自己成立保險子公司、自己蓋材料工廠。</b>護城河深度來自夥伴數量與黏著度，不是資產負債表上有多少個自己的事業單位。</li>
+        </ol>
+      </div>
+
+      <div class="warn">⚠️ 存活者偏誤警語：本案例挑的是失敗案例，Katerra 破產後仍有 Veev、Built Technologies、DroneDeploy 等同賽道公司持續獲得資金，不代表模組化營建整體不可行；競爭對手事後評論帶有「我們比較懂」的倖存者立場，需保留。</div>
+      <div class="src">來源：<a href="https://en.wikipedia.org/wiki/Katerra">Wikipedia: Katerra</a> ｜ <a href="https://www.axios.com/2021/06/08/katerra-bankruptcy-softbank">Axios</a> ｜ <a href="https://www.architectmagazine.com/technology/katerras-2-billion-legacy_o">Architect Magazine</a> ｜ <a href="https://www.constructiondive.com/news/what-does-katerras-demise-mean-for-the-contech-and-modular-industries/608037">Construction Dive</a> ｜ <a href="https://articlegateway.com/index.php/JMPP/article/view/7488">Journal of Management Policy and Practice</a></div>
+    </div>
+  </div>
+  <span class="pg">05 / 08</span>
+</section>
+
+<!-- 屏06 深挖② Zynga -->
+<section class="scene--light" id="s6">
+  <span class="idx">06 · 深挖 ②</span>
+  <div class="reveal maxw">
+    <p class="kicker">日報精華萃取 × 深挖 · DEEP DIVE 02</p>
+    <h2 class="big">一夕蒸發百億市值的公司，<br>死因不是「依賴平台」，<br>是<span class="hl">只有一條命脈，而且握在別人手裡</span></h2>
+
+    <div class="card">
+      <div class="tagrow"><span class="tag v">接 9/2 日報死法 G（資料物理路徑不在磐石手上）</span><span class="tag">Platform Envelopment</span><span class="tag">生態系鐵則</span></div>
+      <p><b>背景：</b>Zynga（FarmVille、CityVille）2011 年上市市值 <b>115 億美元</b>，崛起完全建立在 Facebook 病毒式傳播機制上——<b>2011 年 Zynga 一家公司佔 Facebook 總營收的 12%</b>，共生關係從一開始就不對稱：Facebook 能沒有 Zynga，Zynga 完全離不開 Facebook。</p>
+
+      <h4>致命轉折｜Facebook 為了自己上市，修改了規則</h4>
+      <p><b>2012 年 2 月</b> Facebook 申請上市，招股書揭露對 Zynga 的營收依賴——這反而成為壓垮 Zynga 的第一張骨牌，讓 Facebook 有動機在上市前優化自身平台獲利結構。<b>2012 年 4 月起</b> Facebook 修改動態消息演算法，砍掉 Zynga 賴以擴散的洗版式通知，<b>Zynga 每日活躍用戶數見頂後再未回到高點</b>。<b>2012 年 5 月 18 日</b> Facebook 掛牌當天，Zynga 股價無預警重挫 13%，兩度臨時停牌。<b>2012 年 11 月</b> 雙方修改合作條款，Zynga 喪失特殊待遇，股價再跌逾 10%。</p>
+      <div class="nums">
+        <div class="num"><b>$115億</b><span>2011 上市市值</span></div>
+        <div class="num"><b>12%</b><span>Zynga 佔 FB 總營收比例</span></div>
+        <div class="num"><b>$100億</b><span>2012 全年蒸發市值</span></div>
+        <div class="num"><b>-13%</b><span>2012/5/18 單日重挫（FB 上市日）</span></div>
+      </div>
+
+      <h4>結局｜五輪裁員，財務長跳槽敵營</h4>
+      <p>2012 年全年歷經五輪裁員、關閉多個海外辦公室、核心人才出走——<b>連財務長都跳槽至 Facebook、財務主管跳槽至 Twitter</b>，具高度象徵意義。FarmVille 2 雖 10 月上線後迅速吸引 5,000 萬玩家，證明創意產能仍在，但時機太晚救不了第三季財報。Zynga 此後轉型行動裝置，2022 年被 Take-Two 以 <b>127 億美元</b>收購——僅約 2011 年 IPO 估值略高水準，十年市值原地踏步。</p>
+
+      <div class="frame">
+        <div class="lbl">學理框架</div>
+        <p style="margin:0"><b>平台圈併（Platform Envelopment，Eisenmann, Parker &amp; Van Alstyne）</b>——第三方在平台上做大到接近威脅平台利益時，平台擁有者有能力也有動機單方面修改規則，一夕拆除第三方護城河。一位管理顧問的口語版總結：<span class="hl">「如果你把城堡蓋在租來的地上，房東可以一夜之間改變分區規則。真正的避險方法是跨平台多元布局，並從第一天就建立自己擁有的通路。」</span>關鍵的一句：<b>Facebook 這麼做不是為了傷害 Zynga——他們在自己上市前優化自身平台，Zynga 的死活根本不在考慮範圍內。不需要惡意，只需要利益不再一致，命脈說斷就斷。</b></p>
+      </div>
+
+      <h4>跨域類比｜愛爾蘭馬鈴薯饑荒——單一品種依賴，一場真菌毀掉八分之一人口</h4>
+      <p>1840 年代愛爾蘭因高度依賴單一馬鈴薯品種「Lumper」（單位產量是小麥 3 倍），<b>1841 年約 300 萬人幾乎完全依賴馬鈴薯維生</b>。Lumper 基因完全同質，對晚疫病毫無抵抗力差異——<b>1845 年疫病爆發，三年內造成八分之一愛爾蘭人餓死（約 100 萬人死亡）</b>。加州大學柏克萊分校演化生物學課程指出同樣錯誤持續重演：1970 年美國單一玉米品種因真菌損失逾 10 億美元、1980 年代加州因單一砧木品種被迫重種近 200 萬英畝葡萄藤。</p>
+      <div class="analog">Zynga 依賴 Facebook 這唯一渠道，就像愛爾蘭依賴 Lumper 這唯一品種——<span class="hl">兩者在依賴對象穩定運作時都是效率最高的選擇，但效率最高與最脆弱是同一件事的兩面：一旦單一節點變化，沒有備援結構的一方會在極短時間內失去一切，且無法用「更努力」補救，因為問題不在執行力，在結構本身只有一條命脈。</span></div>
+
+      <div class="migrate">
+        <div class="lbl">⭐ 對磐石具體改變哪個決策</div>
+        <ol>
+          <li><b>資料入口多元化，不等電信商鋪好管線才反應</b>：磐石應主動評估「模主手機上傳」之外至少一條備援資料通路（工地端獨立 IoT 感測器、非電信商區域網路夥伴），確保即使某條實體通路被電信商整合進他們的解決方案包，磐石仍握有至少一條不經對方的資料入口。</li>
+          <li><b>提前建立與電信商的共好關係，而非被動等整合</b>：與其把電信商當競爭對手防守，不如主動探詢能否成為對方解決方案包裡「工班資料與檢核」那一塊模組供應方——呼應本週日報探點「FusionOne 有無公開 API」邏輯：<b>若標準之爭無可避免，該問的不是怎麼贏過對方，是怎麼在對方鋪的管線上，佔住一個他們拆不掉的位置。</b></li>
+          <li><b>磐石今天就能收得到、但尚未開始收的提前示警指標</b>：派工資料中經由第三方網路或第三方平台中轉的比例（9/2 日報已提出）。<b>本週報要重複點名：這是第一個「知道要做但還沒開始收」的數字。</b></li>
+          <li><b>🌐 生態系鐵則應用</b>：正解不是「別依賴電信商」，是<b>同時與至少兩家以上電信商／網通廠／機器人整合商建立淺層合作關係</b>——這樣任何一方要排除磐石的成本都會提高，因為磐石不是唯一沒有選擇的乙方，而是一個在多方生態系裡都佔有一席之地、誰都不想輕易得罪的夥伴。</li>
+        </ol>
+      </div>
+
+      <div class="warn">⚠️ 待查證：Zynga「曾享有動態消息優先曝光權」為匿名員工說法，雙方未證實；股價短期波動亦與 Facebook 上市當日程式交易效應有關（The Atlantic 分析），不完全等同平台圈併機制單一解釋。</div>
+      <div class="src">來源：<a href="https://www.theatlantic.com/business/archive/2012/05/why-did-zyngas-stock-drop-after-facebook-went-public/257395">The Atlantic</a> ｜ <a href="https://en.wikipedia.org/wiki/Zynga">Wikipedia: Zynga</a> ｜ <a href="https://www.businessinsider.com/zynga-disaster-timeline-2012-12">Business Insider 時間軸</a> ｜ <a href="https://www.cnbc.com/2012/11/29/zynga-tumbles-on-new-terms-with-facebook.html">CNBC</a> ｜ <a href="https://evolution.berkeley.edu/the-relevance-of-evolution/agriculture/monoculture-and-the-irish-potato-famine-cases-of-missing-genetic-variation">UC Berkeley Understanding Evolution</a></div>
+    </div>
+
+    <div class="pull" style="margin-top:2.4rem">本週兩則合起來是同一句話：<br><span class="hl">磐石既不該像 Katerra 一樣試圖獨自吃下整條鏈，也不該像 Zynga 一樣把單一入口的命脈交給別人——正解都是同一個：生態系，不是全都自己做，也不是依賴一個做。</span></div>
+  </div>
+  <span class="pg">06 / 08</span>
+</section>
+
+<!-- 屏07 平台研究 + 反思狀態 -->
+<section class="scene--light" id="s7">
+  <span class="idx">07 · 平台研究</span>
+  <div class="reveal maxw">
+    <p class="kicker">平台生態系研究 · PLATFORM RESEARCH</p>
+    <h2 class="big">本週兩份：一份是磐石最該臨摹的台灣案例，<br>一份是國際競品下半場的規則變化</h2>
+
+    <div class="card">
+      <div class="tagrow"><span class="tag v">L3 生態系層</span><span class="tag">台灣案例（本月第 1 份）</span><span class="tag">接 9/2 日報「電信商當 SI」</span></div>
+      <h3>亞旭電腦（ASKEY）P5G 智慧營造生態系——七個夥伴、沒有一個試圖吃下全部</h3>
+      <p><b>一句話：</b>本週日報已提及「電信商當 SI」這個威脅，但聚焦威脅判讀。本平台研究補上日報沒講的一層——<b>這不是中華電信單獨的動作，是亞旭電腦主導系統整合，串起至少七個跨域夥伴共同完成的生態系範例：中華電信（5G 專網）、ROSO 機器人／邏數（AI 施工）、趙建銘建築師事務所（設計）、綠野國際智能、承弘國際、長茂科技（智能整合）、三洋實業－上鋌營造（場域驗證），加上經濟部產業發展署補助。</b></p>
+      <p>技術核心：把 5G 小基站、核心網、中央網管系統、AI 機器人伺服器整合到一台自走式 AMR 載具，做成「會走路的 5G 專網」——網路基礎設施本身變成可移動的施工資產，「走到哪、網路建到哪；進場即開工、完工即撤收」。</p>
+      <div class="analog"><span class="hl">亞旭選擇「不自己做機器人、不自己做設計、不自己做營造」，只專注做自己最擅長的系統整合與網路層，其餘全部與專業夥伴共好合作。</span>這正是深挖①（Katerra 反例）與深挖②（Zynga 反例）共同指向的結論在台灣本土市場的正面示範。</div>
+      <div class="migrate">
+        <div class="lbl">⭐ 可執行結論</div>
+        <ol>
+          <li>磐石評估往材料／保險／融資等第三層擴張時，先問「這一塊磐石有沒有比既有專業者做得更好的理由」，沒有就找夥伴，不要自己做。</li>
+          <li>本案由經濟部產業升級創新平台輔導計畫補助、選公辦社宅作實證場域——<b>磐石若有 AI 3D 配模等新技術要做首次落地驗證，可評估比照申請政府補助計畫、爭取公辦工程作為首發場域，降低早期實證成本並取得官方背書可信度。</b></li>
+          <li>磐石若要複製此模式，需要有能力扮演「系統整合主導方」角色，否則在別人主導的生態系裡只能當配角——這正是深挖②警示的結構位置問題：在別人的生態系當配角，和自己主導一個生態系，命運完全不同。</li>
+        </ol>
+      </div>
+      <div class="warn">⚠️ 待查證：綠野國際智能、承弘國際、長茂科技三家公司具體分工角色與集團歸屬；「山明安居」「水秀安居」實證導入規模與後續商業化時程；亞旭「推向日本／歐洲／東南亞」為公司自述計畫，非既成合約。</div>
+      <div class="src">來源：<a href="https://www.cht.com.tw/home/cht/messages/2026/0831-1700">中華電信官方新聞稿</a> ｜ <a href="https://more-news.tw/708064">墨新聞（完整夥伴名單）</a> ｜ <a href="https://tw.stock.yahoo.com/news/中華電與亞旭電腦整合5g企業專網與ai營建機器人-打造智慧營造新模式-004513312.html">Yahoo 股市</a></div>
+    </div>
+
+    <div class="card">
+      <div class="tagrow"><span class="tag v">L1 平台層</span><span class="tag">國際案例</span><span class="tag">接 9/3、9/6 日報「Procore agent 化」</span></div>
+      <h3>Procore 收購 Datagrid——2026 年是「營建軟體整併元年」</h3>
+      <p>本週日報已引用「Procore 20 個 agent vs 磐石 0 個」的數字，本平台研究補上收購背景：<b>2026 年 1 月 20 日</b>，Procore 官方宣布收購舊金山垂直 AI agent 新創 Datagrid，創辦人 Thiago da Costa 加入主導 AI 與數據戰略，交易金額未揭露。產業分析機構 Verdantix 指出，<b>2026 年是營建軟體整併元年</b>——Autodesk、Bentley Systems、Nemetschek、Trimble 同步加碼併購與 AI 原生產品線。</p>
+      <div class="analog"><span class="hl">Procore 這次收購的關鍵詞是「連接」而非「取代」——Datagrid 被整合進 Procore 既有平台，客戶不必另學一套系統。</span>磐石 AI 3D 配模若要從測試疊代階段畢業，應優先考慮把新能力做成磐石既有 SaaS 內的一個模組，而非另立山頭。</div>
+      <p>Procore 的 agent 化架構採 Actions＋Triggers 雙軌設計，需人工核准落實動作，回應皆附引用來源——<b>「加速執行但保留團隊控制權」</b>，截至 2025 Q4 已有近 700 個客戶自建 agent。</p>
+      <div class="warn">⚠️ 磐石目前 agent 數為 0，若對標開放 API／agent 生態，需同步建立資安治理能力——本週日報同日提及 GPT-6 Astra 已跨越 Critical 資安門檻的對照案例，開放介面本身會同時放大攻擊面，磐石若要追這條路，不能只追功能，要同步追治理。交易金額與 agent 化對客戶留存率、ARPU 的具體財務影響皆未揭露，待查證。</div>
+      <div class="src">來源：<a href="https://www.procore.com/press/procore-acquires-datagrid">Procore 官方新聞稿</a> ｜ <a href="https://www.verdantix.com/client-portal/blog/construction-software-consolidation-heats-up-in-2026--procore-acquires-datagrid-as-hexagon-launches-multivista">Verdantix 產業分析</a> ｜ <a href="https://www.constructiondive.com/news/procore-acquires-datagrid-vertical-ai-firm/810120">Construction Dive</a></div>
+    </div>
+
+    <div class="insuf" style="margin-top:2rem">
+      <p style="margin:0 0 .7rem"><b>本週未執行 7 維度評分之聲明</b></p>
+      <p style="margin:0 0 .7rem">依 Step 1 鐵則，本窗口 feedback 新進 <b>0</b> 份、conversation-signals 新增 <b>0</b> 條，均未達門檻（≥3／≥2），<b>本週不產出加權分數</b>，連續第 7 週。7 維度評分將於料源達門檻時恢復。</p>
+      <p style="margin:0"><b>本週 Tavily 實績</b>：search 9 次／extract 3 次（5 URL）＝約 12 次，全程無 429／432，額度充裕。</p>
+    </div>
+  </div>
+  <span class="pg">07 / 08</span>
+</section>
+
+<!-- 屏08 回饋 + 進化 + 結尾 -->
+<section class="scene--dark" id="s8">
+  <span class="idx">08 · 回饋與進化</span>
+  <div class="reveal maxw">
+    <p class="kicker">閉環回饋 · CLOSING THE LOOP</p>
+    <h2 class="big">連續第 7 週零回饋。<br>軍師今天<span class="hl">依約定不再自我辯護，直接提出降頻建議。</span></h2>
+    <p class="lead">依 W34、W35 自訂終止條件，9/6（今天）為判定日。空窗已達 43 天，橫跨 6 份週報週期。<span class="hl">軍師的判斷：這已經不是「觀察期」可以合理解釋的長度，本週不再延長觀察，直接提出以下建議，供陳董裁示。</span></p>
+
+    <div class="opt">
+      <b>A｜週報降頻為雙週一次</b>（軍師偏好此案）<br>
+      維持現有篇幅與深挖規格，但發布週期從每週改為雙週，讓 Tavily 研究與深挖能更集中投入，同時給回饋通道更長的累積窗口。<br>
+      <span class="hl">若下次週報前累積到 ≥3 則 feedback 或 ≥2 則對話訊號，則立即恢復週頻，不等雙週期滿。</span>
+    </div>
+    <div class="opt">
+      <b>B｜維持週頻，但簡化為 5 屏精簡版</b><br>
+      拿掉本週示範的「四共法則互動屏」與「平台研究獨立屏」，合併進深挖屏的附註，只保留封面／追蹤／深挖×1／回饋與進化四段，篇幅減半，換取仍能每週送達的即時性。
+    </div>
+    <div class="opt">
+      <b>C｜維持現狀，不降頻不降版號</b>（軍師不推薦，但依規則必須提供）<br>
+      理由：料荒不代表週報沒有被使用，可能只是陳董的回饋習慣本來就不是逐週留言。<br>
+      不推薦理由：<span class="hl">連續 7 週零回饋、43 天空窗，若這個假設成立，應該已經有其他形式的訊號（如轉發、口頭提及）出現在對話紀錄中，但目前沒有。維持現狀等於繼續用同樣的資源投入同一個沒有回音的動作。</span>
+    </div>
+
+    <h4 style="color:#c96a52;font-family:'Noto Serif TC',serif;margin:2.4rem 0 .6rem;letter-spacing:.1em">W34/W35 三個深挖候選題（已到期，原樣列出，不自動選）</h4>
+    <ul class="clean expired" style="max-width:70ch">
+      <li><b>① 移工外展模式</b>——8/30 工總籲一般營造業移工名額倍增至 3 萬並推「外展」（一名移工由外展機構聘僱、派往多個工地）。<i>到期日 2026-09-06，已到期，陳董未選號。</i></li>
+      <li><b>② 保險公司當付款人</b>——8/27「第五個付費理由＝保費」（Shepherd 對用 Procore／OpenSpace／DroneDeploy 的承包商提供最高 25% 保費折扣）。<i>到期日 2026-09-06，已到期，陳董未選號。</i></li>
+      <li><b>③ 標準之爭從檔案格式轉向 MCP 介面</b>——8/27 Stratus Labs、8/30 Anthropic MHS。<i>到期日 2026-09-06，已到期，陳董未選號。</i></li>
+    </ul>
+    <p class="sub">依 SOP 明訂「不要自動幫他選」，本週不展開為深挖主題（本週深挖改為軍師自選 Katerra／Zynga 兩案，見屏 05、06）。若陳董仍有興趣，請在回饋欄註明號碼，下週優先處理。</p>
+
+    <p class="kicker" style="margin-top:2.6rem">您的一鍵回饋</p>
+    <div class="fbwrap">
+      <p style="color:var(--text-body);margin:0 0 .3rem"><b>這份週報對您有沒有用？</b></p>
+      <p style="color:var(--struct);font-size:.85rem;margin:0">選一個評分（可加留言，例如寫下降頻選項 A／B／C，或深挖候選題號碼 ①②③）→ 下載 JSON → 放進 <b>_meta/inbox/</b>。</p>
+      <div class="fbrow" id="fbRates">
+        <button class="rate" data-r="high">🟢 high · 很有用</button>
+        <button class="rate" data-r="with_comment">🟠 with_comment · 有用但要修正</button>
+        <button class="rate" data-r="mid">🟡 mid · 普通</button>
+        <button class="rate" data-r="low">⚪ low · 沒用</button>
+      </div>
+      <textarea id="fbComment" placeholder="留言（可空白）。例如：降頻選 A；或深挖選 ②；或「Katerra 這條我不同意，理由是…」"></textarea>
+      <button id="fbSend" disabled>產生回饋檔</button>
+      <div class="fb-note" id="fbNote">尚未評分。</div>
+    </div>
+
+    <p class="kicker" style="margin-top:3rem">本週三件事</p>
+    <ul class="clean">
+      <li><b>磐石戰略願景文件新增 Katerra 防呆檢查清單</b>：第三層任何變現方式啟動前，先答兩題——能否獨立存活、退出成本是否可控。<i>誰做：陳董 × 技術長。何時：下一次戰略願景文件修訂時。</i></li>
+      <li><b>開始追蹤「派工資料經第三方網路／平台中轉的比例」</b>：這是 9/2 日報已提出、但至今尚未開始收集的死法 G 提前示警指標。<i>誰做：技術長。何時：本月內建立追蹤機制。</i></li>
+      <li><b>請陳董在回饋欄回應本週降頻建議（A／B／C 三選一）</b>：這不是自動生效的規則，是需要一句話裁示的具體選擇。<i>誰做：陳董。何時：方便時。</i></li>
+    </ul>
+
+    <p class="lead" style="margin-top:3rem;font-size:1.15rem"><span class="hl">壞消息愈早講愈好，包括軍師自己的壞消息。</span><br>這份報告誠實記錄了一件對軍師不利的事：<b>連續 7 週的料荒，軍師本可以在第 3、4 週就提出降頻假設測試，卻選擇沿用同一個頻率硬撐到約定的判定日才行動——這不是紀律，是拖延被包裝成紀律。</b></p>
+    <p class="sign">CHEN YI-FU ｜ 系統規劃師</p>
+    <p class="sub">2026 第 36 週 ｜ 窗口 8/31 – 9/6 ｜ 產出 2026-09-06 ｜ prompt v3.2<br>底層文件：_meta/weekly-evolution/2026-W36-INSUFFICIENT.md、2026-W36-deepdive.md、_meta/platform-research/ ×2</p>
+  </div>
+  <span class="pg">08 / 08</span>
+</section>
+
+<script>
+const LAWS=[
+ {num:"01",zh:"現場為王",en:"GROUND TRUTH FIRST",desc:"所有決策回到工地驗證。辦公室的 PPT 不算數，工地的數據才算數。每天回報的工地數據——才是磐石最重要的資產。",std:"每位主管每季提交《一線觀察報告》，含親自觀察到的 3 項具體問題與 1 項可系統化的改進建議，品質由 CEO／COO 季度評核。"},
+ {num:"02",zh:"系統大於英雄",en:"SYSTEM OVER HEROES",desc:"一個人解決十個問題，不如一個系統防止一個問題再發生。我們不怕犯錯，怕的是同樣的錯讓下一個人再踩。",std:"任何問題解決後必須寫入 SOP，否則不算完成。"},
+ {num:"03",zh:"共好利他",en:"WIN TOGETHER",desc:"合作對象賺錢，磐石才賺錢。業主、模主、工班都有合理利潤空間——這是共好，不是讓利，是讓盤子可以長久轉下去。",std:"任何合作案，確保對方有合理且可持續的利潤空間；平台利潤率不因壓榨夥伴而取得。"},
+ {num:"04",zh:"誠實比聰明重要",en:"TRUTH OVER SPIN",desc:"壞消息愈早講愈好。對上、對下、對客戶都一樣。公司不要只報喜不報憂——一個問題提出來，就是大家一起進步的機會。",std:"簡報禁止只報喜不報憂；每週會議第一項是「這週什麼搞砸了」。"}
+];
+const tabs=document.getElementById('lawTabs'),box=document.getElementById('lawBox');
+function renderLaw(i){const L=LAWS[i];box.innerHTML=`<div class="lawnum">${L.num}</div><div class="lawtxt"><h3>${L.zh}</h3><div class="en">${L.en}</div><p>${L.desc}</p><div class="std"><b>行為標準：</b>${L.std}</div></div>`;[...tabs.children].forEach((b,j)=>b.classList.toggle('active',j===i));}
+LAWS.forEach((L,i)=>{const b=document.createElement('button');b.className='tab';b.textContent=L.num+' '+L.zh;b.onclick=()=>renderLaw(i);tabs.appendChild(b);});
+renderLaw(2);
+
+const secs=[...document.querySelectorAll('section')];
+const dots=document.getElementById('dots');
+secs.forEach((s)=>{const a=document.createElement('a');a.href='#'+s.id;dots.appendChild(a);});
+const dEls=[...dots.children];
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.reveal').forEach(r=>r.classList.add('in'));}});},{threshold:0,rootMargin:"0px 0px -8% 0px"});
+secs.forEach(s=>io.observe(s));
+const io2=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const i=secs.indexOf(e.target);dEls.forEach((d,j)=>d.classList.toggle('active',j===i));}});},{threshold:0,rootMargin:"-45% 0px -45% 0px"});
+secs.forEach(s=>io2.observe(s));
+setTimeout(()=>{document.querySelectorAll('.reveal:not(.in)').forEach(r=>r.classList.add('in'));},3000);
+addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('prog').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';});
+
+let rating=null;
+document.querySelectorAll('#fbRates .rate').forEach(b=>b.onclick=()=>{rating=b.dataset.r;document.querySelectorAll('#fbRates .rate').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');document.getElementById('fbSend').disabled=false;});
+document.getElementById('fbSend').onclick=()=>{
+  const payload={date:"2026-09-06",week:"2026-W36",rating:rating,comment:document.getElementById('fbComment').value||"",prompt_version:"v3.2",source:"weekly-html",timestamp:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download="feedback-2026-09-06.json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById('fbNote').innerHTML='✅ 已產生 <b>feedback-2026-09-06.json</b>，請放進 <b>_meta/inbox/</b>，軍師下次啟動會自動掃描合併。';
+};
+</script>
+</body>
+</html>
